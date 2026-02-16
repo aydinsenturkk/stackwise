@@ -1,0 +1,36 @@
+{
+  "name": "claudekit",
+  "version": "1.0.0",
+  "description": "Reusable knowledge base of rules, skills, agents, and hooks for Claude Code. Run npx claudekit in any project to configure it.",
+  "type": "module",
+  "bin": {
+    "claudekit": "bin/claudekit.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "knowledge/",
+    "skills/",
+    "agents/",
+    "hooks/",
+    "settings/",
+    "templates/",
+    "lib/registry.json"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.0.0"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "ai",
+    "knowledge-base",
+    "rules",
+    "skills",
+    "agents"
+  ],
+  "license": "MIT"
+}

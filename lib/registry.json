@@ -1,0 +1,392 @@
+{
+  "version": "1.0",
+  "files": [
+    {
+      "path": "knowledge/layer-1-universal/typescript-patterns.md",
+      "layer": 1,
+      "name": "typescript-patterns",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/naming-conventions.md",
+      "layer": 1,
+      "name": "naming-conventions",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/error-handling.md",
+      "layer": 1,
+      "name": "error-handling",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/testing-philosophy.md",
+      "layer": 1,
+      "name": "testing-philosophy",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/security-principles.md",
+      "layer": 1,
+      "name": "security-principles",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/api-design.md",
+      "layer": 1,
+      "name": "api-design",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/documentation-standards.md",
+      "layer": 1,
+      "name": "documentation-standards",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/architecture-principles.md",
+      "layer": 1,
+      "name": "architecture-principles",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/performance-principles.md",
+      "layer": 1,
+      "name": "performance-principles",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/dependency-management.md",
+      "layer": 1,
+      "name": "dependency-management",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/configuration-management.md",
+      "layer": 1,
+      "name": "configuration-management",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/observability.md",
+      "layer": 1,
+      "name": "observability",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/anti-patterns.md",
+      "layer": 1,
+      "name": "anti-patterns",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/code-review-standards.md",
+      "layer": 1,
+      "name": "code-review-standards",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/component-design.md",
+      "layer": 2,
+      "name": "component-design",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/accessibility.md",
+      "layer": 2,
+      "name": "accessibility",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/frontend-error-handling.md",
+      "layer": 2,
+      "name": "frontend-error-handling",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/frontend-security.md",
+      "layer": 2,
+      "name": "frontend-security",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/frontend-performance.md",
+      "layer": 2,
+      "name": "frontend-performance",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/frontend-testing.md",
+      "layer": 2,
+      "name": "frontend-testing",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/frontend-naming.md",
+      "layer": 2,
+      "name": "frontend-naming",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/frontend-architecture.md",
+      "layer": 2,
+      "name": "frontend-architecture",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/internationalization.md",
+      "layer": 2,
+      "name": "internationalization",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/frontend/frontend-anti-patterns.md",
+      "layer": 2,
+      "name": "frontend-anti-patterns",
+      "domain": "frontend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/backend-architecture.md",
+      "layer": 2,
+      "name": "backend-architecture",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/backend-error-handling.md",
+      "layer": 2,
+      "name": "backend-error-handling",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/backend-security.md",
+      "layer": 2,
+      "name": "backend-security",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/backend-testing.md",
+      "layer": 2,
+      "name": "backend-testing",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/backend-naming.md",
+      "layer": 2,
+      "name": "backend-naming",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/database-patterns.md",
+      "layer": 2,
+      "name": "database-patterns",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/caching-strategies.md",
+      "layer": 2,
+      "name": "caching-strategies",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/background-jobs.md",
+      "layer": 2,
+      "name": "background-jobs",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/event-driven.md",
+      "layer": 2,
+      "name": "event-driven",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/validation-patterns.md",
+      "layer": 2,
+      "name": "validation-patterns",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/backend-api-design.md",
+      "layer": 2,
+      "name": "backend-api-design",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/frontend/nextjs.md",
+      "layer": 3,
+      "name": "nextjs",
+      "domain": "frontend",
+      "framework": "nextjs",
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/frontend/react-spa.md",
+      "layer": 3,
+      "name": "react-spa",
+      "domain": "frontend",
+      "framework": "react-spa",
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/backend/nestjs.md",
+      "layer": 3,
+      "name": "nestjs",
+      "domain": "backend",
+      "framework": "nestjs",
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/orm/prisma.md",
+      "layer": 4,
+      "name": "prisma",
+      "domain": "backend",
+      "framework": null,
+      "tool": "prisma",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/state/tanstack-query.md",
+      "layer": 4,
+      "name": "tanstack-query",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "tanstack-query",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/validation/zod.md",
+      "layer": 4,
+      "name": "zod",
+      "domain": null,
+      "framework": null,
+      "tool": "zod",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/testing/vitest.md",
+      "layer": 4,
+      "name": "vitest",
+      "domain": null,
+      "framework": null,
+      "tool": "vitest",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/queue/bullmq.md",
+      "layer": 4,
+      "name": "bullmq",
+      "domain": "backend",
+      "framework": null,
+      "tool": "bullmq",
+      "glob_strategy": "backend"
+    }
+  ]
+}
