@@ -1,13 +1,13 @@
 import { join } from 'node:path';
-import { copyFileSync } from 'node:fs';
 import { getPackageRoot, readJson, writeJson, ensureDir, fileExists } from './utils.js';
 import { detect } from './detect.js';
-import { resolveKnowledgeFiles, determineTemplate, determineSettingsPreset } from './profiles.js';
-import { compose } from './compose.js';
+import { resolveKnowledgeFiles, determineSettingsPreset, TOOL_MAP } from './profiles.js';
+import { compose, generateClaudeMdAuto, writeClaudeMd } from './compose.js';
 import { installSettings } from './settings.js';
 import {
   promptExistingProfile,
   promptStackConfirmation,
+  promptWorkflow,
   promptPathPatterns,
   promptSkillSelection,
   promptAgentSelection,
@@ -42,6 +42,10 @@ function success(msg) {
   console.log(`  ${GREEN}✓ ${msg}${NC}`);
 }
 
+function warn(msg) {
+  console.log(`  ${YELLOW}⚠ ${msg}${NC}`);
+}
+
 export async function run() {
   const packageRoot = getPackageRoot();
   const projectDir = process.cwd();
@@ -70,8 +74,13 @@ export async function run() {
   // --- Step 4: Confirm stack with user ---
   step('Stack detection results');
   const stack = await promptStackConfirmation(
-    useExisting ? { ...detected, ...existingProfile?.stack } : detected
+    useExisting ? { ...detected, ...existingProfile?.stack, workspaces: detected.workspaces } : detected
   );
+
+  // --- Step 4b: Development workflow ---
+  step('Development workflow');
+  const defaultWorkflow = useExisting && existingProfile?.workflow ? existingProfile.workflow : {};
+  const workflow = await promptWorkflow(defaultWorkflow);
 
   // --- Step 5: Configure path patterns ---
   step('Configure path patterns');
@@ -101,6 +110,23 @@ export async function run() {
     info(`Layer 4 (Tool):       ${layer4Count} rules (${toolNames.join(', ')})`);
   }
 
+  // --- Step 6b: Warn about tools without knowledge rules ---
+  const allDetectedTools = [
+    ...stack.orm, ...stack.state_management, ...stack.validation,
+    ...stack.testing, ...stack.styling, ...stack.queue, ...stack.forms,
+    ...stack.ui, ...stack.routing, ...stack.animation, ...stack.table,
+    ...stack.devtools, ...stack.api_docs, ...stack.class_validation,
+    ...stack.rate_limiting, ...stack.auth, ...stack.cache, ...stack.config,
+    ...stack.graphql, ...stack.realtime, ...stack.logging,
+    ...stack.http_client, ...stack.i18n, ...stack.date_utils,
+    ...stack.email, ...stack.upload,
+  ];
+  const toolsWithoutKnowledge = [...new Set(allDetectedTools)].filter(t => !TOOL_MAP[t]);
+  if (toolsWithoutKnowledge.length) {
+    warn(`No knowledge rules for: ${toolsWithoutKnowledge.join(', ')}`);
+    info('Run /generate-knowledge <tool> in Claude Code to generate rules.');
+  }
+
   // --- Step 7: Select skills, agents, hooks ---
   step('Select components');
   const selectedSkills = await promptSkillSelection(stack);
@@ -115,6 +141,7 @@ export async function run() {
     targetDir: claudeDir,
     knowledge_files: filePaths,
     paths,
+    workflow,
     skills: selectedSkills,
     agents: selectedAgents,
     hooks: selectedHooks,
@@ -128,6 +155,7 @@ export async function run() {
     detected_at: new Date().toISOString(),
     stack,
     paths,
+    workflow,
     knowledge_files: filePaths,
     skills: selectedSkills,
     agents: selectedAgents,
@@ -144,17 +172,19 @@ export async function run() {
     success(`Settings merged with "${presetName}" preset`);
   }
 
-  // Template (CLAUDE.md)
-  const claudeMdPath = join(projectDir, 'CLAUDE.md');
-  if (!fileExists(claudeMdPath)) {
-    const templateName = determineTemplate(stack);
-    const templateSource = join(packageRoot, 'templates', templateName);
-    if (fileExists(templateSource)) {
-      copyFileSync(templateSource, claudeMdPath);
-      success(`CLAUDE.md created from ${templateName} template`);
-    }
-  } else {
-    info('CLAUDE.md already exists, preserved');
+  // CLAUDE.md (auto-generated section)
+  const autoContent = generateClaudeMdAuto(stack, workflow, projectDir);
+  const claudeMdResult = writeClaudeMd(projectDir, autoContent);
+  switch (claudeMdResult) {
+    case 'created':
+      success('CLAUDE.md created with auto-generated project info');
+      break;
+    case 'updated':
+      success('CLAUDE.md auto section updated, user notes preserved');
+      break;
+    case 'migrated':
+      success('CLAUDE.md migrated — auto section prepended, existing content preserved');
+      break;
   }
 
   // --- Summary ---

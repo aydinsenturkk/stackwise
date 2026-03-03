@@ -1,14 +1,16 @@
 export const SKILLS = [
-  { name: 'review', description: 'Code review using project rules' },
-  { name: 'fix-issue', description: 'Fetch GitHub issue and implement fix' },
-  { name: 'new-feature', description: 'Scaffold feature with proper structure' },
-  { name: 'add-tests', description: 'Generate tests following testing philosophy' },
-  { name: 'api-endpoint', description: 'Create REST endpoint with full stack' },
-  { name: 'component', description: 'Create React component with types and tests' },
-  { name: 'debug', description: 'Structured debugging workflow' },
-  { name: 'optimize', description: 'Performance analysis and optimization' },
-  { name: 'pr', description: 'Create pull request with full context' },
-  { name: 'migrate', description: 'Database migration with rollback strategy' },
+  { name: 'ck-review', description: 'Code review using project rules' },
+  { name: 'ck-fix-issue', description: 'Fetch GitHub issue and implement fix' },
+  { name: 'ck-new-feature', description: 'Scaffold feature with proper structure' },
+  { name: 'ck-add-tests', description: 'Generate tests following testing philosophy' },
+  { name: 'ck-api-endpoint', description: 'Create REST endpoint with full stack' },
+  { name: 'ck-component', description: 'Create React component with types and tests' },
+  { name: 'ck-debug', description: 'Structured debugging workflow' },
+  { name: 'ck-optimize', description: 'Performance analysis and optimization' },
+  { name: 'ck-pr', description: 'Create pull request with full context' },
+  { name: 'ck-migrate', description: 'Database migration with rollback strategy' },
+  { name: 'ck-generate-knowledge', description: 'Generate knowledge rules for an unsupported tool' },
+  { name: 'ck-sync-project', description: 'Sync CLAUDE.md with current project state' },
 ];
 
 export const AGENTS = [
@@ -45,11 +47,39 @@ export const DEPENDENCY_MAP = {
   '@prisma/client': { category: 'orm', value: 'prisma' },
   'drizzle-orm': { category: 'orm', value: 'drizzle' },
   typeorm: { category: 'orm', value: 'typeorm' },
+  mongoose: { category: 'orm', value: 'mongoose' },
+  sequelize: { category: 'orm', value: 'sequelize' },
+  knex: { category: 'orm', value: 'knex' },
+  '@mikro-orm/core': { category: 'orm', value: 'mikro-orm' },
 
   // State management
   '@tanstack/react-query': { category: 'state_management', value: 'tanstack-query' },
+  '@tanstack/store': { category: 'state_management', value: 'tanstack-store' },
+  '@tanstack/react-store': { category: 'state_management', value: 'tanstack-store' },
   zustand: { category: 'state_management', value: 'zustand' },
   '@reduxjs/toolkit': { category: 'state_management', value: 'redux-toolkit' },
+
+  // Forms
+  'react-hook-form': { category: 'forms', value: 'react-hook-form' },
+  '@tanstack/react-form': { category: 'forms', value: 'tanstack-form' },
+
+  // DevTools
+  '@tanstack/react-query-devtools': { category: 'devtools', value: 'tanstack-devtools' },
+  '@tanstack/router-devtools': { category: 'devtools', value: 'tanstack-devtools' },
+  '@tanstack/form-devtools': { category: 'devtools', value: 'tanstack-devtools' },
+
+  // UI Components
+  'class-variance-authority': { category: 'ui', value: 'shadcn-ui' },
+
+  // Routing
+  '@tanstack/react-router': { category: 'routing', value: 'tanstack-router' },
+
+  // Animation
+  'framer-motion': { category: 'animation', value: 'framer-motion' },
+  'motion': { category: 'animation', value: 'framer-motion' },
+
+  // Tables
+  '@tanstack/react-table': { category: 'table', value: 'tanstack-table' },
 
   // Validation
   zod: { category: 'validation', value: 'zod' },
@@ -69,10 +99,71 @@ export const DEPENDENCY_MAP = {
 
   // Queue
   bullmq: { category: 'queue', value: 'bullmq' },
+
+  // API Documentation
+  '@nestjs/swagger': { category: 'api_docs', value: 'nestjs-swagger' },
+
+  // Class Validation (backend)
+  'class-validator': { category: 'class_validation', value: 'class-validator' },
+  'class-transformer': { category: 'class_validation', value: 'class-validator' },
+
+  // Rate Limiting
+  '@nestjs/throttler': { category: 'rate_limiting', value: 'nestjs-throttler' },
+
+  // Authentication
+  '@nestjs/passport': { category: 'auth', value: 'nestjs-passport' },
+  '@nestjs/jwt': { category: 'auth', value: 'nestjs-passport' },
+  'passport-jwt': { category: 'auth', value: 'nestjs-passport' },
+  passport: { category: 'auth', value: 'passport' },
+  'next-auth': { category: 'auth', value: 'next-auth' },
+  '@auth/core': { category: 'auth', value: 'auth-core' },
+  lucia: { category: 'auth', value: 'lucia' },
+
+  // Caching
+  '@nestjs/cache-manager': { category: 'cache', value: 'nestjs-cache-manager' },
+  'cache-manager': { category: 'cache', value: 'nestjs-cache-manager' },
+
+  // Configuration
+  '@nestjs/config': { category: 'config', value: 'nestjs-config' },
+
+  // GraphQL / API layer
+  graphql: { category: 'graphql', value: 'graphql' },
+  '@apollo/server': { category: 'graphql', value: 'apollo-server' },
+  '@apollo/client': { category: 'graphql', value: 'apollo-client' },
+  '@trpc/server': { category: 'graphql', value: 'trpc-server' },
+  '@trpc/client': { category: 'graphql', value: 'trpc-client' },
+
+  // Realtime
+  'socket.io': { category: 'realtime', value: 'socket-io' },
+  ws: { category: 'realtime', value: 'ws' },
+
+  // Logging
+  winston: { category: 'logging', value: 'winston' },
+  pino: { category: 'logging', value: 'pino' },
+
+  // HTTP Client
+  axios: { category: 'http_client', value: 'axios' },
+  ky: { category: 'http_client', value: 'ky' },
+
+  // Internationalization
+  i18next: { category: 'i18n', value: 'i18next' },
+  'next-intl': { category: 'i18n', value: 'next-intl' },
+
+  // Date utilities
+  dayjs: { category: 'date_utils', value: 'dayjs' },
+  'date-fns': { category: 'date_utils', value: 'date-fns' },
+  luxon: { category: 'date_utils', value: 'luxon' },
+
+  // Email
+  nodemailer: { category: 'email', value: 'nodemailer' },
+  '@nestjs/mailer': { category: 'email', value: 'nestjs-mailer' },
+
+  // File upload
+  multer: { category: 'upload', value: 'multer' },
 };
 
 // Frontend-only skills (only shown if frontend detected)
-export const FRONTEND_SKILLS = ['component'];
+export const FRONTEND_SKILLS = ['ck-component'];
 
 // Backend-only skills (only shown if backend detected)
-export const BACKEND_SKILLS = ['api-endpoint', 'migrate'];
+export const BACKEND_SKILLS = ['ck-api-endpoint', 'ck-migrate'];

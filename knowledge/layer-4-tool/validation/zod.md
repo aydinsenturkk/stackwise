@@ -1,4 +1,4 @@
-# Zod Validation
+# Zod Validation (v4)
 
 ## Schema Definition
 
@@ -7,7 +7,7 @@ import { z } from "zod";
 
 // Primitives
 const name = z.string().min(1).max(100);
-const email = z.string().email();
+const email = z.email();              // v4: top-level validator
 const age = z.number().int().min(0).max(150);
 const isActive = z.boolean().default(true);
 const role = z.enum(["USER", "ADMIN", "MODERATOR"]);
@@ -16,18 +16,43 @@ const createdAt = z.coerce.date();
 // Object schema
 const UserSchema = z.object({
   id: z.string().cuid(),
-  email: z.string().email(),
+  email: z.email(),
   name: z.string().min(1).max(100),
   role: z.enum(["USER", "ADMIN", "MODERATOR"]),
   createdAt: z.coerce.date(),
 });
 ```
 
+### Top-Level Validators (v4)
+
+v4 promotes string format validators to the `z` namespace for tree-shaking and conciseness.
+
+```typescript
+// v4 (preferred)          // v3 (deprecated but works)
+z.email()                  // z.string().email()
+z.uuid()                   // z.string().uuid()
+z.url()                    // z.string().url()
+z.cuid()                   // z.string().cuid()
+z.cuid2()                  // z.string().cuid2()
+z.ulid()                   // z.string().ulid()
+z.nanoid()                 // z.string().nanoid()
+z.emoji()                  // z.string().emoji()
+z.base64()                 // z.string().base64()
+z.ipv4()                   // z.string().ip({ version: "v4" })
+z.ipv6()                   // z.string().ip({ version: "v6" })
+z.cidrv4()                 // IP range v4
+z.cidrv6()                 // IP range v6
+z.iso.date()               // ISO date string
+z.iso.time()               // ISO time string
+z.iso.datetime()           // ISO datetime string
+z.iso.duration()           // ISO duration string
+```
+
 ### Common Validators
 
 | Type       | Methods                                              |
 | ---------- | ---------------------------------------------------- |
-| `z.string` | `.min()`, `.max()`, `.email()`, `.url()`, `.uuid()`, `.cuid()`, `.regex()`, `.trim()` |
+| `z.string` | `.min()`, `.max()`, `.regex()`, `.trim()`, `.toLowerCase()` |
 | `z.number` | `.int()`, `.min()`, `.max()`, `.positive()`, `.nonnegative()` |
 | `z.array`  | `.min()`, `.max()`, `.nonempty()`                    |
 | `z.date`   | `.min()`, `.max()`                                   |
@@ -53,7 +78,7 @@ const UserSchema = z.object({
 ```typescript
 // Define schema once, derive type automatically
 const CreateUserSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   name: z.string().min(1).max(100),
   role: z.enum(["USER", "ADMIN"]).default("USER"),
 });
@@ -67,6 +92,16 @@ type CreateUserRawInput = z.input<typeof CreateUserSchema>;
 // Result: { email: string; name: string; role?: "USER" | "ADMIN" }
 ```
 
+### v4 Coerce Input Type Change
+
+```typescript
+// z.coerce input type is now `unknown` (was the specific type in v3)
+const schema = z.coerce.string();
+type SchemaInput = z.input<typeof schema>;
+// v3: string
+// v4: unknown
+```
+
 ---
 
 ## Schema Composition
@@ -75,7 +110,7 @@ type CreateUserRawInput = z.input<typeof CreateUserSchema>;
 // Base schema
 const UserSchema = z.object({
   id: z.string().cuid(),
-  email: z.string().email(),
+  email: z.email(),
   name: z.string().min(1).max(100),
   role: z.enum(["USER", "ADMIN"]),
   createdAt: z.coerce.date(),
@@ -97,13 +132,16 @@ const UserCredentialsSchema = UserSchema.pick({
   email: true,
 });
 
-// Extend with additional fields
+// Extend with additional fields (v4: preferred over .merge())
 const UserWithPostsSchema = UserSchema.extend({
   posts: z.array(PostSchema),
 });
 
-// Merge two schemas
-const FullProfileSchema = UserSchema.merge(ProfileSchema);
+// Combine schemas using spread (best tsc performance)
+const FullProfileSchema = z.object({
+  ...UserSchema.shape,
+  ...ProfileSchema.shape,
+});
 ```
 
 ### Composition Methods
@@ -113,9 +151,16 @@ const FullProfileSchema = UserSchema.merge(ProfileSchema);
 | `.omit()`    | Remove fields (create from base)           |
 | `.pick()`    | Select specific fields                     |
 | `.partial()` | Make all fields optional (update schemas)  |
-| `.extend()`  | Add new fields                             |
-| `.merge()`   | Combine two object schemas                 |
+| `.extend()`  | Add new fields or merge schemas            |
 | `.required()`| Make optional fields required              |
+
+### v4 Deprecations
+
+| Deprecated              | Replacement                              |
+| ----------------------- | ---------------------------------------- |
+| `.merge(OtherSchema)`   | `.extend(OtherSchema.shape)` or spread   |
+| `z.string().email()`    | `z.email()` (top-level)                  |
+| `z.string().uuid()`     | `z.uuid()` (top-level)                   |
 
 ---
 
@@ -154,6 +199,14 @@ const NumericStringSchema = z.preprocess(
 );
 ```
 
+### `z.partialRecord()` (v4)
+
+```typescript
+// Optional keys when using enum schemas with records
+const myRecord = z.partialRecord(z.enum(["a", "b", "c"]), z.number());
+// { a?: number; b?: number; c?: number; }
+```
+
 ---
 
 ## Schema Sharing Strategy (Contracts Package)
@@ -180,7 +233,7 @@ import { z } from "zod";
 
 export const UserSchema = z.object({
   id: z.string().cuid(),
-  email: z.string().email(),
+  email: z.email(),
   name: z.string().min(1).max(100),
   role: z.enum(["USER", "ADMIN"]),
 });
@@ -239,8 +292,7 @@ function validateInput<T>(schema: z.ZodSchema<T>, data: unknown): T {
 
 // Custom error messages
 const CreateUserSchema = z.object({
-  email: z.string({ required_error: "Email is required" })
-    .email("Must be a valid email address"),
+  email: z.email("Must be a valid email address"),
   name: z.string({ required_error: "Name is required" })
     .min(1, "Name cannot be empty")
     .max(100, "Name must be under 100 characters"),
@@ -259,3 +311,5 @@ const CreateUserSchema = z.object({
 | Business rules in Zod schemas        | Keep business rules in domain layer           |
 | No custom error messages             | Add user-friendly messages to every field     |
 | Validating at only one layer         | Validate at DTO, domain, and database layers  |
+| Using `.merge()` for composition     | Use `.extend()` or spread for better tsc perf |
+| Using `z.string().email()` in v4     | Use top-level `z.email()` for tree-shaking   |

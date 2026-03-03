@@ -8,12 +8,65 @@ const FRAMEWORK_MAP = {
 };
 
 // Tool detection value → registry tool name
-const TOOL_MAP = {
+export const TOOL_MAP = {
   prisma: 'prisma',
   'tanstack-query': 'tanstack-query',
   zod: 'zod',
   vitest: 'vitest',
   bullmq: 'bullmq',
+  'react-hook-form': 'react-hook-form',
+  tailwindcss: 'tailwind',
+  'shadcn-ui': 'shadcn-ui',
+  'tanstack-router': 'tanstack-router',
+  'framer-motion': 'framer-motion',
+  'tanstack-table': 'tanstack-table',
+  'tanstack-form': 'tanstack-form',
+  'tanstack-store': 'tanstack-store',
+  'tanstack-devtools': 'tanstack-devtools',
+  'nestjs-swagger': 'nestjs-swagger',
+  'class-validator': 'class-validator',
+  'nestjs-throttler': 'nestjs-throttler',
+  drizzle: 'drizzle',
+  'nestjs-passport': 'nestjs-passport',
+  'nestjs-cache-manager': 'nestjs-cache-manager',
+  'nestjs-config': 'nestjs-config',
+  // ORM (new)
+  mongoose: 'mongoose',
+  sequelize: 'sequelize',
+  knex: 'knex',
+  'mikro-orm': 'mikro-orm',
+  // Auth (new)
+  passport: 'passport',
+  'next-auth': 'next-auth',
+  'auth-core': 'auth-core',
+  lucia: 'lucia',
+  // GraphQL
+  'apollo-server': 'apollo-server',
+  'apollo-client': 'apollo-client',
+  'trpc-server': 'trpc',
+  'trpc-client': 'trpc',
+  graphql: 'graphql',
+  // Realtime
+  'socket-io': 'socket-io',
+  ws: 'ws',
+  // Logging
+  winston: 'winston',
+  pino: 'pino',
+  // HTTP Client
+  axios: 'axios',
+  ky: 'ky',
+  // i18n
+  i18next: 'i18next',
+  'next-intl': 'next-intl',
+  // Date
+  dayjs: 'dayjs',
+  'date-fns': 'date-fns',
+  luxon: 'luxon',
+  // Email
+  nodemailer: 'nodemailer',
+  'nestjs-mailer': 'nestjs-mailer',
+  // Upload
+  multer: 'multer',
 };
 
 export function resolveKnowledgeFiles(stack) {
@@ -54,6 +107,27 @@ export function resolveKnowledgeFiles(stack) {
     ...stack.validation,
     ...stack.testing,
     ...stack.queue,
+    ...stack.styling,
+    ...stack.forms,
+    ...stack.ui,
+    ...stack.routing,
+    ...stack.animation,
+    ...stack.table,
+    ...stack.devtools,
+    ...stack.api_docs,
+    ...stack.class_validation,
+    ...stack.rate_limiting,
+    ...stack.auth,
+    ...stack.cache,
+    ...stack.config,
+    ...stack.graphql,
+    ...stack.realtime,
+    ...stack.logging,
+    ...stack.http_client,
+    ...stack.i18n,
+    ...stack.date_utils,
+    ...stack.email,
+    ...stack.upload,
   ];
   for (const tool of allTools) {
     const registryName = TOOL_MAP[tool];

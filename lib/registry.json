@@ -128,6 +128,15 @@
       "glob_strategy": "all"
     },
     {
+      "path": "knowledge/layer-1-universal/refactoring-principles.md",
+      "layer": 1,
+      "name": "refactoring-principles",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
       "path": "knowledge/layer-2-domain/frontend/component-design.md",
       "layer": 2,
       "name": "component-design",
@@ -317,6 +326,15 @@
       "glob_strategy": "backend"
     },
     {
+      "path": "knowledge/layer-2-domain/backend/contract-patterns.md",
+      "layer": 2,
+      "name": "contract-patterns",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
       "path": "knowledge/layer-3-framework/frontend/nextjs.md",
       "layer": 3,
       "name": "nextjs",
@@ -386,6 +404,366 @@
       "domain": "backend",
       "framework": null,
       "tool": "bullmq",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/forms/react-hook-form.md",
+      "layer": 4,
+      "name": "react-hook-form",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "react-hook-form",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/styling/tailwind.md",
+      "layer": 4,
+      "name": "tailwind",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "tailwind",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/ui/shadcn-ui.md",
+      "layer": 4,
+      "name": "shadcn-ui",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "shadcn-ui",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/routing/tanstack-router.md",
+      "layer": 4,
+      "name": "tanstack-router",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "tanstack-router",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/animation/framer-motion.md",
+      "layer": 4,
+      "name": "framer-motion",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "framer-motion",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/table/tanstack-table.md",
+      "layer": 4,
+      "name": "tanstack-table",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "tanstack-table",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/forms/tanstack-form.md",
+      "layer": 4,
+      "name": "tanstack-form",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "tanstack-form",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/state/tanstack-store.md",
+      "layer": 4,
+      "name": "tanstack-store",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "tanstack-store",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/devtools/tanstack-devtools.md",
+      "layer": 4,
+      "name": "tanstack-devtools",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "tanstack-devtools",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/api-docs/nestjs-swagger.md",
+      "layer": 4,
+      "name": "nestjs-swagger",
+      "domain": "backend",
+      "framework": null,
+      "tool": "nestjs-swagger",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/validation/class-validator.md",
+      "layer": 4,
+      "name": "class-validator",
+      "domain": "backend",
+      "framework": null,
+      "tool": "class-validator",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/rate-limiting/nestjs-throttler.md",
+      "layer": 4,
+      "name": "nestjs-throttler",
+      "domain": "backend",
+      "framework": null,
+      "tool": "nestjs-throttler",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/orm/drizzle.md",
+      "layer": 4,
+      "name": "drizzle",
+      "domain": "backend",
+      "framework": null,
+      "tool": "drizzle",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/auth/nestjs-passport.md",
+      "layer": 4,
+      "name": "nestjs-passport",
+      "domain": "backend",
+      "framework": null,
+      "tool": "nestjs-passport",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/cache/nestjs-cache-manager.md",
+      "layer": 4,
+      "name": "nestjs-cache-manager",
+      "domain": "backend",
+      "framework": null,
+      "tool": "nestjs-cache-manager",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/config/nestjs-config.md",
+      "layer": 4,
+      "name": "nestjs-config",
+      "domain": "backend",
+      "framework": null,
+      "tool": "nestjs-config",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/orm/mongoose.md",
+      "layer": 4,
+      "name": "mongoose",
+      "domain": "backend",
+      "framework": null,
+      "tool": "mongoose",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/orm/sequelize.md",
+      "layer": 4,
+      "name": "sequelize",
+      "domain": "backend",
+      "framework": null,
+      "tool": "sequelize",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/orm/knex.md",
+      "layer": 4,
+      "name": "knex",
+      "domain": "backend",
+      "framework": null,
+      "tool": "knex",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/orm/mikro-orm.md",
+      "layer": 4,
+      "name": "mikro-orm",
+      "domain": "backend",
+      "framework": null,
+      "tool": "mikro-orm",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/auth/passport.md",
+      "layer": 4,
+      "name": "passport",
+      "domain": "backend",
+      "framework": null,
+      "tool": "passport",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/auth/next-auth.md",
+      "layer": 4,
+      "name": "next-auth",
+      "domain": null,
+      "framework": null,
+      "tool": "next-auth",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/auth/lucia.md",
+      "layer": 4,
+      "name": "lucia",
+      "domain": "backend",
+      "framework": null,
+      "tool": "lucia",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/graphql/apollo-server.md",
+      "layer": 4,
+      "name": "apollo-server",
+      "domain": "backend",
+      "framework": null,
+      "tool": "apollo-server",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/graphql/apollo-client.md",
+      "layer": 4,
+      "name": "apollo-client",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "apollo-client",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/graphql/trpc.md",
+      "layer": 4,
+      "name": "trpc",
+      "domain": null,
+      "framework": null,
+      "tool": "trpc",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/realtime/socket-io.md",
+      "layer": 4,
+      "name": "socket-io",
+      "domain": "backend",
+      "framework": null,
+      "tool": "socket-io",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/realtime/ws.md",
+      "layer": 4,
+      "name": "ws",
+      "domain": "backend",
+      "framework": null,
+      "tool": "ws",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/logging/winston.md",
+      "layer": 4,
+      "name": "winston",
+      "domain": "backend",
+      "framework": null,
+      "tool": "winston",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/logging/pino.md",
+      "layer": 4,
+      "name": "pino",
+      "domain": "backend",
+      "framework": null,
+      "tool": "pino",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/http-client/axios.md",
+      "layer": 4,
+      "name": "axios",
+      "domain": null,
+      "framework": null,
+      "tool": "axios",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/http-client/ky.md",
+      "layer": 4,
+      "name": "ky",
+      "domain": null,
+      "framework": null,
+      "tool": "ky",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/i18n/i18next.md",
+      "layer": 4,
+      "name": "i18next",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "i18next",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/i18n/next-intl.md",
+      "layer": 4,
+      "name": "next-intl",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "next-intl",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/date/dayjs.md",
+      "layer": 4,
+      "name": "dayjs",
+      "domain": null,
+      "framework": null,
+      "tool": "dayjs",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/date/date-fns.md",
+      "layer": 4,
+      "name": "date-fns",
+      "domain": null,
+      "framework": null,
+      "tool": "date-fns",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/date/luxon.md",
+      "layer": 4,
+      "name": "luxon",
+      "domain": null,
+      "framework": null,
+      "tool": "luxon",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/email/nodemailer.md",
+      "layer": 4,
+      "name": "nodemailer",
+      "domain": "backend",
+      "framework": null,
+      "tool": "nodemailer",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/email/nestjs-mailer.md",
+      "layer": 4,
+      "name": "nestjs-mailer",
+      "domain": "backend",
+      "framework": null,
+      "tool": "nestjs-mailer",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/upload/multer.md",
+      "layer": 4,
+      "name": "multer",
+      "domain": "backend",
+      "framework": null,
+      "tool": "multer",
       "glob_strategy": "backend"
     }
   ]

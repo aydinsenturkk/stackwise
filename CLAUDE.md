@@ -14,7 +14,7 @@ The interactive CLI auto-detects your project's stack, lets you confirm/override
 
 Knowledge files are organized into layers of increasing specificity. The CLI installs the right combination as `.claude/rules/` files based on your project's stack.
 
-### Layer 1: Universal (14 files)
+### Layer 1: Universal (15 files)
 Applies to all TypeScript projects regardless of stack.
 
 - `architecture-principles.md` - Clean architecture, separation of concerns, dependency rules
@@ -31,13 +31,14 @@ Applies to all TypeScript projects regardless of stack.
 - `dependency-management.md` - Version pinning, audit, update strategy
 - `configuration-management.md` - Environment variables, feature flags, secrets
 - `anti-patterns.md` - Common mistakes and how to avoid them
+- `refactoring-principles.md` - When to refactor, code smells, safety checklist
 
-### Layer 2: Domain (21 files)
+### Layer 2: Domain (22 files)
 Frontend or backend specific knowledge.
 
 **Frontend (10 files):** component-design, frontend-architecture, frontend-testing, frontend-performance, frontend-security, frontend-error-handling, accessibility, internationalization, frontend-naming, frontend-anti-patterns
 
-**Backend (11 files):** backend-architecture, backend-api-design, backend-testing, backend-security, backend-error-handling, database-patterns, caching-strategies, validation-patterns, event-driven, background-jobs, backend-naming
+**Backend (12 files):** backend-architecture, backend-api-design, backend-testing, backend-security, backend-error-handling, database-patterns, caching-strategies, validation-patterns, event-driven, background-jobs, backend-naming, contract-patterns
 
 ### Layer 3: Framework (3 files)
 Framework-specific patterns and conventions.
@@ -46,14 +47,30 @@ Framework-specific patterns and conventions.
 - `frontend/react-spa.md` - Vite, client-side routing, SPA patterns
 - `backend/nestjs.md` - Modules, decorators, dependency injection
 
-### Layer 4: Tool (5 files)
+### Layer 4: Tool (21 files)
 Library and tool-specific usage patterns.
 
 - `orm/prisma.md` - Schema design, migrations, query patterns
+- `orm/drizzle.md` - SQL-first ORM, schema, relations, migrations
 - `validation/zod.md` - Schema composition, refinements, transforms
+- `validation/class-validator.md` - Decorator validation, class-transformer, DTOs
 - `state/tanstack-query.md` - Query keys, mutations, optimistic updates
+- `state/tanstack-store.md` - Reactive store, selectors, persistence
 - `testing/vitest.md` - Configuration, mocking, snapshot testing
 - `queue/bullmq.md` - Job processing, retry strategies, concurrency
+- `forms/react-hook-form.md` - Form state, Zod integration, field arrays
+- `forms/tanstack-form.md` - Type-safe forms, field-level validation, async validation
+- `styling/tailwind.md` - Utility-first CSS, responsive design, dark mode
+- `ui/shadcn-ui.md` - Component composition, variants, Radix primitives
+- `routing/tanstack-router.md` - Type-safe routing, loaders, search params
+- `animation/framer-motion.md` - Layout animations, gestures, AnimatePresence
+- `table/tanstack-table.md` - Headless tables, sorting, filtering, pagination
+- `devtools/tanstack-devtools.md` - Query, Router, Form devtools setup
+- `api-docs/nestjs-swagger.md` - OpenAPI docs, decorators, DocumentBuilder
+- `rate-limiting/nestjs-throttler.md` - Rate limiting, multiple throttlers, guards
+- `auth/nestjs-passport.md` - JWT/Local strategies, guards, role-based auth
+- `cache/nestjs-cache-manager.md` - Redis/memory cache, interceptor, TTL
+- `config/nestjs-config.md` - Environment variables, validation, namespaced config
 
 ## Profiles
 
@@ -147,19 +164,31 @@ claudekit/
 │   ├── constants.js          # Skills, agents, hooks, dependency map
 │   └── utils.js              # File system helpers
 ├── knowledge/                # 4-layer knowledge system
-│   ├── layer-1-universal/    # 14 files - all TypeScript projects
+│   ├── layer-1-universal/    # 15 files - all TypeScript projects
 │   ├── layer-2-domain/       # Domain-specific
 │   │   ├── frontend/         # 10 files
-│   │   └── backend/          # 11 files
+│   │   └── backend/          # 12 files
 │   ├── layer-3-framework/    # Framework-specific
 │   │   ├── frontend/         # nextjs.md, react-spa.md
 │   │   └── backend/          # nestjs.md
 │   └── layer-4-tool/         # Tool-specific
-│       ├── orm/              # prisma.md
-│       ├── validation/       # zod.md
-│       ├── state/            # tanstack-query.md
+│       ├── orm/              # prisma.md, drizzle.md
+│       ├── validation/       # zod.md, class-validator.md
+│       ├── state/            # tanstack-query.md, tanstack-store.md
 │       ├── testing/          # vitest.md
-│       └── queue/            # bullmq.md
+│       ├── queue/            # bullmq.md
+│       ├── forms/            # react-hook-form.md, tanstack-form.md
+│       ├── styling/          # tailwind.md
+│       ├── ui/               # shadcn-ui.md
+│       ├── routing/          # tanstack-router.md
+│       ├── animation/        # framer-motion.md
+│       ├── table/            # tanstack-table.md
+│       ├── devtools/         # tanstack-devtools.md
+│       ├── api-docs/         # nestjs-swagger.md
+│       ├── rate-limiting/    # nestjs-throttler.md
+│       ├── auth/             # nestjs-passport.md
+│       ├── cache/            # nestjs-cache-manager.md
+│       └── config/           # nestjs-config.md
 ├── lib/
 │   └── registry.json         # Knowledge file registry with metadata
 ├── skills/                   # Slash command definitions

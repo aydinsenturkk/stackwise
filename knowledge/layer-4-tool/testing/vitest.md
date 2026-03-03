@@ -57,14 +57,26 @@ export default defineConfig({
 import "@testing-library/jest-dom/vitest";
 ```
 
-### Monorepo Workspace Configuration
+### Monorepo Projects Configuration
 
 ```typescript
-// vitest.workspace.ts
-export default [
-  "apps/*/vitest.config.ts",
-  "packages/*/vitest.config.ts",
-];
+// vitest.config.ts (v4 — replaces vitest.workspace.ts)
+import { defineConfig } from "vitest/config";
+
+export default defineConfig({
+  test: {
+    projects: [
+      "./apps/*",
+      "./packages/*",
+      {
+        test: {
+          name: "unit",
+          include: ["src/**/*.test.ts"],
+        },
+      },
+    ],
+  },
+});
 ```
 
 ---
@@ -324,3 +336,5 @@ vitest --project api
 | Over-mocking (mocking everything)      | Only mock external boundaries              |
 | Snapshot overuse                       | Use snapshots for stable output only       |
 | Forgetting `vi.useRealTimers()`        | Always restore in `afterEach`              |
+| Using `vitest.workspace.ts`            | Use `projects` in `vitest.config.ts` (v4) |
+| Using `poolOptions` config             | Use top-level `maxWorkers`, `isolate` (v4)|

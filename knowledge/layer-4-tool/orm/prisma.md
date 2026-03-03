@@ -268,36 +268,76 @@ const affected = await prisma.$executeRaw`
 
 ---
 
-## Middleware
+## Client Extensions (replaces Middleware)
+
+`$use` middleware was removed in Prisma 7. Use Client Extensions with `$extends`.
 
 ```typescript
-// Soft delete middleware
-prisma.$use(async (params, next) => {
-  // Intercept delete and convert to soft delete
-  if (params.action === "delete") {
-    params.action = "update";
-    params.args.data = { deletedAt: new Date() };
-  }
-
-  if (params.action === "deleteMany") {
-    params.action = "updateMany";
-    if (params.args.data !== undefined) {
-      params.args.data.deletedAt = new Date();
-    } else {
-      params.args.data = { deletedAt: new Date() };
-    }
-  }
-
-  // Filter out soft-deleted records on reads
-  if (params.action === "findMany" || params.action === "findFirst") {
-    if (!params.args) params.args = {};
-    if (!params.args.where) params.args.where = {};
-    params.args.where.deletedAt = null;
-  }
-
-  return next(params);
+// Soft delete extension
+const prisma = new PrismaClient().$extends({
+  query: {
+    $allModels: {
+      async delete({ model, args, query }) {
+        // Convert delete to soft delete
+        return (prisma[model] as any).update({
+          ...args,
+          data: { deletedAt: new Date() },
+        });
+      },
+      async deleteMany({ model, args, query }) {
+        return (prisma[model] as any).updateMany({
+          ...args,
+          data: { deletedAt: new Date() },
+        });
+      },
+      async findMany({ args, query }) {
+        // Filter out soft-deleted records
+        args.where = { ...args.where, deletedAt: null };
+        return query(args);
+      },
+      async findFirst({ args, query }) {
+        args.where = { ...args.where, deletedAt: null };
+        return query(args);
+      },
+    },
+  },
 });
 ```
+
+### Defining Reusable Extensions
+
+```typescript
+import { Prisma } from "@prisma/client";
+
+// Define extension separately for reuse
+const softDeleteExtension = Prisma.defineExtension({
+  name: "softDelete",
+  query: {
+    $allModels: {
+      async delete({ model, args, query }) {
+        return (prisma[model] as any).update({
+          ...args,
+          data: { deletedAt: new Date() },
+        });
+      },
+    },
+  },
+});
+
+// Apply to client
+const prisma = new PrismaClient()
+  .$extends(softDeleteExtension)
+  .$extends(auditLogExtension);
+```
+
+### Extension Types
+
+| Type      | Purpose                                | Example                     |
+| --------- | -------------------------------------- | --------------------------- |
+| `query`   | Intercept and modify queries           | Soft delete, audit logging  |
+| `model`   | Add custom methods to models           | `user.signUp()`             |
+| `client`  | Add methods to client instance         | `prisma.$log()`             |
+| `result`  | Add computed fields to results         | `user.fullName`             |
 
 ---
 
@@ -389,3 +429,4 @@ export class PrismaUserRepository implements UserRepository {
 | String concatenation in raw queries  | Use tagged templates (`$queryRaw`)         |
 | Not handling `RecordNotFound`        | Use `findUniqueOrThrow` or check null      |
 | Seeding with `create` (not idempotent)| Use `upsert` for idempotent seeding       |
+| Using `$use` middleware              | Use `$extends` Client Extensions (v7+)     |

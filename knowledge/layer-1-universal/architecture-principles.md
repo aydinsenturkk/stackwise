@@ -109,6 +109,31 @@ features/
 
 ---
 
+## When to Abstract
+
+| Condition                 | Abstract? |
+| ------------------------- | --------- |
+| Used 3+ times             | Yes       |
+| Complex logic (>30 lines) | Yes       |
+| Changes independently     | Yes       |
+| Clear reuse pattern       | Yes       |
+| Used 1-2 times            | No        |
+| Simple logic (<10 lines)  | No        |
+| Tightly coupled to parent | No        |
+
+---
+
+## Quick Reference
+
+| Question             | Yes           | No          |
+| -------------------- | ------------- | ----------- |
+| Used 3+ times?       | Abstract      | Keep inline |
+| Measured perf issue? | Optimize      | Don't touch |
+| Explains why?        | Comment       | Skip        |
+| Explains what?       | Refactor code | Skip        |
+
+---
+
 ## Principles
 
 - **Separation of Concerns**: Each layer has one job
