@@ -191,6 +191,27 @@ Rules:
       break;
   }
 
+  // Integration Branches
+  if (workflow.integration_branch) {
+    sections.push(`## Integration Branches
+
+When an epic is planned, a long-lived integration branch is created:
+- Integration branch: \`feat/<epic-slug>\`
+- Task branches: \`<epic-slug>/<issue-number>-<description>\`
+- Task PRs target the integration branch (not main)
+- Final merge: integration branch → main when epic is complete
+
+Use this when \`feat/*\` PRs trigger deployments (e.g., preview containers).
+Task PRs to the integration branch avoid triggering deployments until the epic is ready.
+
+Workflow:
+- \`/ck-plan\` creates the integration branch when planning an epic
+- \`/ck-work\` branches from the integration branch
+- \`/ck-ship\` targets the integration branch for task PRs
+- \`/ck-ship --final\` merges the integration branch to main
+`);
+  }
+
   // Release Strategy
   switch (workflow.release_strategy) {
     case 'semver':
@@ -432,6 +453,9 @@ export function generateClaudeMdAuto(stack, workflow, projectDir) {
     }
     if (workflow.branch_strategy) {
       lines.push(`- **Branches:** ${BRANCH_LABELS[workflow.branch_strategy] || workflow.branch_strategy}`);
+    }
+    if (workflow.integration_branch) {
+      lines.push(`- **Integration branches:** Enabled — epic tasks PR to \`feat/<epic-slug>\``);
     }
     if (workflow.release_strategy) {
       lines.push(`- **Releases:** ${RELEASE_LABELS[workflow.release_strategy] || workflow.release_strategy}`);

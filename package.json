@@ -23,6 +23,15 @@
   "dependencies": {
     "@inquirer/prompts": "^7.0.0"
   },
+  "author": "Aydin Senturk <hello@aydinsenturk.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aydinsenturkk/claudekit.git"
+  },
+  "homepage": "https://github.com/aydinsenturkk/claudekit#readme",
+  "bugs": {
+    "url": "https://github.com/aydinsenturkk/claudekit/issues"
+  },
   "keywords": [
     "claude",
     "claude-code",

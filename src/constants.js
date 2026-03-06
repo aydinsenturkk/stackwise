@@ -11,6 +11,11 @@ export const SKILLS = [
   { name: 'ck-migrate', description: 'Database migration with rollback strategy' },
   { name: 'ck-generate-knowledge', description: 'Generate knowledge rules for an unsupported tool' },
   { name: 'ck-sync-project', description: 'Sync CLAUDE.md with current project state' },
+  { name: 'ck-plan', description: 'Generate PRD, epic, tasks, and GitHub Issues from an idea. Use --auto to execute all tasks' },
+  { name: 'ck-tasks', description: 'View task status dashboard from GitHub Issues' },
+  { name: 'ck-work', description: 'Pick up a task and implement it' },
+  { name: 'ck-ship', description: 'Create PR for completed task and optionally merge' },
+  { name: 'ck-standup', description: 'Generate standup status report across all epics' },
 ];
 
 export const AGENTS = [
@@ -30,17 +35,31 @@ export const HOOKS = [
 export const DEPENDENCY_MAP = {
   // Frontend frameworks
   next: { category: 'frontend_frameworks', value: 'nextjs' },
-  react: { category: 'frontend_frameworks', value: 'react-spa', excludeIf: 'next' },
-  vue: { category: 'frontend_frameworks', value: 'vue' },
+  '@tanstack/react-start': { category: 'frontend_frameworks', value: 'tanstack-start' },
+  '@remix-run/react': { category: 'frontend_frameworks', value: 'remix' },
+  react: { category: 'frontend_frameworks', value: 'react-spa', excludeIf: ['next', '@tanstack/react-start', '@remix-run/react'] },
+  nuxt: { category: 'frontend_frameworks', value: 'nuxt' },
+  vue: { category: 'frontend_frameworks', value: 'vue', excludeIf: 'nuxt' },
+  '@sveltejs/kit': { category: 'frontend_frameworks', value: 'sveltekit' },
+  svelte: { category: 'frontend_frameworks', value: 'svelte', excludeIf: '@sveltejs/kit' },
   '@angular/core': { category: 'frontend_frameworks', value: 'angular' },
-  svelte: { category: 'frontend_frameworks', value: 'svelte' },
+  astro: { category: 'frontend_frameworks', value: 'astro' },
+  '@solidjs/start': { category: 'frontend_frameworks', value: 'solid-start' },
+  'solid-js': { category: 'frontend_frameworks', value: 'solid', excludeIf: '@solidjs/start' },
+  '@builder.io/qwik': { category: 'frontend_frameworks', value: 'qwik' },
 
   // Backend frameworks
   '@nestjs/core': { category: 'backend_frameworks', value: 'nestjs' },
-  express: { category: 'backend_frameworks', value: 'express' },
+  express: { category: 'backend_frameworks', value: 'express', excludeIf: ['@nestjs/core', '@feathersjs/feathers'] },
   fastify: { category: 'backend_frameworks', value: 'fastify' },
   hono: { category: 'backend_frameworks', value: 'hono' },
   koa: { category: 'backend_frameworks', value: 'koa' },
+  '@adonisjs/core': { category: 'backend_frameworks', value: 'adonisjs' },
+  '@feathersjs/feathers': { category: 'backend_frameworks', value: 'feathersjs' },
+  '@elysiajs/core': { category: 'backend_frameworks', value: 'elysia' },
+  elysia: { category: 'backend_frameworks', value: 'elysia' },
+  '@hapi/hapi': { category: 'backend_frameworks', value: 'hapi' },
+  'nitropack': { category: 'backend_frameworks', value: 'nitro' },
 
   // ORM / Database
   prisma: { category: 'orm', value: 'prisma' },

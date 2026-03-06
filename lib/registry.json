@@ -137,6 +137,15 @@
       "glob_strategy": "all"
     },
     {
+      "path": "knowledge/layer-1-universal/pm-workflow.md",
+      "layer": 1,
+      "name": "pm-workflow",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
       "path": "knowledge/layer-2-domain/frontend/component-design.md",
       "layer": 2,
       "name": "component-design",

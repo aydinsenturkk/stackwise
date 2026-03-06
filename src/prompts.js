@@ -261,6 +261,14 @@ export async function promptWorkflow(defaults = {}) {
     default: defaults.branch_strategy || 'github-flow',
   });
 
+  let integration_branch = defaults.integration_branch || false;
+  if (branch_strategy === 'github-flow' || branch_strategy === 'trunk-based') {
+    integration_branch = await confirm({
+      message: 'Use integration branches for epics? (task PRs target feat/<epic> instead of main)',
+      default: defaults.integration_branch || false,
+    });
+  }
+
   const release_strategy = await select({
     message: 'Release strategy:',
     choices: [
@@ -291,7 +299,7 @@ export async function promptWorkflow(defaults = {}) {
     default: defaults.pr_merge || 'squash',
   });
 
-  const result = { commit_convention, branch_strategy, release_strategy, changelog, pr_merge };
+  const result = { commit_convention, branch_strategy, integration_branch, release_strategy, changelog, pr_merge };
   if (commit_convention === 'custom') {
     result.custom_commit_pattern = custom_commit_pattern;
   }

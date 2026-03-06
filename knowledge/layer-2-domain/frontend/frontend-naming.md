@@ -4,15 +4,18 @@ See naming-conventions in Layer 1 for universal naming principles.
 
 ## Files and Folders
 
-| Type           | Convention    | Example                   |
-| -------------- | ------------- | ------------------------- |
-| Component file | PascalCase    | `UserProfile.tsx`         |
-| Hook file      | camelCase     | `useAuth.ts`              |
-| Utility file   | camelCase     | `formatDate.ts`           |
-| Type file      | camelCase     | `user.types.ts`           |
-| Test file      | Same + suffix | `UserProfile.test.tsx`    |
-| Folder         | kebab-case    | `user-profile/`           |
-| Feature folder | kebab-case    | `features/notifications/` |
+**All file names use kebab-case.** This prevents macOS + Git case-sensitivity issues and maintains consistency with backend conventions. Exported symbols (components, functions, types) remain PascalCase/camelCase.
+
+| Type           | File Name (kebab-case)        | Export                              |
+| -------------- | ----------------------------- | ----------------------------------- |
+| Component      | `user-profile.tsx`            | `export function UserProfile()`     |
+| Hook           | `use-sidebar-store.ts`        | `export function useSidebarStore()` |
+| Store          | `ui-store.ts`                 | `export const uiStore`              |
+| Utility        | `format-date.ts`              | `export function formatDate()`      |
+| Type file      | `user.types.ts`               | `export type UserData`              |
+| Test file      | `user-profile.test.tsx`       | —                                   |
+| Folder         | `user-profile/`               | —                                   |
+| Feature folder | `features/notifications/`     | —                                   |
 
 ---
 
@@ -57,9 +60,9 @@ See naming-conventions in Layer 1 for universal naming principles.
 
 ```
 features/[feature]/queries/
-  use[Entity]Query.ts           # Single entity fetch
-  use[Entities]Query.ts         # List fetch
-  use[Action][Entity]Mutation.ts # Write operations
+  use-[entity]-query.ts              # Single entity fetch
+  use-[entities]-query.ts            # List fetch
+  use-[action]-[entity]-mutation.ts  # Write operations
   index.ts
 ```
 

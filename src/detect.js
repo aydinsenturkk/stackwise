@@ -296,8 +296,12 @@ export function detect(projectDir) {
     for (const parsed of parsedPkgs) {
       if (hasDep(depName, parsed)) {
         // Check excludeIf condition (e.g., react-spa excluded if next is present)
-        if (mapping.excludeIf && allDeps.has(mapping.excludeIf)) {
-          continue;
+        // excludeIf can be a string or an array of strings
+        if (mapping.excludeIf) {
+          const excludeList = Array.isArray(mapping.excludeIf) ? mapping.excludeIf : [mapping.excludeIf];
+          if (excludeList.some(dep => allDeps.has(dep))) {
+            continue;
+          }
         }
         result[mapping.category].push(mapping.value);
       }
@@ -330,7 +334,10 @@ export function detect(projectDir) {
 
       for (const [depName, mapping] of Object.entries(DEPENDENCY_MAP)) {
         if (!hasDep(depName, parsed)) continue;
-        if (mapping.excludeIf && allDeps.has(mapping.excludeIf)) continue;
+        if (mapping.excludeIf) {
+          const excludeList = Array.isArray(mapping.excludeIf) ? mapping.excludeIf : [mapping.excludeIf];
+          if (excludeList.some(dep => allDeps.has(dep))) continue;
+        }
 
         if (mapping.category === 'frontend_frameworks') {
           hasFrontendFramework = true;
