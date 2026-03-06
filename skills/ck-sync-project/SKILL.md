@@ -6,7 +6,7 @@ Sync CLAUDE.md with current project state by analyzing the actual project struct
 
 Read `.claude/profile.json` to get the current stack and workflow configuration.
 
-If no profile exists, inform the user to run `npx claudekit` first and stop.
+If no profile exists, inform the user to run `npx @aydinsenturk/claudekit` first and stop.
 
 ### Step 2: Read package.json
 

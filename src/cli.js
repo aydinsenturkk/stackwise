@@ -200,6 +200,6 @@ export async function run() {
   console.log('');
   console.log(`  ${BOLD}Profile saved to${NC} .claude/profile.json`);
   console.log('');
-  console.log(`  ${DIM}To re-run with different settings: npx claudekit${NC}`);
+  console.log(`  ${DIM}To re-run with different settings: npx @aydinsenturk/claudekit${NC}`);
   console.log('');
 }

@@ -221,7 +221,7 @@ Special value `cross` indicates the epic/task spans multiple workspaces.
 - Use when `feat/*` PRs trigger deployments (preview containers, staging environments)
 - Example: `cms/13-login-form` → PR to `feat/cms` → final PR to `main`
 
-The integration branch setting is configured via `npx claudekit` and stored in `profile.json`. The integration branch is created by `/ck-plan` when an epic is planned. Task branches are created by `/ck-work` from the integration branch. Final merge is done by `/ck-ship --final`.
+The integration branch setting is configured via `npx @aydinsenturk/claudekit` and stored in `profile.json`. The integration branch is created by `/ck-plan` when an epic is planned. Task branches are created by `/ck-work` from the integration branch. Final merge is done by `/ck-ship --final`.
 
 ### Commit Convention
 

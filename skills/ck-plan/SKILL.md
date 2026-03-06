@@ -56,7 +56,7 @@ This is a new project. Before creating any epic, define the overall scope first.
    - Scope (monorepo only): which workspace the epic targets
    - Dependencies on other epics
    - Relative priority
-7. The first epic's first task is always **"Project Setup"** — initialize the project, install dependencies, run `npx claudekit`
+7. The first epic's first task is always **"Project Setup"** — initialize the project, install dependencies, run `npx @aydinsenturk/claudekit`
 8. Write `.claude/pm/PROJECT.md` (**Monorepo:** If `profile.json` has `monorepo: true`, include the Scope column. Scope values are workspace dir names or `cross`. Omit it for single-repo projects):
 
 ```markdown
