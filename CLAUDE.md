@@ -1,11 +1,11 @@
 # claudekit - Knowledge Base for Claude Code
 
-A reusable knowledge base of rules, skills, agents, hooks, and settings for Claude Code. Run `npx @aydinsenturk/claudekit` in any project to configure it — no global install needed.
+A reusable knowledge base of rules, skills, agents, hooks, and settings for Claude Code. Run `npx @aydinsenturkk/claudekit` in any project to configure it — no global install needed.
 
 ## Quick Start
 
 ```bash
-npx @aydinsenturk/claudekit
+npx @aydinsenturkk/claudekit
 ```
 
 The interactive CLI auto-detects your project's stack, lets you confirm/override, and installs the right combination of knowledge rules, skills, agents, and hooks into `.claude/`.

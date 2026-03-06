@@ -2,12 +2,12 @@
 
 Curated knowledge base of rules, skills, agents, and hooks for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). One command to set up any TypeScript project.
 
-[![npm version](https://img.shields.io/npm/v/@aydinsenturk/claudekit)](https://www.npmjs.com/package/@aydinsenturk/claudekit)
+[![npm version](https://img.shields.io/npm/v/@aydinsenturkk/claudekit)](https://www.npmjs.com/package/@aydinsenturkk/claudekit)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Node >= 18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
 
 ```bash
-npx @aydinsenturk/claudekit
+npx @aydinsenturkk/claudekit
 ```
 
 ## What It Does
@@ -21,7 +21,7 @@ claudekit scans your `package.json` (including monorepo workspaces), detects you
 - **Settings** preset merged into `.claude/settings.json`
 - **CLAUDE.md** auto-generated with your stack and workflow info
 
-No global install needed. Just `npx @aydinsenturk/claudekit` in any project.
+No global install needed. Just `npx @aydinsenturkk/claudekit` in any project.
 
 ## Supported Stacks
 
@@ -187,7 +187,7 @@ Skills are context-aware: `/ck-component` only appears for frontend projects, `/
 
 ## How It Works
 
-Running `npx @aydinsenturk/claudekit` walks you through an interactive flow:
+Running `npx @aydinsenturkk/claudekit` walks you through an interactive flow:
 
 1. Checks for existing `.claude/profile.json` (offers to update or start fresh)
 2. Scans `package.json` files to detect your stack (including monorepo workspaces)
@@ -201,7 +201,7 @@ Running `npx @aydinsenturk/claudekit` walks you through an interactive flow:
 Re-run anytime to update your configuration:
 
 ```bash
-npx @aydinsenturk/claudekit
+npx @aydinsenturkk/claudekit
 ```
 
 ## What Gets Created
