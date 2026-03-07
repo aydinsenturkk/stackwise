@@ -1,10 +1,10 @@
 {
   "name": "stackwise",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Reusable knowledge base of rules, skills, agents, and hooks for Claude Code. Run npx stackwise in any project to configure it.",
   "type": "module",
   "bin": {
-    "stackwise": "bin/claudekit.js"
+    "stackwise": "bin/stackwise.js"
   },
   "files": [
     "bin/",
@@ -26,11 +26,11 @@
   "author": "Aydin Senturk <hello@aydinsenturk.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aydinsenturkk/claudekit.git"
+    "url": "git+https://github.com/aydinsenturkk/stackwise.git"
   },
-  "homepage": "https://github.com/aydinsenturkk/claudekit#readme",
+  "homepage": "https://github.com/aydinsenturkk/stackwise#readme",
   "bugs": {
-    "url": "https://github.com/aydinsenturkk/claudekit/issues"
+    "url": "https://github.com/aydinsenturkk/stackwise/issues"
   },
   "keywords": [
     "claude",

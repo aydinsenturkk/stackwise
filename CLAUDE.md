@@ -149,10 +149,10 @@ CLAUDE.md templates for common stacks. The CLI copies one into your project and 
 ## Directory Structure
 
 ```
-claudekit/
+stackwise/
 ├── package.json              # npm package definition
 ├── bin/
-│   └── claudekit.js          # CLI entry point (#!/usr/bin/env node)
+│   └── stackwise.js          # CLI entry point (#!/usr/bin/env node)
 ├── src/
 │   ├── cli.js                # Main orchestrator (8-step interactive flow)
 │   ├── detect.js             # Auto-detection of project stack

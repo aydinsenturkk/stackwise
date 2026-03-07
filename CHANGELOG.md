@@ -40,4 +40,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - YAML frontmatter composition with glob patterns per knowledge file
 - CLAUDE.md template system with 4 stack presets (Next.js, React+NestJS, React SPA, Generic)
 
-[1.0.0]: https://github.com/aydinsenturkk/claudekit/releases/tag/v1.0.0
+[1.0.0]: https://github.com/aydinsenturkk/stackwise/releases/tag/v1.0.0

@@ -6,8 +6,8 @@ Thanks for your interest in contributing! This guide covers the project structur
 
 ```bash
 # Clone the repo
-git clone https://github.com/aydinsenturkk/claudekit.git
-cd claudekit
+git clone https://github.com/aydinsenturkk/stackwise.git
+cd stackwise
 
 # Install dependencies
 npm install
@@ -23,8 +23,8 @@ stackwise
 ## Project Structure
 
 ```
-claudekit/
-├── bin/claudekit.js          # CLI entry point
+stackwise/
+├── bin/stackwise.js          # CLI entry point
 ├── src/
 │   ├── cli.js                # Main orchestrator (interactive flow)
 │   ├── detect.js             # Stack auto-detection from package.json
