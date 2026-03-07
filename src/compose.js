@@ -205,10 +205,10 @@ Use this when \`feat/*\` PRs trigger deployments (e.g., preview containers).
 Task PRs to the integration branch avoid triggering deployments until the epic is ready.
 
 Workflow:
-- \`/ck-plan\` creates the integration branch when planning an epic
-- \`/ck-work\` branches from the integration branch
-- \`/ck-ship\` targets the integration branch for task PRs
-- \`/ck-ship --final\` merges the integration branch to main
+- \`/sw-plan\` creates the integration branch when planning an epic
+- \`/sw-work\` branches from the integration branch
+- \`/sw-ship\` targets the integration branch for task PRs
+- \`/sw-ship --final\` merges the integration branch to main
 `);
   }
 

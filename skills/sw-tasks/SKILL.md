@@ -71,7 +71,7 @@ Show the single best next task:
 - Size: medium
 - Epic: User Notifications (#10)
 
-Start with: /ck-work 13
+Start with: /sw-work 13
 ```
 
 **For `blocked` filter:**

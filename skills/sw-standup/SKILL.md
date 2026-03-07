@@ -70,7 +70,7 @@ At the bottom of the report, add actionable recommendations:
 ---
 ## Recommendations
 - **Unblock:** #14 is blocked by #15 which is in progress — follow up
-- **Pick up:** #16 is ready to start — `/ck-work 16`
+- **Pick up:** #16 is ready to start — `/sw-work 16`
 - **At risk:** Epic "User Notifications" has 2 large tasks remaining
 ```
 

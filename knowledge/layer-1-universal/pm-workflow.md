@@ -6,16 +6,16 @@ Spec-driven development workflow using GitHub Issues as the single source of tru
 
 | Command | Purpose |
 |---------|---------|
-| `/ck-plan <idea> [--auto]` | Define scope, create PRD, epic, tasks, GitHub Issues. `--auto` executes all tasks sequentially |
-| `/ck-tasks [filter]` | View task status dashboard |
-| `/ck-work [issue]` | Pick up a task and implement it |
-| `/ck-ship [issue]` | Create PR, optionally merge |
-| `/ck-standup` | Status report across all epics |
+| `/sw-plan <idea> [--auto]` | Define scope, create PRD, epic, tasks, GitHub Issues. `--auto` executes all tasks sequentially |
+| `/sw-tasks [filter]` | View task status dashboard |
+| `/sw-work [issue]` | Pick up a task and implement it |
+| `/sw-ship [issue]` | Create PR, optionally merge |
+| `/sw-standup` | Status report across all epics |
 
 ## Development Flow
 
 ```
-/ck-plan <project idea>        # First run: scope mode
+/sw-plan <project idea>        # First run: scope mode
     │
     ├── Define project vision
     ├── Decompose into epics
@@ -24,7 +24,7 @@ Spec-driven development workflow using GitHub Issues as the single source of tru
     └── Detail first epic (PRD + tasks + GitHub Issues)
     │
     ▼
-┌─ /ck-work ──────────────────┐
+┌─ /sw-work ──────────────────┐
 │   Pick task (auto or manual) │
 │   Load epic + PRD context    │
 │   Create branch, implement   │
@@ -33,20 +33,20 @@ Spec-driven development workflow using GitHub Issues as the single source of tru
 └──────────┬───────────────────┘
            │
            ▼
-   /ck-ship
+   /sw-ship
        Create PR (Closes #N)
        Optional: --merge
            │
            ▼
        More tasks in epic?
-       ├── Yes → /ck-work (loop)
-       └── No  → /ck-plan <next epic>
+       ├── Yes → /sw-work (loop)
+       └── No  → /sw-plan <next epic>
                      │
                      ▼
                  Epic mode: detail next epic
                  from PROJECT.md roadmap
                      │
-                     └── back to /ck-work loop
+                     └── back to /sw-work loop
 ```
 
 ### Integration Branch Flow
@@ -54,14 +54,14 @@ Spec-driven development workflow using GitHub Issues as the single source of tru
 When `profile.json` has `workflow.integration_branch: true`:
 
 ```
-/ck-plan <epic>
+/sw-plan <epic>
     │
     ├── Plan epic (PRD + tasks + GitHub Issues)
     ├── Create integration branch: feat/<epic-slug>
     └── Push to origin
     │
     ▼
-┌─ /ck-work ──────────────────────────┐
+┌─ /sw-work ──────────────────────────┐
 │   Branch from feat/<epic-slug>       │
 │   (not from main)                    │
 │   Branch name: <slug>/<number>-<desc>│
@@ -69,14 +69,14 @@ When `profile.json` has `workflow.integration_branch: true`:
 └──────────┬───────────────────────────┘
            │
            ▼
-   /ck-ship
+   /sw-ship
        PR target: feat/<epic-slug>
        (not main — no container triggered)
            │
            ▼
        More tasks?
-       ├── Yes → /ck-work (loop)
-       └── No  → /ck-ship --final
+       ├── Yes → /sw-work (loop)
+       └── No  → /sw-ship --final
                      │
                      ▼
                  feat/<epic-slug> → main (final PR)
@@ -85,10 +85,10 @@ When `profile.json` has `workflow.integration_branch: true`:
 
 ## Automated Flow
 
-`/ck-plan <idea> --auto` combines planning and execution into a single command. It plans the epic (or resumes an existing one) and then executes all tasks sequentially: implement → test → PR → merge → next task.
+`/sw-plan <idea> --auto` combines planning and execution into a single command. It plans the epic (or resumes an existing one) and then executes all tasks sequentially: implement → test → PR → merge → next task.
 
 ```
-/ck-plan <idea> --auto
+/sw-plan <idea> --auto
     │
     ├── Plan epic (Steps 1-8) — or skip if already planned
     │
@@ -102,13 +102,13 @@ When `profile.json` has `workflow.integration_branch: true`:
 │       ├── All blocked → Deadlock, STOP ──────┼──► Report blocked tasks
 │       │                                      │
 │       ▼                                      │
-│   ck-work: assign, branch, implement,        │
+│   sw-work: assign, branch, implement,        │
 │            typecheck, lint, test, commit      │
 │       │                                      │
 │       ├── Fail after 3 retries → STOP ───────┼──► Report error + branch
 │       │                                      │
 │       ▼                                      │
-│   ck-ship --merge: push, PR, squash merge,   │
+│   sw-ship --merge: push, PR, squash merge,   │
 │                    close issue, unblock deps  │
 │       │                                      │
 │       ├── Merge conflict → STOP ─────────────┼──► Report conflict
@@ -123,7 +123,7 @@ When `profile.json` has `workflow.integration_branch: true`:
 If auto mode stops (failure, deadlock, or manual interruption), fix the issue and resume:
 
 ```bash
-/ck-plan <epic-slug> --auto
+/sw-plan <epic-slug> --auto
 ```
 
 Since the epic is already planned and tasks exist, it skips planning and picks up from the next open task.
@@ -132,7 +132,7 @@ Since the epic is already planned and tasks exist, it skips planning and picks u
 
 ### Scope Mode vs Epic Mode
 
-`/ck-plan` has two modes based on whether `.claude/pm/PROJECT.md` exists:
+`/sw-plan` has two modes based on whether `.claude/pm/PROJECT.md` exists:
 
 - **Scope Mode** (first run): Takes a broad project idea, asks clarifying questions, collects architecture decisions (frontend model, backend model, API style, database, auth), decomposes into epics, creates PROJECT.md as the roadmap, then details the first epic. First epic's first task is always "Project Setup".
 - **Epic Mode** (subsequent runs): Takes a specific epic from the roadmap (or a new idea), creates its PRD + tasks + GitHub Issues, updates PROJECT.md
@@ -146,7 +146,7 @@ PROJECT.md records the project's architecture choices. These decisions guide all
 - **API style:** REST, GraphQL, tRPC
 - **Database, Auth, and other key technical choices**
 
-When implementing tasks (`/ck-work`), always read PROJECT.md's Architecture Decisions section and follow the chosen model's rules from the corresponding knowledge files (`frontend-architecture.md`, `backend-architecture.md`).
+When implementing tasks (`/sw-work`), always read PROJECT.md's Architecture Decisions section and follow the chosen model's rules from the corresponding knowledge files (`frontend-architecture.md`, `backend-architecture.md`).
 
 ### Artifact Structure
 
@@ -176,7 +176,7 @@ Labels are created lazily — on first use via `gh label create`.
 
 ### Task Selection
 
-When no issue number is given to `/ck-work`, it automatically picks the best next task:
+When no issue number is given to `/sw-work`, it automatically picks the best next task:
 1. Open, not blocked (`pm:blocked` absent), unassigned
 2. Sorted by priority (high > medium > low)
 3. Then by issue number (lower first)
@@ -190,7 +190,7 @@ PROJECT.md records the project's issue template preferences:
 - **Task body templates:** Minimal, Detailed, User Story
 - **Epic body templates:** Checklist, Full
 
-When creating issues (`/ck-plan`), always use the conventions specified in PROJECT.md.
+When creating issues (`/sw-plan`), always use the conventions specified in PROJECT.md.
 
 ### Workspace Scoping (Monorepos)
 
@@ -198,7 +198,7 @@ In monorepo projects, tasks and epics include a Scope field:
 - **Epic scope:** Which workspace(s) the epic primarily targets (`web`, `api`, `cross`)
 - **Task scope:** Which specific workspace the task modifies
 - **GitHub label:** `scope:<workspace>` label on task issues
-- **Rule loading:** `/ck-work` loads only rules matching the task's workspace type
+- **Rule loading:** `/sw-work` loads only rules matching the task's workspace type
 
 Scope values match workspace directory names from `.claude/profile.json`.
 Special value `cross` indicates the epic/task spans multiple workspaces.
@@ -221,7 +221,7 @@ Special value `cross` indicates the epic/task spans multiple workspaces.
 - Use when `feat/*` PRs trigger deployments (preview containers, staging environments)
 - Example: `cms/13-login-form` → PR to `feat/cms` → final PR to `main`
 
-The integration branch setting is configured via `npx @aydinsenturkk/claudekit` and stored in `profile.json`. The integration branch is created by `/ck-plan` when an epic is planned. Task branches are created by `/ck-work` from the integration branch. Final merge is done by `/ck-ship --final`.
+The integration branch setting is configured via `npx stackwise` and stored in `profile.json`. The integration branch is created by `/sw-plan` when an epic is planned. Task branches are created by `/sw-work` from the integration branch. Final merge is done by `/sw-ship --final`.
 
 ### Commit Convention
 
@@ -247,6 +247,6 @@ PR body includes `Closes #<issue-number>` to auto-close the task issue on merge.
 - **Fresh context every iteration.** In auto mode, re-read tasks.md and GitHub Issues at the start of each loop iteration. Don't rely on stale state from previous iterations.
 - **Clean state between tasks.** Each task starts from the base branch with a clean working tree. Always `git checkout <base> && git pull` between tasks.
 - **Only pick unassigned tasks.** In auto mode, skip tasks assigned to other users. Only pick up unassigned, unblocked tasks.
-- **Scope-aware rule loading.** In monorepos, `/ck-work` reads the task's Scope field and loads only the rules matching that workspace's type (frontend/backend/shared). Cross-scope tasks load rules for all involved types.
+- **Scope-aware rule loading.** In monorepos, `/sw-work` reads the task's Scope field and loads only the rules matching that workspace's type (frontend/backend/shared). Cross-scope tasks load rules for all involved types.
 - **Branch strategy consistency.** All tasks in an epic follow the same branch strategy from `profile.json`. Don't mix default and integration branch workflows within a single epic.
 - **Integration branch freshness.** When using integration branch strategy, regularly merge main into the integration branch to reduce final merge conflicts.

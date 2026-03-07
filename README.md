@@ -1,18 +1,18 @@
-# claudekit
+# stackwise
 
 Curated knowledge base of rules, skills, agents, and hooks for [Claude Code](https://docs.anthropic.com/en/docs/claude-code). One command to set up any TypeScript project.
 
-[![npm version](https://img.shields.io/npm/v/@aydinsenturkk/claudekit)](https://www.npmjs.com/package/@aydinsenturkk/claudekit)
+[![npm version](https://img.shields.io/npm/v/stackwise)](https://www.npmjs.com/package/stackwise)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Node >= 18](https://img.shields.io/badge/node-%3E%3D18-brightgreen)](https://nodejs.org)
 
 ```bash
-npx @aydinsenturkk/claudekit
+npx stackwise
 ```
 
 ## What It Does
 
-claudekit scans your `package.json` (including monorepo workspaces), detects your frameworks, tools, and libraries, then installs:
+stackwise scans your `package.json` (including monorepo workspaces), detects your frameworks, tools, and libraries, then installs:
 
 - **Knowledge rules** into `.claude/rules/` with proper glob frontmatter
 - **Skills** (slash commands) into `.claude/skills/`
@@ -21,7 +21,7 @@ claudekit scans your `package.json` (including monorepo workspaces), detects you
 - **Settings** preset merged into `.claude/settings.json`
 - **CLAUDE.md** auto-generated with your stack and workflow info
 
-No global install needed. Just `npx @aydinsenturkk/claudekit` in any project.
+No global install needed. Just `npx stackwise` in any project.
 
 ## Supported Stacks
 
@@ -89,30 +89,30 @@ Knowledge files are organized into layers of increasing specificity. Only the la
 
 ## PM Workflow
 
-claudekit includes a spec-driven development workflow powered by 5 slash commands. Plan features as PRDs, decompose into epics and tasks backed by GitHub Issues, then implement them — manually or fully automated.
+stackwise includes a spec-driven development workflow powered by 5 slash commands. Plan features as PRDs, decompose into epics and tasks backed by GitHub Issues, then implement them — manually or fully automated.
 
 ```
-Idea → /ck-plan → PRD + Epic + GitHub Issues
+Idea → /sw-plan → PRD + Epic + GitHub Issues
                         ↓
-              /ck-tasks (view dashboard)
+              /sw-tasks (view dashboard)
                         ↓
-              /ck-work  (pick up & implement)
+              /sw-work  (pick up & implement)
                         ↓
-              /ck-ship  (PR + merge)
+              /sw-ship  (PR + merge)
                         ↓
-              /ck-standup (status report)
+              /sw-standup (status report)
 ```
 
 ### Commands
 
 | Command | Description |
 |---------|-------------|
-| `/ck-plan <idea>` | Generate PRD, epic, tasks, and GitHub Issues from an idea |
-| `/ck-plan <idea> --auto` | Plan and automatically execute all tasks until epic is complete |
-| `/ck-tasks` | View task status dashboard from GitHub Issues |
-| `/ck-work <issue>` | Pick up a task and implement it |
-| `/ck-ship` | Create PR for completed task and optionally merge |
-| `/ck-standup` | Generate standup status report across all epics |
+| `/sw-plan <idea>` | Generate PRD, epic, tasks, and GitHub Issues from an idea |
+| `/sw-plan <idea> --auto` | Plan and automatically execute all tasks until epic is complete |
+| `/sw-tasks` | View task status dashboard from GitHub Issues |
+| `/sw-work <issue>` | Pick up a task and implement it |
+| `/sw-ship` | Create PR for completed task and optionally merge |
+| `/sw-standup` | Generate standup status report across all epics |
 
 ### Integration Branch Support
 
@@ -139,35 +139,35 @@ Installed to `.claude/skills/` and available as `/command` in Claude Code.
 
 | Command | Description |
 |---------|-------------|
-| `/ck-review` | Code review using project rules as checklist |
-| `/ck-fix-issue <number>` | Fetch GitHub issue and implement fix |
-| `/ck-new-feature <name>` | Scaffold feature with proper structure |
-| `/ck-add-tests <file>` | Generate tests following testing philosophy |
-| `/ck-api-endpoint <resource>` | Create REST endpoint with full stack |
-| `/ck-component <name>` | Create React component with types and tests |
-| `/ck-debug <description>` | Structured debugging workflow |
-| `/ck-optimize <file>` | Performance analysis and optimization |
-| `/ck-pr` | Create pull request with full context |
-| `/ck-migrate <description>` | Database migration with rollback strategy |
+| `/sw-review` | Code review using project rules as checklist |
+| `/sw-fix-issue <number>` | Fetch GitHub issue and implement fix |
+| `/sw-new-feature <name>` | Scaffold feature with proper structure |
+| `/sw-add-tests <file>` | Generate tests following testing philosophy |
+| `/sw-api-endpoint <resource>` | Create REST endpoint with full stack |
+| `/sw-component <name>` | Create React component with types and tests |
+| `/sw-debug <description>` | Structured debugging workflow |
+| `/sw-optimize <file>` | Performance analysis and optimization |
+| `/sw-pr` | Create pull request with full context |
+| `/sw-migrate <description>` | Database migration with rollback strategy |
 
 ### PM Workflow
 
 | Command | Description |
 |---------|-------------|
-| `/ck-plan <idea>` | Generate PRD, epic, tasks, and GitHub Issues. Use `--auto` to execute all tasks |
-| `/ck-tasks` | View task status dashboard from GitHub Issues |
-| `/ck-work <issue>` | Pick up a task and implement it |
-| `/ck-ship` | Create PR for completed task and optionally merge |
-| `/ck-standup` | Generate standup status report across all epics |
+| `/sw-plan <idea>` | Generate PRD, epic, tasks, and GitHub Issues. Use `--auto` to execute all tasks |
+| `/sw-tasks` | View task status dashboard from GitHub Issues |
+| `/sw-work <issue>` | Pick up a task and implement it |
+| `/sw-ship` | Create PR for completed task and optionally merge |
+| `/sw-standup` | Generate standup status report across all epics |
 
 ### Utility
 
 | Command | Description |
 |---------|-------------|
-| `/ck-generate-knowledge` | Generate knowledge rules for an unsupported tool |
-| `/ck-sync-project` | Sync CLAUDE.md with current project state |
+| `/sw-generate-knowledge` | Generate knowledge rules for an unsupported tool |
+| `/sw-sync-project` | Sync CLAUDE.md with current project state |
 
-Skills are context-aware: `/ck-component` only appears for frontend projects, `/ck-api-endpoint` and `/ck-migrate` only for backend.
+Skills are context-aware: `/sw-component` only appears for frontend projects, `/sw-api-endpoint` and `/sw-migrate` only for backend.
 
 ## Agents (4 Specialized)
 
@@ -187,7 +187,7 @@ Skills are context-aware: `/ck-component` only appears for frontend projects, `/
 
 ## How It Works
 
-Running `npx @aydinsenturkk/claudekit` walks you through an interactive flow:
+Running `npx stackwise` walks you through an interactive flow:
 
 1. Checks for existing `.claude/profile.json` (offers to update or start fresh)
 2. Scans `package.json` files to detect your stack (including monorepo workspaces)
@@ -201,7 +201,7 @@ Running `npx @aydinsenturkk/claudekit` walks you through an interactive flow:
 Re-run anytime to update your configuration:
 
 ```bash
-npx @aydinsenturkk/claudekit
+npx stackwise
 ```
 
 ## What Gets Created
@@ -220,7 +220,7 @@ your-project/
 │   ├── skills/                # Slash commands
 │   ├── agents/                # Specialized agents
 │   ├── hooks/                 # Automation scripts
-│   └── pm/                    # PM workflow (created by /ck-plan)
+│   └── pm/                    # PM workflow (created by /sw-plan)
 │       ├── PROJECT.md
 │       ├── prds/
 │       └── epics/

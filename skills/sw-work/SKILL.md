@@ -29,7 +29,7 @@ gh issue list --label "pm:task" --state open --json number,title,labels,assignee
 
 Filter out issues that have `pm:blocked` label or are already assigned. Sort by priority (high > medium > low), then by issue number. Pick the first one.
 
-If no task is available, inform the user and suggest checking blocked tasks with `/ck-tasks blocked`.
+If no task is available, inform the user and suggest checking blocked tasks with `/sw-tasks blocked`.
 
 ### Step 2: Load Context
 
@@ -202,4 +202,4 @@ After completing, display:
 - Test results (pass/fail)
 - Branch name
 - Any unblocked dependent tasks
-- Next step: `/ck-ship <number>` to create a PR
+- Next step: `/sw-ship <number>` to create a PR

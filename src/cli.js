@@ -25,7 +25,7 @@ const NC = '\x1b[0m';
 function banner() {
   console.log('');
   console.log(`${BOLD}${CYAN}╔══════════════════════════════════════════════╗${NC}`);
-  console.log(`${BOLD}${CYAN}║          claudekit - Project Setup           ║${NC}`);
+  console.log(`${BOLD}${CYAN}║          stackwise - Project Setup           ║${NC}`);
   console.log(`${BOLD}${CYAN}╚══════════════════════════════════════════════╝${NC}`);
   console.log('');
 }
@@ -190,7 +190,7 @@ export async function run() {
   // --- Summary ---
   console.log('');
   console.log(`${BOLD}${GREEN}╔══════════════════════════════════════════════╗${NC}`);
-  console.log(`${BOLD}${GREEN}║        claudekit initialized!               ║${NC}`);
+  console.log(`${BOLD}${GREEN}║        stackwise initialized!               ║${NC}`);
   console.log(`${BOLD}${GREEN}╚══════════════════════════════════════════════╝${NC}`);
   console.log('');
   console.log(`  ${BOLD}Rules:${NC}   ${counts.rules} knowledge files installed to .claude/rules/`);
@@ -200,6 +200,6 @@ export async function run() {
   console.log('');
   console.log(`  ${BOLD}Profile saved to${NC} .claude/profile.json`);
   console.log('');
-  console.log(`  ${DIM}To re-run with different settings: npx @aydinsenturkk/claudekit${NC}`);
+  console.log(`  ${DIM}To re-run with different settings: npx stackwise${NC}`);
   console.log('');
 }

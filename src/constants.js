@@ -1,21 +1,21 @@
 export const SKILLS = [
-  { name: 'ck-review', description: 'Code review using project rules' },
-  { name: 'ck-fix-issue', description: 'Fetch GitHub issue and implement fix' },
-  { name: 'ck-new-feature', description: 'Scaffold feature with proper structure' },
-  { name: 'ck-add-tests', description: 'Generate tests following testing philosophy' },
-  { name: 'ck-api-endpoint', description: 'Create REST endpoint with full stack' },
-  { name: 'ck-component', description: 'Create React component with types and tests' },
-  { name: 'ck-debug', description: 'Structured debugging workflow' },
-  { name: 'ck-optimize', description: 'Performance analysis and optimization' },
-  { name: 'ck-pr', description: 'Create pull request with full context' },
-  { name: 'ck-migrate', description: 'Database migration with rollback strategy' },
-  { name: 'ck-generate-knowledge', description: 'Generate knowledge rules for an unsupported tool' },
-  { name: 'ck-sync-project', description: 'Sync CLAUDE.md with current project state' },
-  { name: 'ck-plan', description: 'Generate PRD, epic, tasks, and GitHub Issues from an idea. Use --auto to execute all tasks' },
-  { name: 'ck-tasks', description: 'View task status dashboard from GitHub Issues' },
-  { name: 'ck-work', description: 'Pick up a task and implement it' },
-  { name: 'ck-ship', description: 'Create PR for completed task and optionally merge' },
-  { name: 'ck-standup', description: 'Generate standup status report across all epics' },
+  { name: 'sw-review', description: 'Code review using project rules' },
+  { name: 'sw-fix-issue', description: 'Fetch GitHub issue and implement fix' },
+  { name: 'sw-new-feature', description: 'Scaffold feature with proper structure' },
+  { name: 'sw-add-tests', description: 'Generate tests following testing philosophy' },
+  { name: 'sw-api-endpoint', description: 'Create REST endpoint with full stack' },
+  { name: 'sw-component', description: 'Create React component with types and tests' },
+  { name: 'sw-debug', description: 'Structured debugging workflow' },
+  { name: 'sw-optimize', description: 'Performance analysis and optimization' },
+  { name: 'sw-pr', description: 'Create pull request with full context' },
+  { name: 'sw-migrate', description: 'Database migration with rollback strategy' },
+  { name: 'sw-generate-knowledge', description: 'Generate knowledge rules for an unsupported tool' },
+  { name: 'sw-sync-project', description: 'Sync CLAUDE.md with current project state' },
+  { name: 'sw-plan', description: 'Generate PRD, epic, tasks, and GitHub Issues from an idea. Use --auto to execute all tasks' },
+  { name: 'sw-tasks', description: 'View task status dashboard from GitHub Issues' },
+  { name: 'sw-work', description: 'Pick up a task and implement it' },
+  { name: 'sw-ship', description: 'Create PR for completed task and optionally merge' },
+  { name: 'sw-standup', description: 'Generate standup status report across all epics' },
 ];
 
 export const AGENTS = [
@@ -182,7 +182,7 @@ export const DEPENDENCY_MAP = {
 };
 
 // Frontend-only skills (only shown if frontend detected)
-export const FRONTEND_SKILLS = ['ck-component'];
+export const FRONTEND_SKILLS = ['sw-component'];
 
 // Backend-only skills (only shown if backend detected)
-export const BACKEND_SKILLS = ['ck-api-endpoint', 'ck-migrate'];
+export const BACKEND_SKILLS = ['sw-api-endpoint', 'sw-migrate'];

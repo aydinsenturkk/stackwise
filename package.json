@@ -1,13 +1,10 @@
 {
-  "name": "@aydinsenturkk/claudekit",
-  "publishConfig": {
-    "access": "public"
-  },
+  "name": "stackwise",
   "version": "1.0.0",
-  "description": "Reusable knowledge base of rules, skills, agents, and hooks for Claude Code. Run npx @aydinsenturkk/claudekit in any project to configure it.",
+  "description": "Reusable knowledge base of rules, skills, agents, and hooks for Claude Code. Run npx stackwise in any project to configure it.",
   "type": "module",
   "bin": {
-    "claudekit": "bin/claudekit.js"
+    "stackwise": "bin/claudekit.js"
   },
   "files": [
     "bin/",

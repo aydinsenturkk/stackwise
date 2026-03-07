@@ -268,4 +268,4 @@ Display:
 - Any warnings (failing tests, lint errors)
 - If merged: confirmation and any unblocked tasks
 - If final merge: epic completion status and next epic
-- Next step: `/ck-work` to pick up the next task
+- Next step: `/sw-work` to pick up the next task

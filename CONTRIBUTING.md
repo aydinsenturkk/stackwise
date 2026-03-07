@@ -1,4 +1,4 @@
-# Contributing to claudekit
+# Contributing to stackwise
 
 Thanks for your interest in contributing! This guide covers the project structure and how to add new knowledge files, skills, agents, and tool detections.
 
@@ -17,7 +17,7 @@ npm link
 
 # Run in any project
 cd /path/to/your-project
-claudekit
+stackwise
 ```
 
 ## Project Structure

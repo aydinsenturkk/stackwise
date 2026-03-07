@@ -56,7 +56,7 @@ This is a new project. Before creating any epic, define the overall scope first.
    - Scope (monorepo only): which workspace the epic targets
    - Dependencies on other epics
    - Relative priority
-7. The first epic's first task is always **"Project Setup"** — initialize the project, install dependencies, run `npx @aydinsenturkk/claudekit`
+7. The first epic's first task is always **"Project Setup"** — initialize the project, install dependencies, run `npx stackwise`
 8. Write `.claude/pm/PROJECT.md` (**Monorepo:** If `profile.json` has `monorepo: true`, include the Scope column. Scope values are workspace dir names or `cross`. Omit it for single-repo projects):
 
 ```markdown
@@ -493,7 +493,7 @@ WHILE true:
        "All remaining tasks are blocked. Blocked tasks: #X (blocked by #Y), ..."
      - If no open tasks remain → epic is COMPLETE, break loop
 
-  4. Execute ck-work workflow (Steps 1-7):
+  4. Execute sw-work workflow (Steps 1-7):
      a. Assign the issue: gh issue edit <number> --add-assignee "@me"
      b. Create branch (check profile.json workflow.integration_branch):
         - Default: git checkout -b feat/<number>-<short-description>
@@ -508,7 +508,7 @@ WHILE true:
            Branch: feat/<number>-<desc>. Working tree left as-is for debugging."
      g. Commit with conventional commit: feat: <desc>\n\nImplements #<number>
 
-  5. Execute ck-ship --merge workflow (Steps 1-8):
+  5. Execute sw-ship --merge workflow (Steps 1-8):
      a. Push branch: git push -u origin $(git branch --show-current)
      b. Create PR with "Closes #<number>" in body
      c. Squash merge: gh pr merge --squash --delete-branch
@@ -593,7 +593,7 @@ After completing, display:
 - Table of all created task issues with numbers, titles, and labels
 - Updated PROJECT.md path
 - Suggested first task to work on (highest priority, unblocked)
-- Command to start: `/ck-work <issue-number>`
+- Command to start: `/sw-work <issue-number>`
 
 **If `--auto` completed successfully:**
 
@@ -603,7 +603,7 @@ Display:
 - Total tasks completed: X/X
 - Epic status: completed
 - Next epic (if any) now set to `active` in PROJECT.md
-- Command to continue: `/ck-plan <next-epic> --auto`
+- Command to continue: `/sw-plan <next-epic> --auto`
 
 **If `--auto` stopped due to failure:**
 
@@ -612,4 +612,4 @@ Display:
 - Tasks completed so far: X/Y
 - Current branch and working tree state
 - Suggested fix or manual intervention needed
-- Command to resume after fixing: `/ck-plan <epic-slug> --auto`
+- Command to resume after fixing: `/sw-plan <epic-slug> --auto`
