@@ -31,6 +31,7 @@ export const TOOL_MAP = {
   'nestjs-cache-manager': 'nestjs-cache-manager',
   'nestjs-config': 'nestjs-config',
   // ORM (new)
+  typeorm: 'typeorm',
   mongoose: 'mongoose',
   sequelize: 'sequelize',
   knex: 'knex',
@@ -67,6 +68,11 @@ export const TOOL_MAP = {
   'nestjs-mailer': 'nestjs-mailer',
   // Upload
   multer: 'multer',
+  // State (new)
+  zustand: 'zustand',
+  // Testing (new)
+  jest: 'jest',
+  playwright: 'playwright',
 };
 
 export function resolveKnowledgeFiles(stack) {

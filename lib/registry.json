@@ -774,6 +774,42 @@
       "framework": null,
       "tool": "multer",
       "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/orm/typeorm.md",
+      "layer": 4,
+      "name": "typeorm",
+      "domain": "backend",
+      "framework": null,
+      "tool": "typeorm",
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/state/zustand.md",
+      "layer": 4,
+      "name": "zustand",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "zustand",
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-4-tool/testing/jest.md",
+      "layer": 4,
+      "name": "jest",
+      "domain": null,
+      "framework": null,
+      "tool": "jest",
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-4-tool/testing/playwright.md",
+      "layer": 4,
+      "name": "playwright",
+      "domain": null,
+      "framework": null,
+      "tool": "playwright",
+      "glob_strategy": "all"
     }
   ]
 }
