@@ -89,6 +89,9 @@ export const DEPENDENCY_MAP = {
 
   // UI Components
   'class-variance-authority': { category: 'ui', value: 'shadcn-ui' },
+  '@storybook/react': { category: 'ui', value: 'storybook' },
+  '@storybook/react-vite': { category: 'ui', value: 'storybook' },
+  '@storybook/nextjs': { category: 'ui', value: 'storybook' },
 
   // Routing
   '@tanstack/react-router': { category: 'routing', value: 'tanstack-router' },

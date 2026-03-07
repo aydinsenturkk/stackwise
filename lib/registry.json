@@ -785,6 +785,15 @@
       "glob_strategy": "backend"
     },
     {
+      "path": "knowledge/layer-4-tool/ui/storybook.md",
+      "layer": 4,
+      "name": "storybook",
+      "domain": "frontend",
+      "framework": null,
+      "tool": "storybook",
+      "glob_strategy": "frontend"
+    },
+    {
       "path": "knowledge/layer-4-tool/state/zustand.md",
       "layer": 4,
       "name": "zustand",

@@ -68,6 +68,8 @@ export const TOOL_MAP = {
   'nestjs-mailer': 'nestjs-mailer',
   // Upload
   multer: 'multer',
+  // UI (new)
+  storybook: 'storybook',
   // State (new)
   zustand: 'zustand',
   // Testing (new)
