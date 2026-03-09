@@ -26,10 +26,10 @@ Scan the project directory to understand the actual structure:
 
 ### Step 4: Build the Auto Section
 
-Generate the content between `<!-- CLAUDEKIT:AUTO:START -->` and `<!-- CLAUDEKIT:AUTO:END -->` markers:
+Generate the content between `<!-- STACKWISE:AUTO:START -->` and `<!-- STACKWISE:AUTO:END -->` markers:
 
 ```markdown
-<!-- CLAUDEKIT:AUTO:START -->
+<!-- STACKWISE:AUTO:START -->
 # <project-name>
 
 ## Stack
@@ -52,7 +52,7 @@ Generate the content between `<!-- CLAUDEKIT:AUTO:START -->` and `<!-- CLAUDEKIT
 - <key directories and their purpose, based on Step 3 analysis>
 - <API routes if found>
 - <DB models if found>
-<!-- CLAUDEKIT:AUTO:END -->
+<!-- STACKWISE:AUTO:END -->
 ```
 
 The "Project Structure" section is the key advantage of this skill over the CLI — use your analysis from Step 3 to describe the actual project layout, key directories, API routes, and database models.
@@ -60,7 +60,7 @@ The "Project Structure" section is the key advantage of this skill over the CLI 
 ### Step 5: Update CLAUDE.md
 
 1. Read the existing `CLAUDE.md` file
-2. Find the `<!-- CLAUDEKIT:AUTO:START -->` and `<!-- CLAUDEKIT:AUTO:END -->` markers
+2. Find the `<!-- STACKWISE:AUTO:START -->` and `<!-- STACKWISE:AUTO:END -->` markers
 3. Replace everything between the markers (inclusive) with the new auto section
 4. **Do NOT modify anything outside the markers** — that is the user's custom content
 5. If no markers exist, prepend the auto section to the beginning of the file, preserving all existing content
@@ -68,7 +68,7 @@ The "Project Structure" section is the key advantage of this skill over the CLI 
 
 ### Important Rules
 
-- Never delete or modify content outside the `CLAUDEKIT:AUTO:START/END` markers
+- Never delete or modify content outside the `STACKWISE:AUTO:START/END` markers
 - Keep the auto section concise — this goes into Claude's context on every conversation
 - Use the profile's `stack.package_manager` to determine the correct run command (`npm run`, `pnpm`, `bun`, `yarn`)
 - If `$ARGUMENTS` contains specific instructions (e.g., "add API routes"), focus the analysis on that area

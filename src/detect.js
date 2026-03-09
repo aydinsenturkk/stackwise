@@ -25,6 +25,7 @@ function detectPackageManager(projectDir) {
   if (fileExists(join(projectDir, 'yarn.lock'))) return 'yarn';
   if (fileExists(join(projectDir, 'bun.lockb')) || fileExists(join(projectDir, 'bun.lock'))) return 'bun';
   if (fileExists(join(projectDir, 'package-lock.json'))) return 'npm';
+  if (fileExists(join(projectDir, 'package.json'))) return 'npm';
   return '';
 }
 
@@ -58,7 +59,7 @@ function detectLanguage(projectDir) {
     fileExists(join(projectDir, 'build.gradle.kts')) ||
     fileExists(join(projectDir, 'pom.xml'))
   ) return 'java';
-  return '';
+  return 'unknown';
 }
 
 /**
@@ -101,8 +102,8 @@ function readWorkspaceGlobs(projectDir) {
         }
       }
       if (globs.length > 0) return globs;
-    } catch {
-      // parse failed, fall through
+    } catch (err) {
+      console.warn(`Warning: Failed to parse pnpm-workspace.yaml: ${err.message}`);
     }
   }
 
@@ -154,7 +155,10 @@ function resolveGlobDirs(projectDir, globs) {
     const cleaned = glob.replace(/\/\*\*?$/, '');
 
     // If the cleaned pattern still contains *, skip it (complex glob)
-    if (cleaned.includes('*')) continue;
+    if (cleaned.includes('*')) {
+      console.warn(`Warning: Complex workspace glob pattern not fully supported, skipping: ${glob}`);
+      continue;
+    }
 
     const parentPath = join(projectDir, cleaned);
     try {
@@ -203,18 +207,20 @@ function collectPackageJsonFiles(projectDir, isMonorepo) {
     if (globs) {
       allWsDirs = resolveGlobDirs(projectDir, globs);
     } else {
+      const fallbackSet = new Set();
       for (const dir of FALLBACK_WORKSPACE_DIRS) {
         const dirPath = join(projectDir, dir);
         try {
           for (const entry of readdirSync(dirPath)) {
             if (statSync(join(dirPath, entry)).isDirectory()) {
-              allWsDirs.push(`${dir}/${entry}`);
+              fallbackSet.add(`${dir}/${entry}`);
             }
           }
         } catch {
           // directory doesn't exist, skip
         }
       }
+      allWsDirs = [...fallbackSet];
     }
 
     for (const wsDir of allWsDirs) {

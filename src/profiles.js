@@ -105,6 +105,8 @@ export function resolveKnowledgeFiles(stack) {
     if (registryName) {
       const fwFiles = getFilesByFramework(registryName);
       files.push(...fwFiles);
+    } else {
+      console.log(`  Info: No Layer 3 knowledge file for framework "${fw}" — L3 exists for: ${Object.keys(FRAMEWORK_MAP).join(', ')}`);
     }
   }
 

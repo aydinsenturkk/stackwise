@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { getPackageRoot, readJson, writeJson, ensureDir, fileExists } from './utils.js';
 import { detect } from './detect.js';
@@ -46,6 +47,37 @@ function warn(msg) {
   console.log(`  ${YELLOW}⚠ ${msg}${NC}`);
 }
 
+function mergeStackDetection(detected, existing) {
+  if (!existing) return detected;
+  const merged = { ...detected };
+
+  // Array fields: union of detected + existing
+  const arrayKeys = [
+    'frontend_frameworks', 'backend_frameworks', 'orm', 'state_management',
+    'validation', 'testing', 'styling', 'queue', 'forms', 'ui', 'routing',
+    'animation', 'table', 'devtools', 'api_docs', 'class_validation',
+    'rate_limiting', 'auth', 'cache', 'config', 'graphql', 'realtime',
+    'logging', 'http_client', 'i18n', 'date_utils', 'email', 'upload',
+  ];
+
+  for (const key of arrayKeys) {
+    const detectedArr = detected[key] || [];
+    const existingArr = existing[key] || [];
+    merged[key] = [...new Set([...detectedArr, ...existingArr])];
+  }
+
+  // Scalar fields: prefer detected (fresh scan), fall back to existing
+  merged.language = detected.language || existing.language || 'unknown';
+  merged.package_manager = detected.package_manager || existing.package_manager || 'npm';
+  merged.monorepo = detected.monorepo || existing.monorepo || false;
+  merged.monorepo_tool = detected.monorepo_tool || existing.monorepo_tool || '';
+
+  // Workspaces always from fresh detection
+  merged.workspaces = detected.workspaces || [];
+
+  return merged;
+}
+
 export async function run() {
   const packageRoot = getPackageRoot();
   const projectDir = process.cwd();
@@ -73,9 +105,8 @@ export async function run() {
 
   // --- Step 4: Confirm stack with user ---
   step('Stack detection results');
-  const stack = await promptStackConfirmation(
-    useExisting ? { ...detected, ...existingProfile?.stack, workspaces: detected.workspaces } : detected
-  );
+  const mergedDetection = useExisting ? mergeStackDetection(detected, existingProfile?.stack) : detected;
+  const stack = await promptStackConfirmation(mergedDetection);
 
   // --- Step 4b: Development workflow ---
   step('Development workflow');
@@ -150,8 +181,14 @@ export async function run() {
   const counts = compose(config, packageRoot);
 
   // Write profile.json
+  let pkgVersion = '1.0.0';
+  try {
+    const pkg = JSON.parse(readFileSync(join(packageRoot, 'package.json'), 'utf-8'));
+    pkgVersion = pkg.version || '1.0.0';
+  } catch { /* ignore */ }
+
   const profile = {
-    version: '1.0',
+    version: pkgVersion,
     detected_at: new Date().toISOString(),
     stack,
     paths,
@@ -168,8 +205,12 @@ export async function run() {
   const presetName = determineSettingsPreset(stack);
   const shouldMerge = await promptSettingsMerge(presetName);
   if (shouldMerge) {
-    installSettings(claudeDir, presetName);
-    success(`Settings merged with "${presetName}" preset`);
+    const settingsResult = installSettings(claudeDir, presetName);
+    if (settingsResult) {
+      success(`Settings merged with "${presetName}" preset`);
+    } else {
+      warn(`Settings preset "${presetName}" not found, skipping`);
+    }
   }
 
   // CLAUDE.md (auto-generated section)
@@ -197,6 +238,9 @@ export async function run() {
   console.log(`  ${BOLD}Skills:${NC}  ${counts.skills} slash commands installed to .claude/skills/`);
   console.log(`  ${BOLD}Agents:${NC}  ${counts.agents} specialized agents installed to .claude/agents/`);
   console.log(`  ${BOLD}Hooks:${NC}   ${counts.hooks} hook scripts installed to .claude/hooks/`);
+  if (counts.skipped > 0) {
+    console.log(`  ${YELLOW}Skipped:${NC} ${counts.skipped} items skipped (see warnings above)`);
+  }
   console.log('');
   console.log(`  ${BOLD}Profile saved to${NC} .claude/profile.json`);
   console.log('');

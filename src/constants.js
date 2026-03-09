@@ -184,8 +184,9 @@ export const DEPENDENCY_MAP = {
   multer: { category: 'upload', value: 'multer' },
 };
 
-// Frontend-only skills (only shown if frontend detected)
+// Frontend-only skills (hidden if no frontend detected)
+// All skills NOT listed here or in BACKEND_SKILLS are shown universally
 export const FRONTEND_SKILLS = ['sw-component'];
 
-// Backend-only skills (only shown if backend detected)
+// Backend-only skills (hidden if no backend detected)
 export const BACKEND_SKILLS = ['sw-api-endpoint', 'sw-migrate'];

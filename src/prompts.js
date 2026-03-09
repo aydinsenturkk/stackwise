@@ -159,10 +159,13 @@ export async function promptPathPatterns(stack) {
 
   const paths = {};
 
+  const validatePath = (value) => value.trim() ? true : 'Path pattern cannot be empty';
+
   if (hasFrontend) {
     paths.frontend = await input({
       message: 'Frontend path pattern:',
       default: defaultFrontend,
+      validate: validatePath,
     });
   }
 
@@ -170,6 +173,7 @@ export async function promptPathPatterns(stack) {
     paths.backend = await input({
       message: 'Backend path pattern:',
       default: defaultBackend,
+      validate: validatePath,
     });
   }
 
@@ -177,6 +181,7 @@ export async function promptPathPatterns(stack) {
     paths.shared = await input({
       message: 'Shared/common path pattern:',
       default: defaultShared,
+      validate: validatePath,
     });
   }
 
@@ -248,6 +253,7 @@ export async function promptWorkflow(defaults = {}) {
     custom_commit_pattern = await input({
       message: 'Custom commit pattern (e.g. "[PROJ-123] description"):',
       default: custom_commit_pattern,
+      validate: (value) => value.trim() ? true : 'Commit pattern cannot be empty',
     });
   }
 

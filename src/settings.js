@@ -52,7 +52,10 @@ export function mergeSettings(existing, preset) {
 
 export function installSettings(targetDir, presetName) {
   const preset = loadSettingsPreset(presetName);
-  if (!preset) return null;
+  if (!preset) {
+    console.warn(`Warning: Settings preset "${presetName}" not found.`);
+    return null;
+  }
 
   const settingsPath = join(targetDir, 'settings.json');
   let existing = null;

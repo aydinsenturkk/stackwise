@@ -3,8 +3,8 @@ import { join } from 'node:path';
 import { ensureDir, copyDirRecursive, fileExists, getPackageRoot } from './utils.js';
 import { getFileMetadata } from './registry.js';
 
-const AUTO_START = '<!-- CLAUDEKIT:AUTO:START -->';
-const AUTO_END = '<!-- CLAUDEKIT:AUTO:END -->';
+const AUTO_START = '<!-- STACKWISE:AUTO:START -->';
+const AUTO_END = '<!-- STACKWISE:AUTO:END -->';
 
 function getOutputPrefix(layer, domain) {
   switch (layer) {
@@ -481,11 +481,11 @@ export function writeClaudeMd(projectDir, autoContent) {
   }
 
   const existing = readFileSync(claudeMdPath, 'utf-8');
+
   const startIdx = existing.indexOf(AUTO_START);
   const endIdx = existing.indexOf(AUTO_END);
 
   if (startIdx !== -1 && endIdx !== -1) {
-    // Replace between markers (inclusive)
     const before = existing.substring(0, startIdx);
     const after = existing.substring(endIdx + AUTO_END.length);
     writeFileSync(claudeMdPath, before + autoContent + after, 'utf-8');
@@ -510,19 +510,21 @@ export function compose(config, packageRoot) {
   ensureDir(agentsDir);
   ensureDir(hooksDir);
 
-  const counts = { rules: 0, skills: 0, agents: 0, hooks: 0 };
+  const counts = { rules: 0, skills: 0, agents: 0, hooks: 0, skipped: 0 };
 
   // --- Install knowledge files as rules with frontmatter ---
   for (const filePath of config.knowledge_files) {
     const meta = getFileMetadata(filePath);
     if (!meta) {
       console.warn(`Warning: File not found in registry, skipping: ${filePath}`);
+      counts.skipped++;
       continue;
     }
 
     const sourceFile = join(packageRoot, filePath);
     if (!fileExists(sourceFile)) {
       console.warn(`Warning: Source file missing, skipping: ${sourceFile}`);
+      counts.skipped++;
       continue;
     }
 
@@ -553,11 +555,17 @@ export function compose(config, packageRoot) {
   for (const skillName of config.skills || []) {
     const skillSource = join(packageRoot, 'skills', skillName);
     if (fileExists(skillSource)) {
-      const skillDest = join(skillsDir, skillName);
-      copyDirRecursive(skillSource, skillDest);
-      counts.skills++;
+      try {
+        const skillDest = join(skillsDir, skillName);
+        copyDirRecursive(skillSource, skillDest);
+        counts.skills++;
+      } catch (err) {
+        console.warn(`Warning: Failed to copy skill "${skillName}": ${err.message}`);
+        counts.skipped++;
+      }
     } else {
       console.warn(`Warning: Skill not found, skipping: ${skillName}`);
+      counts.skipped++;
     }
   }
 
@@ -565,11 +573,17 @@ export function compose(config, packageRoot) {
   for (const agentName of config.agents || []) {
     const agentSource = join(packageRoot, 'agents', agentName);
     if (fileExists(agentSource)) {
-      const agentDest = join(agentsDir, agentName);
-      copyDirRecursive(agentSource, agentDest);
-      counts.agents++;
+      try {
+        const agentDest = join(agentsDir, agentName);
+        copyDirRecursive(agentSource, agentDest);
+        counts.agents++;
+      } catch (err) {
+        console.warn(`Warning: Failed to copy agent "${agentName}": ${err.message}`);
+        counts.skipped++;
+      }
     } else {
       console.warn(`Warning: Agent not found, skipping: ${agentName}`);
+      counts.skipped++;
     }
   }
 
@@ -583,6 +597,7 @@ export function compose(config, packageRoot) {
       counts.hooks++;
     } else {
       console.warn(`Warning: Hook not found, skipping: ${hookName}`);
+      counts.skipped++;
     }
   }
 
