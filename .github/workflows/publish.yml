@@ -8,7 +8,6 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
-      id-token: write
       contents: read
     steps:
       - uses: actions/checkout@v4
@@ -28,4 +27,6 @@ jobs:
             exit 1
           fi
 
-      - run: npm publish --provenance --ignore-scripts
+      - run: npm publish --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
