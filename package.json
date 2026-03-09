@@ -41,5 +41,8 @@
     "skills",
     "agents"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "provenance": true
+  }
 }
