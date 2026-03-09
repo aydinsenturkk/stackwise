@@ -1,0 +1,63 @@
+name: New Tool / Framework Support
+description: Request knowledge rules for a tool or framework
+labels: ["new-tool"]
+body:
+  - type: input
+    id: tool-name
+    attributes:
+      label: Tool / Framework name
+      placeholder: "e.g. Drizzle, SWR, Pinia"
+    validations:
+      required: true
+
+  - type: input
+    id: npm-package
+    attributes:
+      label: npm package name
+      placeholder: "e.g. drizzle-orm, swr, pinia"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Category
+      options:
+        - Frontend framework
+        - Backend framework
+        - ORM / Database
+        - State management
+        - Validation
+        - Testing
+        - Styling
+        - UI components
+        - Forms
+        - Routing
+        - Animation
+        - Auth
+        - GraphQL / API
+        - Realtime
+        - Logging
+        - HTTP client
+        - i18n
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: layer
+    attributes:
+      label: Knowledge layer
+      description: Which layer should this belong to?
+      options:
+        - "Layer 3: Framework (architecture patterns, conventions)"
+        - "Layer 4: Tool (usage patterns, best practices)"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      placeholder: Why is this tool important? Any specific patterns you'd like covered?

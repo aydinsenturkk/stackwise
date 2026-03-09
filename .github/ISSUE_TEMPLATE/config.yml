@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Generate knowledge rules yourself
+    url: https://github.com/aydinsenturkk/stackwise#customization
+    about: Use /sw-generate-knowledge in Claude Code to create rules for any unsupported tool
