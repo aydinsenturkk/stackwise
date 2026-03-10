@@ -49,6 +49,53 @@ Tailwind v4 replaces `tailwind.config.ts` with CSS-based configuration using `@t
 }
 ```
 
+### `@source` Directive
+
+Tailwind v4 auto-detects source files, but some paths (e.g., `node_modules`) are excluded by default. Use `@source` to explicitly add them.
+
+```css
+@import "tailwindcss";
+@source "../node_modules/@my-org/ui-kit/src";
+@source "../../packages/shared-styles";
+
+/* Register class names that only exist at runtime (CMS, database) */
+@source inline("bg-red-500 text-white font-bold");
+```
+
+### `@utility` Directive
+
+Define custom utilities that work with all variants (`hover:`, `dark:`, responsive) — unlike plain CSS classes.
+
+```css
+@utility tab-size-* {
+  tab-size: --value(--tab-size-*);
+}
+
+@utility content-auto {
+  content-visibility: auto;
+}
+```
+
+```tsx
+// Custom utilities compose with variants just like built-in ones
+<pre className="tab-size-4 dark:tab-size-2">
+<div className="content-auto hover:content-auto">
+```
+
+### `@variant` Directive
+
+Define custom variants for use with any utility.
+
+```css
+@variant pointer-coarse (@media (pointer: coarse));
+@variant theme-ocean (&:where([data-theme="ocean"], [data-theme="ocean"] *));
+```
+
+```tsx
+<button className="px-4 pointer-coarse:px-6 pointer-coarse:py-3">
+<div className="bg-white theme-ocean:bg-cyan-50">
+```
+
 ### Reset and Override Defaults
 
 ```css
@@ -76,6 +123,33 @@ Tailwind v4 replaces `tailwind.config.ts` with CSS-based configuration using `@t
 | `theme.extend.animation`        | `--animate-{name}`                  |
 | `prefix: "tw"`                  | `@import "tailwindcss" prefix(tw)`  |
 | `darkMode: "class"`             | `@custom-variant dark`              |
+
+---
+
+## Container Queries
+
+Built-in container query support — no plugins needed. Use `@container` on the parent and size-based variants on children.
+
+```tsx
+<div className="@container">
+  <div className="flex flex-col @sm:flex-row @lg:grid @lg:grid-cols-3 gap-4">
+    <Card />
+  </div>
+</div>
+
+// Named containers for nested scenarios
+<div className="@container/sidebar">
+  <nav className="@sm/sidebar:flex @sm/sidebar:flex-col">{links}</nav>
+</div>
+```
+
+| Variant             | Min Width | Notes                |
+| ------------------- | --------- | -------------------- |
+| `@xs:` / `@sm:`     | 20 / 24rem | Small containers    |
+| `@md:` / `@lg:`     | 28 / 32rem | Medium containers   |
+| `@xl:` / `@2xl:`    | 36 / 42rem | Large containers    |
+| `@min-[400px]:`     | Custom     | Arbitrary min-width |
+| `@max-sm:` / `@max-[600px]:` | — | Max-width variants |
 
 ---
 
@@ -162,29 +236,15 @@ export function cn(...inputs: ClassValue[]) {
 
 ## Layout Patterns
 
-### Flexbox
-
 ```tsx
-// Center content
+// Flexbox
 <div className="flex items-center justify-center">
-
-// Space between with wrap
 <div className="flex flex-wrap items-center justify-between gap-4">
-
-// Stack (column)
 <div className="flex flex-col gap-2">
-```
 
-### Grid
-
-```tsx
-// Responsive grid
+// Grid
 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-
-// Sidebar layout
 <div className="grid grid-cols-[240px_1fr] gap-8">
-
-// Auto-fill responsive
 <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
 ```
 
@@ -198,6 +258,28 @@ export function cn(...inputs: ClassValue[]) {
 | Container with padding  | `mx-auto max-w-7xl px-4 sm:px-6 lg:px-8` |
 | Truncate text           | `truncate` or `line-clamp-2`              |
 | Aspect ratio            | `aspect-video` or `aspect-square`          |
+
+---
+
+## 3D Transform Utilities
+
+```tsx
+// Card flip on hover
+<div className="group perspective-500">
+  <div className="transition-transform duration-500 transform-3d group-hover:rotate-y-180">
+    <div className="backface-hidden">Front</div>
+    <div className="absolute inset-0 rotate-y-180 backface-hidden">Back</div>
+  </div>
+</div>
+```
+
+| Utility                      | CSS Property                   |
+| ---------------------------- | ------------------------------ |
+| `rotate-x-*` / `rotate-y-*` | `rotateX()` / `rotateY()`     |
+| `perspective-*`              | `perspective`                  |
+| `perspective-origin-*`       | `perspective-origin`           |
+| `transform-3d`               | `transform-style: preserve-3d`|
+| `backface-hidden`            | `backface-visibility: hidden`  |
 
 ---
 
@@ -215,6 +297,11 @@ export function cn(...inputs: ClassValue[]) {
 | `first:`      | First child                           |
 | `last:`       | Last child                            |
 | `odd:` / `even:` | Alternating children              |
+| `not-hover:`  | When NOT hovered                      |
+| `not-focus:`  | When NOT focused                      |
+| `not-first:`  | Not the first child                   |
+| `not-last:`   | Not the last child                    |
+| `not-disabled:` | When NOT disabled                   |
 
 ```tsx
 // Group hover pattern
@@ -226,6 +313,10 @@ export function cn(...inputs: ClassValue[]) {
 // Peer validation pattern
 <input className="peer" type="email" required />
 <span className="hidden text-red-500 peer-invalid:block">Invalid email</span>
+
+// not-* negation variants — cleaner than :not() pseudo-selectors
+<li className="border-b not-last:mb-2 not-first:pt-2">Item</li>
+<button className="opacity-50 not-disabled:opacity-100 not-disabled:hover:bg-blue-700">Submit</button>
 ```
 
 ---

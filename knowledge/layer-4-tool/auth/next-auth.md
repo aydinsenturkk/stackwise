@@ -1,5 +1,7 @@
 # NextAuth.js (Auth.js)
 
+> **Important: Auth.js team has joined Better Auth.** The core Auth.js maintainers have joined the [Better Auth](https://www.better-auth.com/) project, making Better Auth the official successor. **New projects should use Better Auth instead.** Auth.js v5 (`next-auth@beta`) will continue receiving security patches, and the API documentation below remains valid for existing projects. Note that v5 never reached a stable release — install is still `next-auth@beta` after 2+ years in beta.
+
 ## Setup
 
 ```bash
@@ -375,3 +377,4 @@ export const { auth } = NextAuth({
 | Not protecting API routes | API routes are public by default | Use middleware or check `auth()` in each route handler |
 | Ignoring the `signIn` callback | Any user with an OAuth account can sign in | Restrict sign-in by email domain, allowlist, or database check |
 | Not handling the `redirect` callback | Open redirect vulnerability | Validate redirect URLs against `baseUrl` |
+| Starting a new project with Auth.js v5 | Auth.js team has moved to Better Auth; v5 is perpetual beta with no stable release | Use [Better Auth](https://www.better-auth.com/) for new projects; only keep Auth.js for existing codebases |

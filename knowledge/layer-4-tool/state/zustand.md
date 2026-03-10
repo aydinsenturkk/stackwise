@@ -1,5 +1,7 @@
 # Zustand
 
+> Zustand v5 requires React 18+.
+
 ## Store Creation
 
 ```typescript
@@ -32,6 +34,20 @@ import { useShallow } from 'zustand/react/shallow';
 
 const { count, increment } = useCounterStore(
   useShallow((state) => ({ count: state.count, increment: state.increment })),
+);
+```
+
+### Custom Equality Function
+
+In v5, `create` no longer accepts a custom equality function. For custom equality comparisons, use `createWithEqualityFn` from `zustand/traditional`:
+
+```typescript
+import { createWithEqualityFn } from 'zustand/traditional';
+import { shallow } from 'zustand/shallow';
+
+const useStore = createWithEqualityFn<State>()(
+  (set) => ({ ... }),
+  shallow,
 );
 ```
 
@@ -113,6 +129,8 @@ const useAppStore = create<AuthSlice & UISlice>()((...args) => ({
 ## Middleware
 
 ### Persist
+
+> In v5, the persist middleware no longer stores the item at store creation time — it writes to storage on the first state change. If you need to persist the initial state immediately, trigger a no-op `set` after creation.
 
 ```typescript
 import { persist, createJSONStorage } from 'zustand/middleware';
@@ -207,6 +225,10 @@ const completedCount = useTodoStore((state) => state.completedCount());
 const currentUser = useAuthStore.getState().user;
 
 // Subscribe to changes
+// NOTE: Selector-based subscribe requires the `subscribeWithSelector` middleware.
+// Without it, `subscribe` only accepts a listener for the entire state.
+//   import { subscribeWithSelector } from 'zustand/middleware';
+//   const useAuthStore = create<AuthStore>()(subscribeWithSelector((set) => ({ ... })));
 const unsubscribe = useAuthStore.subscribe(
   (state) => state.token,
   (token) => {

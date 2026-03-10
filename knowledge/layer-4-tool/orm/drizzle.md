@@ -21,8 +21,10 @@ import {
 } from "drizzle-orm/pg-core";
 import { relations } from "drizzle-orm";
 
+// Identity columns (recommended) — `serial` still works but identity columns
+// are the modern PostgreSQL approach and avoid sequence ownership issues.
 export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   name: text("name").notNull(),
   email: varchar("email", { length: 255 }).notNull().unique(),
   verified: boolean("verified").notNull().default(false),
@@ -90,13 +92,15 @@ export const postsToTagsRelations = relations(postsToTags, ({ one }) => ({
 
 ```typescript
 // src/db/index.ts
-import { drizzle } from "drizzle-orm/node-postgres";
+
+// Simplified init — auto-detects the driver from your installed packages
+import { drizzle } from "drizzle-orm";
 import * as schema from "./schema";
 
-// Simple connection string
 export const db = drizzle(process.env.DATABASE_URL!, { schema });
 
-// Or with Pool
+// Or with an explicit driver import (still supported)
+import { drizzle } from "drizzle-orm/node-postgres";
 import { Pool } from "pg";
 
 const pool = new Pool({ connectionString: process.env.DATABASE_URL });
@@ -260,8 +264,9 @@ npx drizzle-kit studio
 | `generate`  | Create SQL migration from diff     |
 | `migrate`   | Apply pending migrations           |
 | `push`      | Push schema without migration file |
-| `pull`      | Pull schema from existing database |
-| `studio`    | Open visual database browser       |
+| `pull`      | Pull schema from existing database    |
+| `check`     | Detect non-commutative migrations     |
+| `studio`    | Open visual database browser          |
 
 ---
 

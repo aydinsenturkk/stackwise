@@ -87,6 +87,28 @@ export const postKeys = {
 
 ---
 
+## queryOptions() Helper
+
+Define `queryKey` + `queryFn` once with `queryOptions()` and reuse across `useQuery`, `useSuspenseQuery`, `prefetchQuery`, `ensureQueryData`, and `invalidateQueries` — with full type inference.
+
+```typescript
+import { queryOptions, useQuery } from "@tanstack/react-query";
+
+export function userDetailOptions(userId: string) {
+  return queryOptions({
+    queryKey: userKeys.detail(userId),
+    queryFn: () => userService.getById(userId),
+    staleTime: 5 * 60 * 1000,
+  });
+}
+
+// Reuse in components, loaders, prefetching
+const { data } = useQuery(userDetailOptions(userId));
+await queryClient.prefetchQuery(userDetailOptions(userId));
+```
+
+---
+
 ## useMutation
 
 ```typescript
@@ -121,6 +143,21 @@ function CreateUserForm() {
   );
 }
 ```
+
+### useMutationState
+
+Observe mutation state across components. Useful for global loading indicators or disabling UI while mutations are in flight.
+
+```typescript
+import { useMutationState } from "@tanstack/react-query";
+// Track pending mutations by mutationKey
+const pendingVars = useMutationState({
+  filters: { mutationKey: ["createUser"], status: "pending" },
+  select: (mutation) => mutation.state.variables as CreateUserInput,
+});
+```
+
+> Pair `useMutationState` with `mutationKey` on `useMutation` calls so filters can target specific mutation types.
 
 ---
 
@@ -241,6 +278,7 @@ function PostFeed() {
     queryFn: ({ pageParam }) => postService.getFeed({ cursor: pageParam }),
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
+    maxPages: 5, // Keep at most 5 pages in cache to limit memory
   });
 
   const posts = data?.pages.flatMap((page) => page.items) ?? [];
@@ -257,6 +295,64 @@ function PostFeed() {
   );
 }
 ```
+
+### maxPages
+
+Set `maxPages` to cap pages held in cache, preventing unbounded memory growth. When exceeded, the oldest page is dropped. Also provide `getPreviousPageParam` so dropped pages can be refetched if the user scrolls back.
+
+---
+
+## Suspense Hooks
+
+First-class Suspense integration. `data` is guaranteed `T` (never `undefined`), eliminating loading checks. Also available as `useSuspenseInfiniteQuery`.
+
+```typescript
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+function UserProfile({ userId }: { userId: string }) {
+  const { data: user } = useSuspenseQuery(userDetailOptions(userId));
+  return <UserCard user={user} />;  // user is User, not User | undefined
+}
+
+// Parent handles loading + error declaratively
+function UserPage({ userId }: { userId: string }) {
+  return (
+    <ErrorBoundary fallback={<ErrorMessage />}>
+      <Suspense fallback={<Skeleton />}>
+        <UserProfile userId={userId} />
+      </Suspense>
+    </ErrorBoundary>
+  );
+}
+```
+
+| Rule                                       | Explanation                                              |
+| ------------------------------------------ | -------------------------------------------------------- |
+| No `enabled` option                        | Suspense hooks always fetch — conditional logic goes in the parent |
+| No `placeholderData`                       | Suspense replaces the need for placeholder states        |
+| Wrap in `<Suspense>` + `<ErrorBoundary>`   | Loading and error states are handled declaratively       |
+
+---
+
+## Error Handling with throwOnError
+
+The `throwOnError` option (renamed from `useErrorBoundary` in v5) controls whether errors propagate to the nearest React Error Boundary. Works on both queries and mutations.
+
+```typescript
+// All errors propagate to ErrorBoundary
+useQuery({ ...options, throwOnError: true });
+
+// Selectively propagate — only server errors
+useQuery({ ...options, throwOnError: (error) => error.status >= 500 });
+```
+
+| Value      | Behavior                                                |
+| ---------- | ------------------------------------------------------- |
+| `false`    | Default. Errors available via `isError` / `error`       |
+| `true`     | All errors throw to nearest ErrorBoundary               |
+| `function` | Return `true` to throw, `false` to handle inline        |
+
+> Suspense hooks always throw to ErrorBoundary — `throwOnError` is implicitly `true`.
 
 ---
 
