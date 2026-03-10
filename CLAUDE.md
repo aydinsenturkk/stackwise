@@ -14,7 +14,7 @@ The interactive CLI auto-detects your project's stack, lets you confirm/override
 
 Knowledge files are organized into layers of increasing specificity. The CLI installs the right combination as `.claude/rules/` files based on your project's stack.
 
-### Layer 1: Universal (15 files)
+### Layer 1: Universal (19 files)
 Applies to all TypeScript projects regardless of stack.
 
 - `architecture-principles.md` - Clean architecture, separation of concerns, dependency rules
@@ -32,43 +32,88 @@ Applies to all TypeScript projects regardless of stack.
 - `configuration-management.md` - Environment variables, feature flags, secrets
 - `anti-patterns.md` - Common mistakes and how to avoid them
 - `refactoring-principles.md` - When to refactor, code smells, safety checklist
+- `concurrency-async.md` - Async patterns, Promise.all, race conditions
+- `git-workflow.md` - Branching strategy, commit conventions, PR workflow
+- `ci-cd-principles.md` - Pipeline design, deployment strategies, rollback
+- `pm-workflow.md` - Task management, estimation, prioritization
 
-### Layer 2: Domain (22 files)
+### Layer 2: Domain (24 files)
 Frontend or backend specific knowledge.
 
 **Frontend (10 files):** component-design, frontend-architecture, frontend-testing, frontend-performance, frontend-security, frontend-error-handling, accessibility, internationalization, frontend-naming, frontend-anti-patterns
 
-**Backend (12 files):** backend-architecture, backend-api-design, backend-testing, backend-security, backend-error-handling, database-patterns, caching-strategies, validation-patterns, event-driven, background-jobs, backend-naming, contract-patterns
+**Backend (14 files):** backend-architecture, backend-api-design, backend-testing, backend-security, backend-error-handling, backend-performance, backend-anti-patterns, database-patterns, caching-strategies, validation-patterns, event-driven, background-jobs, backend-naming, contract-patterns
 
-### Layer 3: Framework (3 files)
+### Layer 3: Framework (12 files)
 Framework-specific patterns and conventions.
 
-- `frontend/nextjs.md` - App Router, Server Components, Route Handlers
-- `frontend/react-spa.md` - Vite, client-side routing, SPA patterns
-- `backend/nestjs.md` - Modules, decorators, dependency injection
+**Frontend (7 files):**
+- `frontend/nextjs.md` - Next.js 15-16, App Router, Server Functions, `use cache`
+- `frontend/react-spa.md` - Vite, React Router v7 library mode, route.lazy()
+- `frontend/vue.md` - Vue 3.5, Composition API, script setup, composables
+- `frontend/nuxt.md` - Nuxt 3.14+, auto-imports, useFetch, server routes
+- `frontend/angular.md` - Angular 19+, signals, standalone, zoneless
+- `frontend/remix.md` - React Router v7 Framework Mode, loaders/actions, typegen
+- `frontend/tanstack-start.md` - TanStack Start v1 RC, server functions, Nitro
 
-### Layer 4: Tool (21 files)
-Library and tool-specific usage patterns.
+**Backend (5 files):**
+- `backend/nestjs.md` - NestJS v11, modules, decorators, dependency injection
+- `backend/express.md` - Express v5, middleware pipeline, async handlers
+- `backend/fastify.md` - Fastify v5, plugin system, schema validation
+- `backend/hono.md` - Multi-runtime, middleware, Zod OpenAPI, RPC mode
+- `backend/koa.md` - Koa 3, onion middleware, context object
 
-- `orm/prisma.md` - Schema design, migrations, query patterns
-- `orm/drizzle.md` - SQL-first ORM, schema, relations, migrations
+### Layer 4: Tool (50 files)
+Library and tool-specific usage patterns across 26 categories.
+
+- `orm/prisma.md` - Prisma 7, driver adapters, TypedSQL, Client Extensions
+- `orm/drizzle.md` - SQL-first ORM, schema, relations, identity columns
+- `orm/mongoose.md` - Mongoose ODM, schemas, TypeScript inference
+- `orm/sequelize.md` - Sequelize ORM, models, migrations, scopes
+- `orm/typeorm.md` - TypeORM, entities, decorators, repositories
+- `orm/knex.md` - Knex.js query builder, migrations, seeds
+- `orm/mikro-orm.md` - MikroORM, Unit of Work, Identity Map
 - `validation/zod.md` - Schema composition, refinements, transforms
 - `validation/class-validator.md` - Decorator validation, class-transformer, DTOs
-- `state/tanstack-query.md` - Query keys, mutations, optimistic updates
+- `state/tanstack-query.md` - TanStack Query v5, queryOptions, suspense hooks
 - `state/tanstack-store.md` - Reactive store, selectors, persistence
-- `testing/vitest.md` - Configuration, mocking, snapshot testing
+- `state/zustand.md` - Zustand v5, slices, middleware, persist
+- `testing/vitest.md` - Vitest v4, Browser Mode, visual regression
+- `testing/jest.md` - Jest configuration, mocking, snapshots
+- `testing/playwright.md` - E2E testing, page objects, assertions
 - `queue/bullmq.md` - Job processing, retry strategies, concurrency
 - `forms/react-hook-form.md` - Form state, Zod integration, field arrays
-- `forms/tanstack-form.md` - Type-safe forms, field-level validation, async validation
-- `styling/tailwind.md` - Utility-first CSS, responsive design, dark mode
+- `forms/tanstack-form.md` - Type-safe forms, field-level validation
+- `styling/tailwind.md` - Tailwind v4, CSS-first config, container queries
 - `ui/shadcn-ui.md` - Component composition, variants, Radix primitives
+- `ui/storybook.md` - Storybook CSF3, stories, docs, interaction tests
 - `routing/tanstack-router.md` - Type-safe routing, loaders, search params
-- `animation/framer-motion.md` - Layout animations, gestures, AnimatePresence
+- `rpc/trpc.md` - tRPC v11, streaming, SSE subscriptions, FormData
+- `animation/framer-motion.md` - Motion (Framer Motion), layout animations
 - `table/tanstack-table.md` - Headless tables, sorting, filtering, pagination
 - `devtools/tanstack-devtools.md` - Query, Router, Form devtools setup
-- `api-docs/nestjs-swagger.md` - OpenAPI docs, decorators, DocumentBuilder
-- `rate-limiting/nestjs-throttler.md` - Rate limiting, multiple throttlers, guards
+- `graphql/apollo-server.md` - Apollo Server v4, resolvers, context
+- `graphql/apollo-client.md` - Apollo Client, cache, queries, mutations
+- `auth/better-auth.md` - Better Auth (replaces Lucia), providers, sessions
+- `auth/next-auth.md` - NextAuth.js / Auth.js v5, providers, middleware
 - `auth/nestjs-passport.md` - JWT/Local strategies, guards, role-based auth
+- `auth/passport.md` - Passport.js, strategies, serialization
+- `realtime/socket-io.md` - Socket.IO, rooms, namespaces, events
+- `realtime/ws.md` - ws WebSocket, binary, heartbeat
+- `logging/winston.md` - Winston, transports, formats
+- `logging/pino.md` - Pino, fast logging, child loggers
+- `http-client/axios.md` - Axios, interceptors, instances
+- `http-client/ky.md` - Ky, hooks, retry, timeout
+- `i18n/i18next.md` - i18next, namespaces, interpolation
+- `i18n/next-intl.md` - next-intl, App Router, messages
+- `date/dayjs.md` - Day.js, parsing, formatting, plugins
+- `date/date-fns.md` - date-fns, tree-shakeable, functional
+- `date/luxon.md` - Luxon, DateTime, zones, intervals
+- `email/nodemailer.md` - Nodemailer, SMTP, templates
+- `email/nestjs-mailer.md` - @nestjs-modules/mailer, templates
+- `upload/multer.md` - Multer, file uploads, storage
+- `api-docs/nestjs-swagger.md` - OpenAPI docs, decorators, DocumentBuilder
+- `rate-limiting/nestjs-throttler.md` - Rate limiting, throttlers, guards
 - `cache/nestjs-cache-manager.md` - Redis/memory cache, interceptor, TTL
 - `config/nestjs-config.md` - Environment variables, validation, namespaced config
 
@@ -163,32 +208,41 @@ stackwise/
 │   ├── settings.js           # Settings merge logic
 │   ├── constants.js          # Skills, agents, hooks, dependency map
 │   └── utils.js              # File system helpers
-├── knowledge/                # 4-layer knowledge system
-│   ├── layer-1-universal/    # 15 files - all TypeScript projects
+├── knowledge/                # 4-layer knowledge system (105 files)
+│   ├── layer-1-universal/    # 19 files - all TypeScript projects
 │   ├── layer-2-domain/       # Domain-specific
 │   │   ├── frontend/         # 10 files
-│   │   └── backend/          # 12 files
+│   │   └── backend/          # 14 files
 │   ├── layer-3-framework/    # Framework-specific
-│   │   ├── frontend/         # nextjs.md, react-spa.md
-│   │   └── backend/          # nestjs.md
-│   └── layer-4-tool/         # Tool-specific
-│       ├── orm/              # prisma.md, drizzle.md
-│       ├── validation/       # zod.md, class-validator.md
-│       ├── state/            # tanstack-query.md, tanstack-store.md
-│       ├── testing/          # vitest.md
-│       ├── queue/            # bullmq.md
-│       ├── forms/            # react-hook-form.md, tanstack-form.md
-│       ├── styling/          # tailwind.md
-│       ├── ui/               # shadcn-ui.md
-│       ├── routing/          # tanstack-router.md
-│       ├── animation/        # framer-motion.md
-│       ├── table/            # tanstack-table.md
-│       ├── devtools/         # tanstack-devtools.md
-│       ├── api-docs/         # nestjs-swagger.md
-│       ├── rate-limiting/    # nestjs-throttler.md
-│       ├── auth/             # nestjs-passport.md
-│       ├── cache/            # nestjs-cache-manager.md
-│       └── config/           # nestjs-config.md
+│   │   ├── frontend/         # 7 files (nextjs, react-spa, vue, nuxt, angular, remix, tanstack-start)
+│   │   └── backend/          # 5 files (nestjs, express, fastify, hono, koa)
+│   └── layer-4-tool/         # 50 files across 26 categories
+│       ├── orm/              # prisma, drizzle, mongoose, sequelize, typeorm, knex, mikro-orm
+│       ├── validation/       # zod, class-validator
+│       ├── state/            # tanstack-query, tanstack-store, zustand
+│       ├── testing/          # vitest, jest, playwright
+│       ├── queue/            # bullmq
+│       ├── forms/            # react-hook-form, tanstack-form
+│       ├── styling/          # tailwind
+│       ├── ui/               # shadcn-ui, storybook
+│       ├── routing/          # tanstack-router
+│       ├── rpc/              # trpc
+│       ├── animation/        # framer-motion (motion)
+│       ├── table/            # tanstack-table
+│       ├── devtools/         # tanstack-devtools
+│       ├── graphql/          # apollo-server, apollo-client
+│       ├── auth/             # better-auth, next-auth, nestjs-passport, passport
+│       ├── realtime/         # socket-io, ws
+│       ├── logging/          # winston, pino
+│       ├── http-client/      # axios, ky
+│       ├── i18n/             # i18next, next-intl
+│       ├── date/             # dayjs, date-fns, luxon
+│       ├── email/            # nodemailer, nestjs-mailer
+│       ├── upload/           # multer
+│       ├── api-docs/         # nestjs-swagger
+│       ├── rate-limiting/    # nestjs-throttler
+│       ├── cache/            # nestjs-cache-manager
+│       └── config/           # nestjs-config
 ├── lib/
 │   └── registry.json         # Knowledge file registry with metadata
 ├── skills/                   # Slash command definitions

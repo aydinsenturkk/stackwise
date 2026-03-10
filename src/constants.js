@@ -139,7 +139,7 @@ export const DEPENDENCY_MAP = {
   passport: { category: 'auth', value: 'passport' },
   'next-auth': { category: 'auth', value: 'next-auth' },
   '@auth/core': { category: 'auth', value: 'auth-core' },
-  lucia: { category: 'auth', value: 'lucia' },
+  'better-auth': { category: 'auth', value: 'better-auth' },
 
   // Caching
   '@nestjs/cache-manager': { category: 'cache', value: 'nestjs-cache-manager' },

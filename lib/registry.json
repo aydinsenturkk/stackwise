@@ -146,6 +146,33 @@
       "glob_strategy": "all"
     },
     {
+      "path": "knowledge/layer-1-universal/git-workflow.md",
+      "layer": 1,
+      "name": "git-workflow",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/concurrency-async.md",
+      "layer": 1,
+      "name": "concurrency-async",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
+      "path": "knowledge/layer-1-universal/ci-cd-principles.md",
+      "layer": 1,
+      "name": "ci-cd-principles",
+      "domain": null,
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "all"
+    },
+    {
       "path": "knowledge/layer-2-domain/frontend/component-design.md",
       "layer": 2,
       "name": "component-design",
@@ -344,6 +371,24 @@
       "glob_strategy": "backend"
     },
     {
+      "path": "knowledge/layer-2-domain/backend/backend-performance.md",
+      "layer": 2,
+      "name": "backend-performance",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-2-domain/backend/backend-anti-patterns.md",
+      "layer": 2,
+      "name": "backend-anti-patterns",
+      "domain": "backend",
+      "framework": null,
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
       "path": "knowledge/layer-3-framework/frontend/nextjs.md",
       "layer": 3,
       "name": "nextjs",
@@ -369,6 +414,87 @@
       "framework": "nestjs",
       "tool": null,
       "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/backend/express.md",
+      "layer": 3,
+      "name": "express",
+      "domain": "backend",
+      "framework": "express",
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/backend/fastify.md",
+      "layer": 3,
+      "name": "fastify",
+      "domain": "backend",
+      "framework": "fastify",
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/backend/hono.md",
+      "layer": 3,
+      "name": "hono",
+      "domain": "backend",
+      "framework": "hono",
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/backend/koa.md",
+      "layer": 3,
+      "name": "koa",
+      "domain": "backend",
+      "framework": "koa",
+      "tool": null,
+      "glob_strategy": "backend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/frontend/vue.md",
+      "layer": 3,
+      "name": "vue",
+      "domain": "frontend",
+      "framework": "vue",
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/frontend/nuxt.md",
+      "layer": 3,
+      "name": "nuxt",
+      "domain": "frontend",
+      "framework": "nuxt",
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/frontend/angular.md",
+      "layer": 3,
+      "name": "angular",
+      "domain": "frontend",
+      "framework": "angular",
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/frontend/remix.md",
+      "layer": 3,
+      "name": "remix",
+      "domain": "frontend",
+      "framework": "remix",
+      "tool": null,
+      "glob_strategy": "frontend"
+    },
+    {
+      "path": "knowledge/layer-3-framework/frontend/tanstack-start.md",
+      "layer": 3,
+      "name": "tanstack-start",
+      "domain": "frontend",
+      "framework": "tanstack-start",
+      "tool": null,
+      "glob_strategy": "frontend"
     },
     {
       "path": "knowledge/layer-4-tool/orm/prisma.md",
@@ -614,12 +740,12 @@
       "glob_strategy": "all"
     },
     {
-      "path": "knowledge/layer-4-tool/auth/lucia.md",
+      "path": "knowledge/layer-4-tool/auth/better-auth.md",
       "layer": 4,
-      "name": "lucia",
+      "name": "better-auth",
       "domain": "backend",
       "framework": null,
-      "tool": "lucia",
+      "tool": "better-auth",
       "glob_strategy": "backend"
     },
     {
@@ -641,7 +767,7 @@
       "glob_strategy": "frontend"
     },
     {
-      "path": "knowledge/layer-4-tool/graphql/trpc.md",
+      "path": "knowledge/layer-4-tool/rpc/trpc.md",
       "layer": 4,
       "name": "trpc",
       "domain": null,

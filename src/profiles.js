@@ -5,6 +5,15 @@ const FRAMEWORK_MAP = {
   nextjs: 'nextjs',
   'react-spa': 'react-spa',
   nestjs: 'nestjs',
+  express: 'express',
+  fastify: 'fastify',
+  hono: 'hono',
+  koa: 'koa',
+  vue: 'vue',
+  nuxt: 'nuxt',
+  angular: 'angular',
+  remix: 'remix',
+  'tanstack-start': 'tanstack-start',
 };
 
 // Tool detection value → registry tool name
@@ -40,7 +49,7 @@ export const TOOL_MAP = {
   passport: 'passport',
   'next-auth': 'next-auth',
   'auth-core': 'auth-core',
-  lucia: 'lucia',
+  'better-auth': 'better-auth',
   // GraphQL
   'apollo-server': 'apollo-server',
   'apollo-client': 'apollo-client',
