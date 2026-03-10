@@ -1,5 +1,7 @@
 # NestJS Framework
 
+> This guide covers NestJS v11 (current). Uses Express v5 / Fastify v5 under the hood.
+
 ## Module System
 
 ### Module Types
@@ -94,16 +96,23 @@ constructor(
 
 ### Injection Scopes
 
-| Scope                   | Lifetime                  | Use When                     |
-| ----------------------- | ------------------------- | ---------------------------- |
-| **Singleton** (default) | Entire application        | Stateless services           |
-| **Request**             | Per HTTP request          | Request-scoped context       |
-| **Transient**           | Per injection             | Unique instance each time    |
+| Scope                   | Lifetime                              | Use When                         |
+| ----------------------- | ------------------------------------- | -------------------------------- |
+| **Singleton** (default) | Entire application                    | Stateless services               |
+| **Request**             | Per HTTP request                      | Request-scoped context           |
+| **Transient**           | Per injection                         | Unique instance each time        |
+| **Durable**             | Request-scoped without rebuilding DI tree | High-performance request-scoped |
 
 ```typescript
 @Injectable({ scope: Scope.REQUEST })
 export class RequestContextService {
   // New instance per HTTP request
+}
+
+// Durable providers: request-scoped performance without DI tree rebuild
+@Injectable({ scope: Scope.REQUEST, durable: true })
+export class TenantService {
+  // Reuses DI subtree, only recreates this provider per request
 }
 ```
 
@@ -118,6 +127,8 @@ The execution order for incoming requests:
 ```
 Middleware → Guards → Interceptors (before) → Pipes → Handler → Interceptors (after) → Exception Filters
 ```
+
+**Express v5 route matching:** The wildcard `*` must now be named (e.g., `/*splat`). This affects middleware `forRoutes()` calls and route path definitions.
 
 ### Guards
 
@@ -152,10 +163,16 @@ async create(@Body() dto: CreateUserDto) {
   return this.usersService.create(dto);
 }
 
-// Built-in ParseIntPipe for param transformation
+// Built-in ParseIntPipe / ParseDatePipe for param transformation
 @Get(":id")
 async findOne(@Param("id", ParseIntPipe) id: number) {
   return this.usersService.findById(id);
+}
+
+// ParseDatePipe converts string params to Date objects
+@Get("since/:date")
+async findSince(@Param("date", ParseDatePipe) date: Date) {
+  return this.usersService.findSince(date);
 }
 ```
 
@@ -183,6 +200,11 @@ export class TransformInterceptor<T> implements NestInterceptor<T, Response<T>> 
 ```
 
 ### Exception Filters
+
+| Exception Type         | Purpose                                          |
+| ---------------------- | ------------------------------------------------ |
+| `HttpException`        | Standard HTTP errors with status code            |
+| `IntrinsicException`   | Base exception that bypasses framework logging   |
 
 ```typescript
 @Catch(DomainException)
@@ -288,9 +310,19 @@ export class CacheModule {
 export class AppModule {}
 ```
 
+**v11 identity change:** Dynamic module references are compared by identity. Assign to a variable to ensure singleton behavior when importing in multiple places:
+
+```typescript
+// v11: Assign to variable to maintain singleton behavior
+const cacheRoot = CacheModule.forRoot({ ttl: 300, host: "localhost" });
+@Module({ imports: [cacheRoot] }) // reuse same reference
+```
+
 ---
 
 ## Testing with NestJS
+
+**Note:** NestJS v11 defaults to SWC compiler and Vitest for testing. New projects use `vitest` out of the box.
 
 ```typescript
 describe("UsersService", () => {

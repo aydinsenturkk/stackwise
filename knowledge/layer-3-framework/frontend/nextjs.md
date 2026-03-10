@@ -9,6 +9,9 @@
 | Data fetching   | Direct `async/await`             | Via hooks (TanStack Query, SWR)    |
 | Bundle impact   | Zero client JS                   | Adds to client bundle              |
 | Access          | DB, fs, env vars, secrets        | Browser APIs, event handlers       |
+| Guard imports   | Use `server-only` package        | Use `client-only` package          |
+
+> **Tip:** Install `server-only` / `client-only` packages and import them at the top of files that must never cross the boundary. Build will fail with a clear error if the boundary is violated.
 
 ### When to Use Each
 
@@ -25,9 +28,7 @@
 - Effects with useEffect
 - Event listeners (onClick, onChange)
 
-### Composition Pattern
-
-Client components can render server components as children:
+### Composition Pattern — Client Wrapping Server
 
 ```tsx
 // ClientWrapper.tsx
@@ -37,14 +38,14 @@ export function ClientWrapper({ children }: { children: React.ReactNode }) {
   return <div>{isOpen && children}</div>;
 }
 
-// page.tsx (Server Component)
+// page.tsx (Server Component) — ServerContent still renders on server
 import { ClientWrapper } from "./ClientWrapper";
 import { ServerContent } from "./ServerContent";
 
 export default function Page() {
   return (
     <ClientWrapper>
-      <ServerContent />  {/* Still renders on server */}
+      <ServerContent />
     </ClientWrapper>
   );
 }
@@ -65,26 +66,26 @@ export default function Page() {
 | `template.tsx`    | Layout that re-mounts on navigate    |
 | `default.tsx`     | Parallel route fallback              |
 
-### Route Groups and Organization
-
-```
-app/
-├── (auth)/
-│   ├── login/page.tsx
-│   └── register/page.tsx
-├── (dashboard)/
-│   ├── layout.tsx
-│   ├── settings/page.tsx
-│   └── profile/page.tsx
-├── api/
-│   └── users/route.ts
-└── layout.tsx
-```
+### Route Groups and Conventions
 
 - `(groupName)` - Groups routes without affecting URL
 - `[param]` - Dynamic segment
 - `[...slug]` - Catch-all segment
 - `[[...slug]]` - Optional catch-all segment
+
+### Type Helpers for Page and Layout Props
+
+Use the built-in `PageProps` and `LayoutProps` type helpers for correctly typed route parameters:
+
+```tsx
+import type { PageProps, LayoutProps } from "next";
+
+export default async function Page({ params, searchParams }: PageProps) {
+  const { id } = await params;
+  const { q } = await searchParams;
+  // ...
+}
+```
 
 ---
 
@@ -108,17 +109,32 @@ export default async function UsersPage() {
 
 ### Caching and Revalidation
 
-| Strategy           | How                                          | When                         |
-| ------------------ | -------------------------------------------- | ---------------------------- |
-| Static             | `fetch(url)`                                 | Data never changes           |
-| Time-based ISR     | `fetch(url, { next: { revalidate: 60 } })`  | Data changes periodically    |
-| On-demand          | `revalidatePath('/users')`                   | After mutation               |
-| Tag-based          | `revalidateTag('users')`                     | Granular cache invalidation  |
-| No cache           | `fetch(url, { cache: 'no-store' })`          | Always fresh data            |
+> **Next.js 15+:** `fetch()` is **not cached by default** (auto no-cache). You must explicitly opt in to caching.
+
+| Strategy           | How                                               | When                         |
+| ------------------ | ------------------------------------------------- | ---------------------------- |
+| Force cache        | `fetch(url, { cache: 'force-cache' })`            | Data never changes           |
+| Time-based ISR     | `fetch(url, { next: { revalidate: 60 } })`       | Data changes periodically    |
+| On-demand          | `revalidatePath('/users')`                        | After mutation               |
+| Tag-based          | `revalidateTag('users')`                          | Granular cache invalidation  |
+| No cache (default) | `fetch(url)` or `fetch(url, { cache: 'no-store' })` | Always fresh data         |
+
+### `use cache` Directive
+
+Mark functions or files as cacheable with `"use cache"` — the granular replacement for page-level caching config. Combine with `cacheLife()` and `cacheTag()` to control TTL and invalidation:
+
+```tsx
+"use cache";
+export async function getUser(id: string) {
+  return db.user.findUnique({ where: { id } });
+}
+```
 
 ---
 
-## Server Actions
+## Server Functions
+
+> **Note:** "Server Actions" have been renamed to "Server Functions" as of Next.js 15. The `"use server"` directive and behavior are unchanged.
 
 ```tsx
 // app/posts/actions.ts
@@ -155,7 +171,7 @@ export function CreatePostForm() {
 }
 ```
 
-### Server Action Rules
+### Server Function Rules
 
 | Do                                      | Don't                                |
 | --------------------------------------- | ------------------------------------ |
@@ -190,8 +206,10 @@ export async function POST(request: NextRequest) {
 
 ## Middleware
 
+> **Next.js 16:** `middleware.ts` is renamed to `proxy.ts` at the project root. The `middleware.ts` filename still works but is deprecated. Prefer `proxy.ts` for new projects.
+
 ```typescript
-// middleware.ts (root of project)
+// proxy.ts (root of project — or middleware.ts for Next.js 15 and earlier)
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
@@ -221,13 +239,33 @@ export const metadata: Metadata = {
   description: "App description",
 };
 
-// Dynamic metadata
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const product = await getProduct(params.id);
+// Dynamic metadata — params is a Promise (Next.js 15+), must be awaited
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
   return {
     title: product.name,
     openGraph: { images: [product.image] },
   };
+}
+```
+
+> **Streaming metadata:** `generateMetadata` can now stream — the page begins rendering while metadata resolves. No code change needed; Next.js handles this automatically.
+
+---
+
+## Async Request APIs
+
+As of Next.js 15, `cookies()`, `headers()`, `params`, and `searchParams` are all **async** — must be awaited:
+
+```tsx
+import { cookies, headers } from "next/headers";
+
+export default async function Page() {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token");
+  const headersList = await headers();
+  const referer = headersList.get("referer");
 }
 ```
 
@@ -247,22 +285,15 @@ app/dashboard/
 
 ```tsx
 // app/dashboard/layout.tsx
-export default function Layout({
-  children,
-  analytics,
-  team,
-}: {
+export default function Layout(props: {
   children: React.ReactNode;
   analytics: React.ReactNode;
   team: React.ReactNode;
 }) {
   return (
     <div>
-      {children}
-      <div className="grid grid-cols-2">
-        {analytics}
-        {team}
-      </div>
+      {props.children}
+      <div className="grid grid-cols-2">{props.analytics}{props.team}</div>
     </div>
   );
 }
@@ -309,15 +340,9 @@ export default function Loading() {
   return <PostListSkeleton />;
 }
 
-// app/posts/error.tsx
+// app/posts/error.tsx — must be a client component
 "use client";
-export default function Error({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
+export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <div>
       <h2>Something went wrong</h2>
@@ -341,6 +366,9 @@ export default function NotFound() {
 | `"use client"` on every component   | Default to server, add client only when needed   |
 | Fetching data in client components  | Fetch in server components, pass as props         |
 | Large client component trees        | Push `"use client"` boundary down to leaves      |
-| Using `useEffect` for data loading  | Use server components or server actions           |
+| Using `useEffect` for data loading  | Use server components or server functions         |
 | Ignoring `loading.tsx`              | Add loading states for better UX                  |
 | Hardcoding revalidation times       | Use on-demand revalidation after mutations        |
+| Assuming `fetch()` is cached        | Explicitly opt in with `cache: 'force-cache'`     |
+| Synchronous access to `params`      | Always `await params` and `await searchParams`    |
+| Synchronous `cookies()` / `headers()` | These are async in Next.js 15+ — always `await` |

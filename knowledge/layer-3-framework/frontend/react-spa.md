@@ -1,5 +1,7 @@
 # React SPA with Vite
 
+> **React Router v7 library mode** — This file covers React Router v7 used as a library (without `@react-router/dev`). For framework mode with SSR, file-based routing, and server loaders, see the Remix/React Router framework docs.
+
 ## Project Structure
 
 ```
@@ -41,15 +43,13 @@ src/
 
 ---
 
-## Client-Side Routing (React Router)
+## Client-Side Routing (React Router v7)
+
+React Router v7 unified all packages under `react-router`. The `react-router-dom` package is deprecated — all imports come from `react-router`.
 
 ```tsx
 // app/routes.tsx
-import { createBrowserRouter } from "react-router-dom";
-import { lazy, Suspense } from "react";
-
-const Dashboard = lazy(() => import("../features/dashboard"));
-const Settings = lazy(() => import("../features/settings"));
+import { createBrowserRouter } from "react-router";
 
 export const router = createBrowserRouter([
   {
@@ -60,27 +60,27 @@ export const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       {
         path: "dashboard",
-        element: (
-          <Suspense fallback={<DashboardSkeleton />}>
-            <Dashboard />
-          </Suspense>
-        ),
+        lazy: () => import("../features/dashboard/route"),
       },
       {
         path: "settings",
-        element: (
-          <Suspense fallback={<SettingsSkeleton />}>
-            <Settings />
-          </Suspense>
-        ),
+        lazy: () => import("../features/settings/route"),
       },
       { path: "*", element: <NotFound /> },
     ],
   },
 ]);
 
+// features/dashboard/route.tsx — lazy route module
+export { default as Component } from "./DashboardPage";
+export { ErrorBoundary } from "./DashboardError";
+export async function loader() {
+  // optional client-side loader
+  return { stats: await fetchDashboardStats() };
+}
+
 // main.tsx
-import { RouterProvider } from "react-router-dom";
+import { RouterProvider } from "react-router";
 import { router } from "./app/routes";
 
 createRoot(document.getElementById("root")!).render(
@@ -90,14 +90,28 @@ createRoot(document.getElementById("root")!).render(
 );
 ```
 
+### route.lazy() Pattern
+
+The `lazy` property on a route replaces manual `React.lazy` + `Suspense` wrapping. The lazy function returns a module that can export `Component`, `ErrorBoundary`, `loader`, `action`, and other route properties. React Router handles the Suspense boundary automatically.
+
+```tsx
+// Preferred: route.lazy() — handles Suspense automatically
+{ path: "users", lazy: () => import("../features/users/route") }
+
+// Avoid: manual React.lazy + Suspense wrapping (legacy pattern)
+const Users = lazy(() => import("../features/users"));
+{ path: "users", element: <Suspense fallback={...}><Users /></Suspense> }
+```
+
 ### Route Organization
 
-| Pattern             | When                              |
-| ------------------- | --------------------------------- |
-| Flat routes          | Small apps, < 10 routes          |
-| Nested routes        | Shared layouts, parent-child UI  |
-| Lazy routes          | Always for feature routes        |
-| Index routes         | Default child content            |
+| Pattern              | When                              |
+| -------------------- | --------------------------------- |
+| Flat routes          | Small apps, < 10 routes           |
+| Nested routes        | Shared layouts, parent-child UI   |
+| `route.lazy()`       | Always for feature routes         |
+| Index routes         | Default child content             |
+| Client loaders       | Pre-fetch data before render      |
 
 ---
 
@@ -106,14 +120,19 @@ createRoot(document.getElementById("root")!).render(
 ### Route-Level Splitting (Required)
 
 ```tsx
-// Always lazy-load feature routes
-const UserProfile = lazy(() => import("../features/user-profile"));
+// Use route.lazy() for all feature routes — no manual React.lazy needed
+{
+  path: "user-profile/:id",
+  lazy: () => import("../features/user-profile/route"),
+}
 ```
 
 ### Component-Level Splitting (When Needed)
 
 ```tsx
-// Heavy components loaded on demand
+// Heavy components outside routes still use React.lazy + Suspense
+import { lazy, Suspense } from "react";
+
 const RichTextEditor = lazy(() => import("./RichTextEditor"));
 const ChartDashboard = lazy(() => import("./ChartDashboard"));
 
@@ -130,7 +149,7 @@ function PostEditor() {
 
 | Split                                   | Don't Split                        |
 | --------------------------------------- | ---------------------------------- |
-| Feature routes                          | Shared UI components (Button, etc.)|
+| Feature routes (`route.lazy()`)         | Shared UI components (Button, etc.)|
 | Heavy libraries (chart, editor, map)    | Small utility components           |
 | Modals and drawers                      | Navigation and layout              |
 | Admin/settings sections                 | Core app shell                     |
@@ -192,10 +211,12 @@ export default defineConfig({
     },
   },
   build: {
+    // Vite 6 uses Rollup. Future Vite versions will transition to Rolldown,
+    // where manualChunks may move to advancedChunks. Keep current config for now.
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ["react", "react-dom", "react-router-dom"],
+          vendor: ["react", "react-dom", "react-router"],
           query: ["@tanstack/react-query"],
         },
       },
@@ -213,6 +234,8 @@ export default defineConfig({
 | Tree shaking       | Automatic with ESM imports                 | Remove dead code            |
 | Source maps         | `sourcemap: true`                          | Debugging production issues |
 | CSS code splitting | Automatic per lazy route                   | Smaller initial CSS         |
+
+> **Rolldown transition**: Vite is migrating from Rollup to Rolldown as its bundler. When this lands, `manualChunks` may become `advancedChunks` with a different API. Watch Vite release notes and update accordingly.
 
 ---
 
@@ -257,11 +280,14 @@ import heroImage from "@/assets/hero.png";
 
 ## Anti-Patterns
 
-| Anti-Pattern                     | Solution                                       |
-| -------------------------------- | ---------------------------------------------- |
-| No code splitting                | Lazy-load all feature routes                   |
-| Secrets in `VITE_` env vars     | Keep secrets in backend only                   |
-| Importing across features        | Use shared/ for cross-feature code             |
-| Single massive bundle            | Use `manualChunks` for vendor splitting        |
-| No proxy in development          | Configure `server.proxy` to avoid CORS         |
-| Deep import paths                | Use path aliases (`@/features/...`)            |
+| Anti-Pattern                           | Solution                                         |
+| -------------------------------------- | ------------------------------------------------ |
+| Importing from `react-router-dom`      | Use `react-router` — the unified v7 package      |
+| `React.lazy` + `Suspense` for routes   | Use `route.lazy()` — handles Suspense for you    |
+| No code splitting                      | Lazy-load all feature routes via `route.lazy()`  |
+| Secrets in `VITE_` env vars            | Keep secrets in backend only                     |
+| Importing across features              | Use `shared/` for cross-feature code             |
+| Single massive bundle                  | Use `manualChunks` for vendor splitting          |
+| No proxy in development                | Configure `server.proxy` to avoid CORS           |
+| Deep import paths                      | Use path aliases (`@/features/...`)              |
+| Using `@react-router/dev` in SPA       | Use library mode — no build plugin needed        |
