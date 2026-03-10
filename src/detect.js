@@ -42,6 +42,15 @@ function detectMonorepo(projectDir) {
   if (fileExists(join(projectDir, 'nx.json'))) {
     return { monorepo: true, monorepo_tool: 'nx' };
   }
+  // npm/yarn workspaces defined in package.json
+  const rootPkg = readPackageJson(join(projectDir, 'package.json'));
+  if (rootPkg?.workspaces) {
+    const ws = rootPkg.workspaces;
+    const globs = Array.isArray(ws) ? ws : ws.packages;
+    if (Array.isArray(globs) && globs.length > 0) {
+      return { monorepo: true, monorepo_tool: 'npm-workspaces' };
+    }
+  }
   return { monorepo: false, monorepo_tool: '' };
 }
 
