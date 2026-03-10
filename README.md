@@ -37,13 +37,14 @@ No global install needed. Just `npx stackwise` in any project.
 | **Testing** | Vitest, Jest, Playwright, Cypress |
 | **Styling** | Tailwind CSS, Styled Components, Emotion |
 | **Forms** | React Hook Form, TanStack Form |
-| **UI Components** | shadcn/ui |
+| **UI Components** | shadcn/ui, Storybook |
 | **Routing** | TanStack Router |
 | **Animation** | Framer Motion |
 | **Tables** | TanStack Table |
 | **DevTools** | TanStack DevTools |
-| **Auth** | NestJS Passport, Passport, NextAuth, Auth.js, Lucia |
-| **GraphQL / API** | GraphQL, Apollo Server, Apollo Client, tRPC |
+| **Auth** | NestJS Passport, Passport, NextAuth, Auth.js, Better Auth |
+| **GraphQL** | Apollo Server, Apollo Client |
+| **RPC** | tRPC |
 | **Realtime** | Socket.IO, ws |
 | **Logging** | Winston, Pino |
 | **HTTP Client** | Axios, Ky |
@@ -68,12 +69,12 @@ Knowledge files are organized into layers of increasing specificity. Only the la
 
 | Layer | Count | Scope |
 |-------|-------|-------|
-| **Layer 1: Universal** | 16 files | Architecture, TypeScript patterns, error handling, testing, security, API design, performance, naming, code review, docs, observability, dependencies, configuration, anti-patterns, refactoring, PM workflow |
-| **Layer 2: Domain** | 22 files | Frontend (10): component design, accessibility, i18n, etc. Backend (12): database patterns, caching, validation, event-driven, contracts, etc. |
-| **Layer 3: Framework** | 3 files | Next.js (App Router, Server Components), React SPA (Vite, client routing), NestJS (modules, DI) |
-| **Layer 4: Tool** | 45 files | ORM, validation, state, forms, auth, GraphQL, realtime, logging, HTTP, i18n, date, email, upload, etc. |
+| **Layer 1: Universal** | 19 files | Architecture, TypeScript patterns, error handling, testing, security, API design, performance, naming, code review, docs, observability, dependencies, configuration, anti-patterns, refactoring, concurrency, git workflow, CI/CD, PM workflow |
+| **Layer 2: Domain** | 24 files | Frontend (10): component design, accessibility, i18n, etc. Backend (14): database patterns, caching, validation, event-driven, contracts, performance, anti-patterns, etc. |
+| **Layer 3: Framework** | 12 files | Frontend (7): Next.js, React SPA, Vue, Nuxt, Angular, Remix/React Router v7, TanStack Start. Backend (5): NestJS, Express, Fastify, Hono, Koa |
+| **Layer 4: Tool** | 50 files | ORM, validation, state, forms, auth, GraphQL, RPC, realtime, logging, HTTP, i18n, date, email, upload, etc. |
 
-**Total: 86 knowledge rules**
+**Total: 105 knowledge rules**
 
 ### Profiles
 
@@ -85,7 +86,7 @@ Knowledge files are organized into layers of increasing specificity. Only the la
 | `backend-nestjs` | L1 + L2 backend + L3 NestJS + L4 tools | NestJS API without frontend |
 | `generic` | L1 only | Any TypeScript project |
 
-**Example:** A Next.js + Prisma + Zod + TanStack Query + Vitest project gets: 16 universal + 10 frontend + 1 Next.js + 4 tool-specific = **31 rules**.
+**Example:** A Next.js + Prisma + Zod + TanStack Query + Vitest project gets: 19 universal + 10 frontend + 1 Next.js + 4 tool-specific = **34 rules**.
 
 ## PM Workflow
 

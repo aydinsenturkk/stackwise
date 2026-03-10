@@ -129,20 +129,39 @@ Profiles are automatically determined based on detected stack. The CLI resolves 
 | `backend-nestjs` | L1 + L2 backend + L3 NestJS + L4 tools | NestJS API without frontend |
 | `generic` | L1 only | Any TypeScript project |
 
-## Skills (10 slash commands)
+## Skills (17 slash commands)
+
+### Development
 
 | Command | Description |
 |---------|-------------|
-| `/review` | Code review using project rules as checklist |
-| `/fix-issue <number>` | Fetch GitHub issue and implement fix |
-| `/new-feature <name>` | Scaffold feature with proper structure |
-| `/add-tests <file>` | Generate tests following testing philosophy |
-| `/api-endpoint <resource>` | Create REST endpoint with full stack |
-| `/component <name>` | Create React component with types and tests |
-| `/debug <description>` | Structured debugging workflow |
-| `/optimize <file>` | Performance analysis and optimization |
-| `/pr` | Create pull request with full context |
-| `/migrate <description>` | Database migration with rollback strategy |
+| `/sw-review` | Code review using project rules as checklist |
+| `/sw-fix-issue <number>` | Fetch GitHub issue and implement fix |
+| `/sw-new-feature <name>` | Scaffold feature with proper structure |
+| `/sw-add-tests <file>` | Generate tests following testing philosophy |
+| `/sw-api-endpoint <resource>` | Create REST endpoint with full stack |
+| `/sw-component <name>` | Create React component with types and tests |
+| `/sw-debug <description>` | Structured debugging workflow |
+| `/sw-optimize <file>` | Performance analysis and optimization |
+| `/sw-pr` | Create pull request with full context |
+| `/sw-migrate <description>` | Database migration with rollback strategy |
+
+### PM Workflow
+
+| Command | Description |
+|---------|-------------|
+| `/sw-plan <idea>` | Generate PRD, epic, tasks, and GitHub Issues. Use `--auto` to execute all |
+| `/sw-tasks` | View task status dashboard from GitHub Issues |
+| `/sw-work <issue>` | Pick up a task and implement it |
+| `/sw-ship` | Create PR for completed task and optionally merge |
+| `/sw-standup` | Generate standup status report across all epics |
+
+### Utility
+
+| Command | Description |
+|---------|-------------|
+| `/sw-generate-knowledge` | Generate knowledge rules for an unsupported tool |
+| `/sw-sync-project` | Sync CLAUDE.md with current project state |
 
 ## Agents (4 specialized)
 
@@ -245,17 +264,24 @@ stackwise/
 │       └── config/           # nestjs-config
 ├── lib/
 │   └── registry.json         # Knowledge file registry with metadata
-├── skills/                   # Slash command definitions
-│   ├── review/
-│   ├── fix-issue/
-│   ├── new-feature/
-│   ├── add-tests/
-│   ├── api-endpoint/
-│   ├── component/
-│   ├── debug/
-│   ├── optimize/
-│   ├── pr/
-│   └── migrate/
+├── skills/                   # 17 slash command definitions
+│   ├── sw-review/            # Development skills
+│   ├── sw-fix-issue/
+│   ├── sw-new-feature/
+│   ├── sw-add-tests/
+│   ├── sw-api-endpoint/
+│   ├── sw-component/
+│   ├── sw-debug/
+│   ├── sw-optimize/
+│   ├── sw-pr/
+│   ├── sw-migrate/
+│   ├── sw-plan/              # PM workflow skills
+│   ├── sw-tasks/
+│   ├── sw-work/
+│   ├── sw-ship/
+│   ├── sw-standup/
+│   ├── sw-generate-knowledge/ # Utility skills
+│   └── sw-sync-project/
 ├── agents/                   # Custom agent definitions
 │   ├── code-reviewer/
 │   ├── test-writer/
