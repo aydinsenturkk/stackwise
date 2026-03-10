@@ -1,35 +1,10 @@
 # Frontend Testing
 
-See testing-fundamentals in Layer 1 for universal testing principles (pyramid, test quality, naming).
-
-## Testing Pyramid for Frontend
-
-```
-       /\       E2E (Few) - Critical user flows
-      /  \
-     /----\     Integration (Some) - Component interactions
-    /      \
-   /--------\   Unit (Many) - Business logic, utilities
-```
-
----
-
-## What to Test
-
-| Test                          | Don't Test            |
-| ----------------------------- | --------------------- |
-| Business logic                | Simple presentational |
-| Complex components with logic | UI library components |
-| Critical user flows           | Framework internals   |
-| Edge cases, error states      | Third-party libraries |
-
----
+> See Layer 1 testing-philosophy.md for universal testing principles.
 
 ## Component Testing
 
-### Test Behavior, Not Implementation
-
-Test what the component does from the user's perspective, not how it works internally.
+### What to Test in Components
 
 | Do                                     | Don't                                  |
 | -------------------------------------- | -------------------------------------- |
@@ -37,8 +12,6 @@ Test what the component does from the user's perspective, not how it works inter
 | Test user interactions                 | Test lifecycle method calls            |
 | Test visible behavior                  | Test implementation details            |
 | Assert on what the user sees           | Assert on component instance internals |
-
-### What to Test in Components
 
 | Aspect             | Example                                      |
 | ------------------ | -------------------------------------------- |
@@ -102,21 +75,19 @@ Find elements the way a user or assistive technology would find them:
 
 ---
 
-## Focus Areas
+## Frontend Focus Areas
 
 | Area            | Why                                        |
 | --------------- | ------------------------------------------ |
-| Business logic  | Calculations, transformations, validations |
 | User flows      | Login, checkout, data submission           |
 | Edge cases      | Empty states, error states, boundaries     |
 | Interactions    | Click, type, submit, navigate              |
+| Accessible queries | Find elements the way users find them   |
 
 ---
 
 ## Principles
 
-- **Test behavior**: Test what the user sees and does, not internal wiring
-- **Pyramid distribution**: Many unit, some integration, few E2E
-- **Trust the platform**: Don't test framework or library internals
-- **Business focus**: Most testing value comes from business logic tests
-- **Accessible queries**: Find elements the way users find them
+- **Accessible queries**: Find elements the way users and assistive technology find them
+- **User perspective**: Test what the user sees and does, not internal wiring
+- **Visual stability**: Use snapshots and visual regression to catch unintended UI changes

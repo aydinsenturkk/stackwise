@@ -1,5 +1,7 @@
 # Frontend Anti-Patterns
 
+> See Layer 1 anti-patterns.md for universal anti-patterns.
+
 ## Component Anti-Patterns
 
 | Anti-Pattern   | Sign                              | Solution                               |
@@ -29,20 +31,6 @@ When data is fetched from the server and stored in a cache, do not copy it into 
 ### Stale Closures
 
 When a callback references external variables, all referenced variables must be listed as dependencies. Missing dependencies cause the callback to capture outdated values.
-
----
-
-## Organization Anti-Patterns
-
-| Anti-Pattern     | Sign                            | Solution                    |
-| ---------------- | ------------------------------- | --------------------------- |
-| Feature Coupling | Direct imports between features | Events or shared services   |
-| Utils Dumping    | 2000+ lines in helpers file     | Organize by domain          |
-| God Objects      | Service with 50+ methods        | Split into focused services |
-
-### Feature Coupling
-
-Features should communicate through events or shared abstractions, never by importing each other's internal modules. If two features need the same data, lift it to a shared service.
 
 ---
 

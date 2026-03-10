@@ -1,17 +1,6 @@
 # Frontend Performance
 
-See performance-optimization in Layer 1 for universal performance principles.
-
-## When to Optimize
-
-| Optimize                  | Don't Optimize       |
-| ------------------------- | -------------------- |
-| Measured issue (profiler) | No measured problem  |
-| User-facing impact        | Minimal user impact  |
-| Clear bottleneck          | Based on assumptions |
-| Simple solution           | Adds complexity      |
-
-**Measure first, optimize later.** Use profiling tools before any optimization.
+> See Layer 1 performance-principles.md for universal performance principles.
 
 ---
 
@@ -96,7 +85,6 @@ For rendering long lists or large datasets, render only the items visible in the
 
 | Anti-Pattern           | Problem                            | Solution                |
 | ---------------------- | ---------------------------------- | ----------------------- |
-| Premature optimization | Optimizing without measuring       | Profile first           |
 | Over-memoization       | Memoizing trivial operations       | Only memoize expensive  |
 | Missing dependencies   | Stale data from incomplete deps    | Include all dependencies|
 | Loading everything     | Large initial bundle               | Code split by route     |
@@ -105,7 +93,6 @@ For rendering long lists or large datasets, render only the items visible in the
 
 ## Principles
 
-- **Measure first**: Never optimize based on assumptions
 - **Split by route**: Route-based splitting gives the biggest win
 - **Memoize judiciously**: Only for measured expensive operations
 - **Virtualize long lists**: Never render thousands of DOM nodes

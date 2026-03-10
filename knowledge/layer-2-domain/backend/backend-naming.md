@@ -1,6 +1,6 @@
 # Backend Naming Conventions
 
-> Backend-specific naming patterns organized by DDD layers. See Layer 1 for universal naming conventions.
+> See Layer 1 naming-conventions.md for universal naming patterns.
 
 ## File Suffixes by Layer
 
@@ -35,59 +35,27 @@
 | Mapper               | kebab-case | `order.mapper.ts`                |
 | Test file            | kebab-case | `order.entity.spec.ts`           |
 
-## Class Naming
+## Class Suffixes by Layer
 
 | Pattern                   | Example                     |
 | ------------------------- | --------------------------- |
 | Repository interface      | `IOrderRepository`          |
 | Repository implementation | `{Impl}OrderRepository`     |
-| Service                   | `OrderService`              |
 | Handler                   | `CreateOrderHandler`        |
 | Controller                | `OrderController`           |
 | Mapper                    | `OrderMapper`               |
 | Adapter                   | `StripePaymentAdapter`      |
-| Exception                 | `OrderNotFoundException`    |
 
-## Method Naming
+## Repository & Service Method Naming
 
 | Action          | Pattern             | Example                    |
 | --------------- | ------------------- | -------------------------- |
-| Create          | `create`, `new`     | `createOrder()`            |
 | Read single     | `find`, `get`       | `findById()`, `getOrder()` |
 | Read multiple   | `findAll`, `list`   | `findAllByUser()`          |
 | Update          | `update`, `change`  | `updateStatus()`           |
 | Delete          | `remove`, `delete`  | `removeOrder()`            |
 | Check existence | `exists`, `has`     | `existsById()`             |
-| Validate        | `validate`, `check` | `validateOrder()`          |
 | Convert         | `to`, `from`, `map` | `toDTO()`, `fromEntity()`  |
-
-### Boolean Methods
-
-| Good              | Bad            |
-| ----------------- | -------------- |
-| `isActive()`      | `active()`     |
-| `hasItems()`      | `items()`      |
-| `canCancel()`     | `cancelable()` |
-| `shouldProcess()` | `process()`    |
-
-## Variable Naming
-
-| Type           | Convention                | Example           |
-| -------------- | ------------------------- | ----------------- |
-| Local variable | camelCase                 | `orderTotal`      |
-| Constant       | UPPER_SNAKE_CASE          | `MAX_RETRY_COUNT` |
-| Private field  | camelCase with underscore | `_status`         |
-| Boolean        | is/has/can/should prefix  | `isValid`         |
-
-### Common Abbreviations
-
-| Allowed  | Avoid                |
-| -------- | -------------------- |
-| `id`     | `identifier`         |
-| `dto`    | `dataTransferObject` |
-| `repo`   | `rp`                 |
-| `config` | `cfg`                |
-| `params` | `p`                  |
 
 ## Database Naming
 
@@ -117,13 +85,3 @@
 | PATCH update   | `/resources/{id}`          | `/orders/123`        |
 | DELETE         | `/resources/{id}`          | `/orders/123`        |
 | Action         | `/resources/{id}/{action}` | `/orders/123/cancel` |
-
-## Anti-Patterns
-
-| Don't           | Do               |
-| --------------- | ---------------- |
-| `OrderMgr`      | `OrderService`   |
-| `doProcess()`   | `process()`      |
-| `data`, `info`  | Specific names   |
-| `temp`, `tmp`   | Meaningful names |
-| `handleStuff()` | `processOrder()` |

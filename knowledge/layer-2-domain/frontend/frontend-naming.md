@@ -1,6 +1,6 @@
 # Frontend Naming Conventions
 
-See naming-conventions in Layer 1 for universal naming principles.
+> See Layer 1 naming-conventions.md for universal naming patterns.
 
 ## Files and Folders
 
@@ -68,41 +68,11 @@ features/[feature]/queries/
 
 ---
 
-## Function Naming
+## Prop Types
 
-| Type          | Pattern           | Example                       |
-| ------------- | ----------------- | ----------------------------- |
-| Event handler | `handle[Event]`   | `handleClick`, `handleSubmit` |
-| Callback prop | `on[Event]`       | `onClick`, `onSubmit`         |
-| Getter        | `get[Thing]`      | `getUserById`                 |
-| Setter        | `set[Thing]`      | `setUserName`                 |
-| Check         | `is[Condition]`   | `isValidEmail`                |
-| Transform     | `[action][Thing]` | `formatDate`, `parseJSON`     |
-| Async fetch   | `fetch[Entity]`   | `fetchUser`, `fetchPosts`     |
-
----
-
-## Boolean Variables
-
-| Pattern          | Example                          |
-| ---------------- | -------------------------------- |
-| `is[State]`      | `isLoading`, `isOpen`, `isValid` |
-| `has[Thing]`     | `hasError`, `hasPermission`      |
-| `can[Action]`    | `canEdit`, `canDelete`           |
-| `should[Action]` | `shouldRefetch`, `shouldAnimate` |
-
----
-
-## Types and Interfaces
-
-| Type         | Pattern                   | Example             |
-| ------------ | ------------------------- | ------------------- |
-| Props        | `[Component]Props`        | `ButtonProps`       |
-| API Response | `[Entity]Response`        | `UserResponse`      |
-| API Request  | `[Action][Entity]Request` | `CreateUserRequest` |
-| Data         | `[Entity]Data`            | `UserData`          |
-| State        | `[Feature]State`          | `AuthState`         |
-| Config       | `[Feature]Config`         | `ThemeConfig`       |
+| Pattern            | Example       |
+| ------------------ | ------------- |
+| `[Component]Props` | `ButtonProps` |
 
 ---
 
@@ -132,33 +102,8 @@ features/[feature]/queries/
 
 ---
 
-## Constants
-
-| Type         | Convention      | Example           |
-| ------------ | --------------- | ----------------- |
-| Primitive    | SCREAMING_SNAKE | `MAX_RETRY_COUNT` |
-| Object/Array | SCREAMING_SNAKE | `API_ENDPOINTS`   |
-| Enum values  | PascalCase      | `Status.Pending`  |
-
----
-
 ## Anti-Patterns
 
 | Avoid                        | Instead                        |
 | ---------------------------- | ------------------------------ |
-| `data`, `info`, `item`       | Specific name: `user`, `post`  |
-| `handleClick1`, `handleClick2` | `handleSave`, `handleCancel` |
 | `MyComponent`                | `UserProfile` (descriptive)    |
-| `flag`, `temp`, `val`        | `isEnabled`, `cachedValue`     |
-| Hungarian notation           | Let the type system handle it  |
-| Abbreviations                | Full words: `button` not `btn` |
-
----
-
-## Principles
-
-- **Descriptive**: Name reveals intent
-- **Consistent**: Same pattern across the codebase
-- **Searchable**: Easy to find with text search
-- **Pronounceable**: Can be spoken in discussion
-- **No mental mapping**: No need to remember what `x` means
