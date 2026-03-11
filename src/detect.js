@@ -278,6 +278,7 @@ export function detect(projectDir) {
     cache: [],
     config: [],
     graphql: [],
+    rpc: [],
     realtime: [],
     logging: [],
     http_client: [],

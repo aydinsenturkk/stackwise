@@ -53,9 +53,9 @@ export const TOOL_MAP = {
   // GraphQL
   'apollo-server': 'apollo-server',
   'apollo-client': 'apollo-client',
-  'trpc-server': 'trpc',
-  'trpc-client': 'trpc',
   graphql: 'graphql',
+  // RPC
+  trpc: 'trpc',
   // Realtime
   'socket-io': 'socket-io',
   ws: 'ws',
@@ -140,6 +140,7 @@ export function resolveKnowledgeFiles(stack) {
     ...stack.cache,
     ...stack.config,
     ...stack.graphql,
+    ...stack.rpc,
     ...stack.realtime,
     ...stack.logging,
     ...stack.http_client,

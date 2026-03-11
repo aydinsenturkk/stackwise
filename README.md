@@ -57,7 +57,7 @@ No global install needed. Just `npx stackwise` in any project.
 | **Rate Limiting** | NestJS Throttler |
 | **Cache** | NestJS Cache Manager |
 | **Config** | NestJS Config |
-| **Monorepo** | pnpm workspaces, Turborepo, Nx, Lerna |
+| **Monorepo** | npm workspaces, yarn workspaces, pnpm workspaces, Turborepo, Nx, Lerna |
 
 ### Package Managers
 

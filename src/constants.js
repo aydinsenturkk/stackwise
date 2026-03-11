@@ -37,7 +37,8 @@ export const DEPENDENCY_MAP = {
   next: { category: 'frontend_frameworks', value: 'nextjs' },
   '@tanstack/react-start': { category: 'frontend_frameworks', value: 'tanstack-start' },
   '@remix-run/react': { category: 'frontend_frameworks', value: 'remix' },
-  react: { category: 'frontend_frameworks', value: 'react-spa', excludeIf: ['next', '@tanstack/react-start', '@remix-run/react'] },
+  '@react-router/dev': { category: 'frontend_frameworks', value: 'remix' },
+  react: { category: 'frontend_frameworks', value: 'react-spa', excludeIf: ['next', '@tanstack/react-start', '@remix-run/react', '@react-router/dev'] },
   nuxt: { category: 'frontend_frameworks', value: 'nuxt' },
   vue: { category: 'frontend_frameworks', value: 'vue', excludeIf: 'nuxt' },
   '@sveltejs/kit': { category: 'frontend_frameworks', value: 'sveltekit' },
@@ -148,12 +149,14 @@ export const DEPENDENCY_MAP = {
   // Configuration
   '@nestjs/config': { category: 'config', value: 'nestjs-config' },
 
-  // GraphQL / API layer
+  // GraphQL
   graphql: { category: 'graphql', value: 'graphql' },
   '@apollo/server': { category: 'graphql', value: 'apollo-server' },
   '@apollo/client': { category: 'graphql', value: 'apollo-client' },
-  '@trpc/server': { category: 'graphql', value: 'trpc-server' },
-  '@trpc/client': { category: 'graphql', value: 'trpc-client' },
+
+  // RPC
+  '@trpc/server': { category: 'rpc', value: 'trpc' },
+  '@trpc/client': { category: 'rpc', value: 'trpc' },
 
   // Realtime
   'socket.io': { category: 'realtime', value: 'socket-io' },
