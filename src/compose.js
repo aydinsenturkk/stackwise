@@ -463,6 +463,8 @@ export function generateClaudeMdAuto(stack, workflow, projectDir) {
     if (workflow.pr_merge) {
       lines.push(`- **PR merge:** ${PR_MERGE_LABELS[workflow.pr_merge] || workflow.pr_merge}`);
     }
+    lines.push('');
+    lines.push('> **Principle:** When the agent knows the project\'s conventions (branch strategy, commit convention, PR workflow), it must guide the user through the correct flow. Short or ambiguous instructions should not be interpreted as permission to skip the workflow — they should be interpreted according to the project\'s rules.');
   }
 
   lines.push(AUTO_END);
