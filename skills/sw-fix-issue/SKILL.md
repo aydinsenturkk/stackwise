@@ -21,14 +21,32 @@ Determine:
 - **Scope**: which part of the codebase is affected (frontend, backend, or both)
 - **Priority**: from labels or severity described in the issue
 
-### Step 3: Find Relevant Code
+### Step 3: Create a Branch
+
+Create a branch for the fix:
+
+```bash
+git checkout <base-branch>
+git pull origin <base-branch>
+git checkout -b <type>/$ARGUMENTS-<short-description>
+```
+
+Determine the branch type from the issue analysis:
+- `fix/` for bug fixes (most common)
+- `feat/` for new functionality
+- `refactor/` for restructuring
+- `perf/` for performance improvements
+
+Example: `fix/42-login-double-submit`, `feat/87-add-export-csv`
+
+### Step 4: Find Relevant Code
 
 Search the codebase for files related to the issue:
 - Use error messages or stack traces from the issue to locate code
 - Search for function names, component names, or API endpoints mentioned
 - Read the relevant source files to understand the current implementation
 
-### Step 4: Load Applicable Rules
+### Step 5: Load Applicable Rules
 
 1. Read `.claude/profile.json` to understand the project's stack
 2. Based on the files you will modify, read rules from `.claude/rules/`:
@@ -38,14 +56,14 @@ Search the codebase for files related to the issue:
    - `04-*` (tool rules) - load for active tools
 3. If no profile exists, read all available rules from `.claude/rules/` and apply the relevant ones. Suggest running `/init` first.
 
-### Step 5: Implement the Fix
+### Step 6: Implement the Fix
 
 - Make the minimal changes needed to resolve the issue
 - Follow all project rules and conventions
 - Handle edge cases identified in the issue comments
 - Do not refactor unrelated code
 
-### Step 6: Verify the Fix
+### Step 7: Verify the Fix
 
 Run the relevant tests:
 
@@ -59,7 +77,7 @@ npm test
 
 If tests fail, fix them. If no tests cover the changed code, note this in the commit message.
 
-### Step 7: Commit with Conventional Message
+### Step 8: Commit with Conventional Message
 
 Create a commit using conventional commit format that references the issue:
 
@@ -85,4 +103,6 @@ After completing, summarize:
 - What changes were made and why
 - Which files were modified
 - Whether all tests pass
+- Branch name
 - Any follow-up work needed
+- Next step: `/sw-pr` to create a pull request

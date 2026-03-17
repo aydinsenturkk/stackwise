@@ -143,17 +143,17 @@ Profiles are automatically determined based on detected stack. The CLI resolves 
 | `/sw-component <name>` | Create React component with types and tests |
 | `/sw-debug <description>` | Structured debugging workflow |
 | `/sw-optimize <file>` | Performance analysis and optimization |
-| `/sw-pr` | Create pull request with full context |
+| `/sw-pr` | Create pull request for ad-hoc work (no task issue required) |
 | `/sw-migrate <description>` | Database migration with rollback strategy |
 
 ### PM Workflow
 
 | Command | Description |
 |---------|-------------|
-| `/sw-plan <idea>` | Generate PRD, epic, tasks, and GitHub Issues. Use `--auto` to execute all |
+| `/sw-plan <idea>` | Plan work as standalone task or epic. Use `--auto` for epic auto-execution |
 | `/sw-tasks` | View task status dashboard from GitHub Issues |
 | `/sw-work <issue>` | Pick up a task and implement it |
-| `/sw-ship` | Create PR for completed task and optionally merge |
+| `/sw-ship` | Create PR for a tracked task issue, close it, and optionally merge |
 | `/sw-standup` | Generate standup status report across all epics |
 
 ### Utility

@@ -7,14 +7,14 @@ export const SKILLS = [
   { name: 'sw-component', description: 'Create React component with types and tests' },
   { name: 'sw-debug', description: 'Structured debugging workflow' },
   { name: 'sw-optimize', description: 'Performance analysis and optimization' },
-  { name: 'sw-pr', description: 'Create pull request with full context' },
+  { name: 'sw-pr', description: 'Create pull request for ad-hoc work (no task issue required)' },
   { name: 'sw-migrate', description: 'Database migration with rollback strategy' },
   { name: 'sw-generate-knowledge', description: 'Generate knowledge rules for an unsupported tool' },
   { name: 'sw-sync-project', description: 'Sync CLAUDE.md with current project state' },
-  { name: 'sw-plan', description: 'Generate PRD, epic, tasks, and GitHub Issues from an idea. Use --auto to execute all tasks' },
+  { name: 'sw-plan', description: 'Plan work as standalone task or epic. Use --auto for epic auto-execution' },
   { name: 'sw-tasks', description: 'View task status dashboard from GitHub Issues' },
   { name: 'sw-work', description: 'Pick up a task and implement it' },
-  { name: 'sw-ship', description: 'Create PR for completed task and optionally merge' },
+  { name: 'sw-ship', description: 'Create PR for a tracked task issue, close it, and optionally merge' },
   { name: 'sw-standup', description: 'Generate standup status report across all epics' },
 ];
 

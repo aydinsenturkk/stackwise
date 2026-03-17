@@ -34,17 +34,25 @@ If no task is available, inform the user and suggest checking blocked tasks with
 ### Step 2: Load Context
 
 1. Read the task issue body to find the epic reference (look for "Part of #<number>" or "Epic" section)
-2. Find the epic slug by checking `.claude/pm/epics/*/tasks.md` for the epic issue number
-3. Read the epic file: `.claude/pm/epics/<slug>/epic.md`
-4. Read the PRD: `.claude/pm/prds/<slug>.md`
-5. Understand the full context: what the feature is, what this specific task needs to accomplish, and what constraints exist
-6. If monorepo: Read the task's "Scope" field from the issue body
+
+2. **If epic reference found (epic task):**
+   a. Find the epic slug by checking `.claude/pm/epics/*/tasks.md` for the epic issue number
+   b. Read the epic file: `.claude/pm/epics/<slug>/epic.md`
+   c. Read the PRD: `.claude/pm/prds/<slug>.md`
+   d. Understand the full context: what the feature is, what this specific task needs to accomplish, and what constraints exist
+   e. Read `.claude/profile.json` and check `workflow.integration_branch`
+   f. If `integration_branch` is `true`:
+      - Read the integration branch name from `.claude/pm/epics/<slug>/epic.md`
+        (look for "Integration Branch:" field)
+
+3. **If no epic reference (standalone task):**
+   - The task issue body IS the full context — no epic/PRD to load
+   - Read `.claude/profile.json` for stack and conventions
+   - Standalone tasks always branch from the base branch (no integration branch)
+
+4. If monorepo: Read the task's "Scope" field from the issue body
    - Parse the `## Scope` section → workspace directory name
    - If scope is missing, infer from the task title or ask the user
-7. Read `.claude/profile.json` and check `workflow.integration_branch`
-8. If `integration_branch` is `true`:
-   - Read the integration branch name from `.claude/pm/epics/<slug>/epic.md`
-     (look for "Integration Branch:" field)
 
 ### Step 3: Assign and Branch
 
@@ -54,9 +62,21 @@ If no task is available, inform the user and suggest checking blocked tasks with
 gh issue edit <number> --add-assignee "@me"
 ```
 
-2. Create a branch based on `workflow.integration_branch` from `.claude/profile.json`:
+2. Create a branch based on task type:
 
-   **Default** (`integration_branch: false`):
+   **Standalone task** (no epic reference):
+
+   Determine the type from the task title prefix or labels: `feat`, `fix`, `refactor`, `chore`, `docs`, `test`.
+
+   ```bash
+   git checkout <base-branch>
+   git pull origin <base-branch>
+   git checkout -b <type>/<number>-<short-description>
+   ```
+
+   Example: `fix/42-login-validation`, `feat/55-add-export-csv`
+
+   **Epic task — default** (`integration_branch: false`):
 
    ```bash
    git checkout <base-branch>
@@ -64,15 +84,13 @@ gh issue edit <number> --add-assignee "@me"
    git checkout -b feat/<number>-<short-description>
    ```
 
-   **Integration branch enabled** (`integration_branch: true`):
+   **Epic task — integration branch enabled** (`integration_branch: true`):
 
    ```bash
    git checkout feat/<epic-slug>
    git pull origin feat/<epic-slug>
    git checkout -b <epic-slug>/<number>-<short-description>
    ```
-
-Use a descriptive branch name derived from the task title (e.g., `feat/13-create-api-endpoints` or `cms/13-create-api-endpoints`).
 
 ### Step 4: Load Project Rules
 

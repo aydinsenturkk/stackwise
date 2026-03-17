@@ -2,7 +2,7 @@ Create a PR for a completed task and optionally merge it
 
 ## Input
 
-`$ARGUMENTS` - Optional: issue number (e.g., `42`), `--merge` flag, or `--final` flag for integration branch merge. Can combine: `42 --merge`
+`$ARGUMENTS` - Optional: issue number (e.g., `42`), `--merge` flag, `--review` flag, or `--final` flag for integration branch merge. Can combine: `42 --review --merge`
 
 ## Workflow
 
@@ -13,8 +13,9 @@ Use the given issue number.
 
 **If no issue number:**
 Infer from the current branch name. Expected formats:
-- Trunk-Based: `feat/<number>-<description>`
-- Integration Branch: `<epic-slug>/<number>-<description>`
+- Standalone task: `<type>/<number>-<description>` (e.g., `fix/42-login-bug`)
+- Epic task (trunk-based): `feat/<number>-<description>`
+- Epic task (integration branch): `<epic-slug>/<number>-<description>`
 
 ```bash
 git branch --show-current
@@ -30,9 +31,15 @@ Parse the issue number from the branch name. If the branch doesn't follow either
 gh issue view <number> --json number,title,body,labels
 ```
 
-2. Find the epic slug by checking `.claude/pm/epics/*/tasks.md` for a matching issue number
-3. Read the epic: `.claude/pm/epics/<slug>/epic.md`
-4. Read the PRD: `.claude/pm/prds/<slug>.md`
+2. Check the task issue body for an epic reference (look for "Part of #<number>" or "Epic" section)
+
+3. **If epic reference found (epic task):**
+   a. Find the epic slug by checking `.claude/pm/epics/*/tasks.md` for a matching issue number
+   b. Read the epic: `.claude/pm/epics/<slug>/epic.md`
+   c. Read the PRD: `.claude/pm/prds/<slug>.md`
+
+4. **If no epic reference (standalone task):**
+   - The task issue body IS the full context — no epic/PRD to load
 
 ### Step 3: Determine Base Branch
 
@@ -77,19 +84,27 @@ npm test 2>/dev/null
 
 Note any failures in the PR description but don't block PR creation.
 
-### Step 6: Push Branch
+### Step 6: Code Review (only when `--review` is set)
+
+If `--review` is in `$ARGUMENTS`, run the `/sw-review` workflow on the current changes before pushing. This performs a structured code review against project rules.
+
+If the review finds **CRITICAL** findings, stop and present them to the user before continuing. For WARNING and SUGGESTION findings, include them in the PR description under a `## Review Notes` section.
+
+If `--review` is NOT set, skip this step.
+
+### Step 7: Push Branch
 
 ```bash
 git push -u origin $(git branch --show-current)
 ```
 
-### Step 7: Create the PR
+### Step 8: Create the PR
 
 Build the PR title and body from context:
 
 **Title:** `<type>: <task title> (#<issue-number>)`
 
-**Body:**
+**Body (epic task):**
 
 ```markdown
 ## Summary
@@ -108,13 +123,15 @@ Part of #<epic-issue-number> — <epic title>
 - [ ] <how to verify each change>
 ```
 
+**Body (standalone task):** Same structure but **omit** the `## Epic` section entirely.
+
 ```bash
 gh pr create \
   --title "<title>" \
   --body "<body>"
 ```
 
-### Step 8: Optional Merge
+### Step 9: Optional Merge
 
 If `--merge` is in `$ARGUMENTS`:
 
@@ -140,7 +157,7 @@ gh issue edit <number> --body "$UPDATED_TASK_BODY"
 gh issue close <number>
 ```
 
-5. Update the epic issue to check off the completed task:
+5. **Epic tasks only** — Update the epic issue to check off the completed task (skip this for standalone tasks):
 
 ```bash
 # Get epic number from task body
@@ -171,7 +188,7 @@ For each blocked issue whose blockers are all now closed, remove `pm:blocked`:
 gh issue edit <number> --remove-label "pm:blocked"
 ```
 
-8. Check if the closed task's epic is now complete:
+8. **Epic tasks only** — Check if the closed task's epic is now complete (skip this for standalone tasks):
 
 ```bash
 # Get the epic number from the task body
@@ -208,7 +225,7 @@ fi
 
 If the epic was closed, update `.claude/pm/PROJECT.md` — set the epic's status to `completed` and activate the next planned epic (if any).
 
-### Step 9: Final Merge (only with `--final` flag)
+### Step 10: Final Merge (only with `--final` flag)
 
 If `--final` is in `$ARGUMENTS` and `.claude/profile.json` has `workflow.integration_branch: true`:
 

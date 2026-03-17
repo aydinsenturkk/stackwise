@@ -1,4 +1,4 @@
-Generate a PRD, epic, tasks, and GitHub Issues from an idea
+Plan work as a standalone task or a full epic with PRD, tasks, and GitHub Issues
 
 ## Input
 
@@ -16,7 +16,95 @@ Read `$ARGUMENTS`. If the idea is too vague or short (fewer than 5 words), ask t
 - Who is the target user?
 - What are the key requirements?
 
-### Step 2: Understand Project Context
+### Step 2: Assess Scope
+
+Analyze the parsed idea to determine the planning tier:
+
+**Standalone Task** — single, focused work item completable in one PR:
+- Bug fix, small feature, config change, refactor
+- Affects one concern or module
+- No sub-tasks needed
+
+**Epic** — multi-task initiative requiring coordination:
+- Spans multiple modules or concerns
+- Needs multiple PRs to complete
+- Has internal dependencies between sub-tasks
+- `--auto` flag implies epic tier
+
+Present your assessment to the user:
+
+> "This looks like a **standalone task** — a single PR should cover it. Proceed as standalone, or escalate to an epic?"
+
+or:
+
+> "This looks like an **epic** — it'll need multiple tasks and PRs. Proceed as epic?"
+
+If the user confirms, continue with the appropriate path below.
+
+---
+
+### Path A: Standalone Task
+
+For standalone tasks, skip the full PRD/Epic ceremony and create a single GitHub issue.
+
+#### A1: Ensure Labels
+
+```bash
+gh label create "pm:task" --description "Individual task" --color "0075CA" 2>/dev/null || true
+gh label create "priority:high" --description "High priority" --color "D73A4A" 2>/dev/null || true
+gh label create "priority:medium" --description "Medium priority" --color "FBCA04" 2>/dev/null || true
+gh label create "priority:low" --description "Low priority" --color "0E8A16" 2>/dev/null || true
+gh label create "size:small" --description "Small task" --color "C5DEF5" 2>/dev/null || true
+gh label create "size:medium" --description "Medium task" --color "BFD4F2" 2>/dev/null || true
+gh label create "size:large" --description "Large task" --color "D4C5F9" 2>/dev/null || true
+```
+
+#### A2: Load Conventions
+
+If `.claude/pm/PROJECT.md` exists, read the **Issue Conventions** section to use the project's task title and body patterns. If it doesn't exist, use **Conventional** title pattern and **Minimal** body template as defaults.
+
+#### A3: Determine Task Type
+
+Infer the type from the idea:
+- `feat` — new functionality
+- `fix` — bug fix
+- `refactor` — code restructuring
+- `chore` — maintenance, config, tooling
+- `docs` — documentation only
+- `test` — adding or fixing tests
+
+#### A4: Create GitHub Issue
+
+Create a single issue using the conventions:
+
+```bash
+gh issue create \
+  --title "<type>: <description>" \
+  --label "pm:task,priority:<level>,size:<size>" \
+  --body "<task body per convention, WITHOUT ## Epic section>"
+```
+
+The task body follows the same template as epic tasks (Minimal/Detailed/User Story from conventions), but **without** the `## Epic` section — standalone tasks have no epic parent.
+
+**Monorepo:** If `.claude/profile.json` has `monorepo: true`, add `scope:<workspace>` to the labels.
+
+#### A5: Output
+
+Display:
+- Task issue number and URL
+- Task title and labels
+- Suggested branch: `<type>/<number>-<short-desc>` (e.g., `fix/42-login-validation`)
+- Command to start: `/sw-work <issue-number>`
+
+**Stop here.** Do not continue to Path B steps.
+
+---
+
+### Path B: Epic
+
+Continue with the full planning flow below (Steps 3–10).
+
+### Step 3: Understand Project Context
 
 1. Read `.claude/profile.json` to understand the project's stack and conventions
 2. Check if `.claude/pm/PROJECT.md` exists
@@ -102,19 +190,19 @@ This is a new project. Before creating any epic, define the overall scope first.
 ```
 
 9. Present the epic roadmap to the user for confirmation
-10. After confirmation, proceed to Step 3 with the **first epic** (highest priority, no dependencies). Set its status to `active` in PROJECT.md.
+10. After confirmation, proceed to Step 4 with the **first epic** (highest priority, no dependencies). Set its status to `active` in PROJECT.md.
 
 **If `PROJECT.md` exists → Epic Mode (subsequent runs):**
 
 1. Read `.claude/pm/PROJECT.md` to understand existing epics, ordering, and dependencies
 2. Check existing PRDs in `.claude/pm/prds/` to avoid duplication
 3. Determine which epic to plan:
-   - If `$ARGUMENTS` matches a planned/active epic from PROJECT.md **AND** `.claude/pm/epics/<slug>/tasks.md` already exists → tasks are already created. If `--auto` is set, skip directly to Step 9. Otherwise show the Output summary.
+   - If `$ARGUMENTS` matches a planned/active epic from PROJECT.md **AND** `.claude/pm/epics/<slug>/tasks.md` already exists → tasks are already created. If `--auto` is set, skip directly to Step 10. Otherwise show the Output summary.
    - If `$ARGUMENTS` matches a planned epic from PROJECT.md but tasks don't exist yet, proceed to Step 3
    - If `$ARGUMENTS` is a new idea not in PROJECT.md, add it as a new epic
-4. Proceed to Step 3
+4. Proceed to Step 4
 
-### Step 3: Generate the PRD
+### Step 4: Generate the PRD
 
 Create a slug from the idea (e.g., `user-notifications`).
 
@@ -155,7 +243,7 @@ Write `.claude/pm/prds/<slug>.md` with this structure:
 - [ ] <measurable criterion 2>
 ```
 
-### Step 4: Decompose into Epic and Tasks
+### Step 5: Decompose into Epic and Tasks
 
 Write `.claude/pm/epics/<slug>/epic.md`.
 
@@ -186,7 +274,7 @@ Guidelines for task decomposition:
 - Identify dependencies between tasks clearly
 - Order tasks so blocked ones come after their dependencies
 
-### Step 5: Ensure GitHub Labels Exist
+### Step 6: Ensure GitHub Labels Exist
 
 Check and create labels if they don't exist:
 
@@ -207,7 +295,7 @@ gh label create "size:large" --description "Large task" --color "D4C5F9" 2>/dev/
 gh label create "scope:<workspace-dir>" --description "Scope: <workspace-dir>" --color "1D76DB" 2>/dev/null || true
 ```
 
-### Step 6: Create GitHub Issues
+### Step 7: Create GitHub Issues
 
 Read the **Issue Conventions** section from `.claude/pm/PROJECT.md` to determine which title patterns and body templates to use. Apply the selected convention for every issue created below.
 
@@ -398,7 +486,7 @@ Add to `.claude/pm/epics/<slug>/epic.md`:
 **Integration Branch:** `feat/<epic-slug>`
 ```
 
-### Step 7: Write Task Mapping
+### Step 8: Write Task Mapping
 
 Write `.claude/pm/epics/<slug>/tasks.md`.
 
@@ -415,7 +503,7 @@ Write `.claude/pm/epics/<slug>/tasks.md`.
 | #<number> | <task title> | open | medium | medium | web |
 ```
 
-### Step 8: Update Project Index
+### Step 9: Update Project Index
 
 Update `.claude/pm/PROJECT.md` — create it if it doesn't exist.
 
@@ -448,7 +536,7 @@ Rules:
 - Add it to the Epic Order section with its dependencies (if any)
 - If this is the only epic, set it to `active`
 
-### Step 9: Auto-Execute (only when `--auto` is set)
+### Step 10: Auto-Execute (only when `--auto` is set)
 
 If `--auto` is NOT in `$ARGUMENTS`, skip this step entirely and show the Output below.
 
