@@ -222,15 +222,13 @@ Before writing any plan documents, explore the problem space with the user.
 
 #### 4a: Research the Codebase
 
-Investigate the current state of the project as it relates to the idea:
+Delegate codebase research to an **Explore agent** to keep the main context clean. Spawn the agent with the epic idea as the query:
 
-- Search for existing code, modules, or patterns relevant to the feature
-- Identify files and directories that will be affected
-- Check for similar implementations that could be referenced or extended
-- Note technical constraints (database schema, API contracts, shared types)
-- Review dependencies that may be involved
+> "Search the codebase for code, patterns, and files relevant to: `<epic idea>`. Report: relevant files and modules, existing patterns that can be reused, technical constraints (database schema, API contracts, shared types), dependencies involved."
 
-Present a summary of findings:
+The agent returns a structured summary. Only this summary enters the main conversation — not raw file contents.
+
+Present the summary to the user:
 
 > "Here's what I found in the codebase that's relevant to this feature: ..."
 
@@ -660,9 +658,11 @@ If not on the base branch (main/master), switch to it and pull latest.
 
 #### Execution Loop
 
+Each task is executed in a **separate worktree agent** to prevent context accumulation. The main conversation only manages task selection and progress tracking.
+
 ```
 WHILE true:
-  1. Read fresh context:
+  1. Read fresh context (lightweight — main conversation):
      - Re-read .claude/pm/epics/<slug>/tasks.md for task list
      - Fetch open tasks from GitHub:
        gh issue list --label "pm:task" --state open --json number,title,labels,assignees --limit 50
@@ -678,38 +678,53 @@ WHILE true:
        "All remaining tasks are blocked. Blocked tasks: #X (blocked by #Y), ..."
      - If no open tasks remain → epic is COMPLETE, break loop
 
-  4. Execute sw-work workflow (Steps 1-7):
-     a. Assign the issue: gh issue edit <number> --add-assignee "@me"
-     b. Create branch (check profile.json workflow.integration_branch):
-        - Default: git checkout -b feat/<number>-<short-description>
-        - Integration branch enabled: git checkout feat/<epic-slug> && git pull && git checkout -b <slug>/<number>-<short-description>
-     c. Load epic + PRD context
-     d. Load project rules from .claude/rules/
-     e. Implement the task following acceptance criteria
-     f. Run quality checks (typecheck, lint, test)
-        - On failure: attempt to fix (up to 3 retries)
-        - If still failing after 3 retries → STOP (fail-fast), report:
-          "Task #<number> failed after 3 fix attempts. Error: <details>.
-           Branch: feat/<number>-<desc>. Working tree left as-is for debugging."
-     g. Commit with conventional commit: feat: <desc>\n\nImplements #<number>
+  4. Assign the issue (main conversation):
+     gh issue edit <number> --add-assignee "@me"
 
-  5. Execute sw-ship --merge workflow (Steps 1-8):
-     a. Push branch: git push -u origin $(git branch --show-current)
-     b. Create PR with "Closes #<number>" in body
-     c. Squash merge: gh pr merge --squash --delete-branch
-        - On merge conflict → STOP, report:
-          "Merge conflict on task #<number>. PR: <url>. Resolve manually."
-     d. Close issue if not auto-closed
-     e. Switch to base branch:
-        - Default: git checkout <base> && git pull
-        - Integration branch enabled: git checkout feat/<epic-slug> && git pull
-     f. Unblock dependent tasks: remove pm:blocked where all blockers are closed
-     g. Check if epic is complete (all referenced tasks closed)
+  5. Spawn a worktree agent for this task:
 
-  6. Report iteration progress:
-     "✓ Task #<number>: <title> — Completed (X/Y tasks done)"
+     The agent receives a self-contained prompt with everything it needs:
+     - Issue number and epic slug
+     - Path to profile.json, epic.md, PRD, and tasks.md
+     - Branch strategy (default or integration branch)
+     - Base branch name
 
-  7. Loop back to step 1
+     Agent prompt template:
+     > "Execute task #<number> for epic <slug>.
+     >  Read the issue: gh issue view <number> --json number,title,body,labels
+     >  Read context: .claude/pm/epics/<slug>/epic.md, .claude/pm/prds/<slug>.md
+     >  Read profile: .claude/profile.json
+     >  Branch strategy: <default | integration branch feat/<slug>>
+     >  Base branch: <main>
+     >
+     >  Steps:
+     >  1. Create branch per strategy
+     >  2. Load relevant project rules from .claude/rules/
+     >  3. Implement following acceptance criteria
+     >  4. Run quality checks (typecheck, lint, test) — fix failures, max 3 retries
+     >  5. Commit: <type>: <desc>\n\nImplements #<number>
+     >  6. Push: git push -u origin <branch>
+     >  7. Create PR with 'Closes #<number>' in body, referencing epic #<epic-number>
+     >  8. Squash merge: gh pr merge --squash --delete-branch
+     >  9. Unblock dependent tasks: remove pm:blocked where all blockers are closed
+     >
+     >  If any step fails after 3 retries, stop and report the error."
+
+     Use `isolation: "worktree"` so the agent works on an isolated copy.
+
+  6. Process agent result:
+     - **Success:** Log progress, update tasks.md status
+       "✓ Task #<number>: <title> — Completed (X/Y tasks done)"
+     - **Failure:** STOP immediately (fail-fast), report:
+       "Task #<number> failed. Error: <details from agent>.
+        Branch: <branch>. Resolve manually, then resume with:
+        /sw-plan <epic-slug> --auto"
+
+  7. Ensure clean state for next task:
+     git checkout <base> && git pull
+     (or git checkout feat/<epic-slug> && git pull for integration branch)
+
+  8. Loop back to step 1
 END WHILE
 ```
 

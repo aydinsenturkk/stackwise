@@ -96,7 +96,7 @@ When `profile.json` has `workflow.integration_branch: true`:
 
 ## Automated Flow
 
-`/sw-plan <idea> --auto` combines planning and execution into a single command. It plans the epic (or resumes an existing one) and then executes all tasks sequentially: implement → test → PR → merge → next task.
+`/sw-plan <idea> --auto` combines planning and execution into a single command. It plans the epic (or resumes an existing one) and then executes all tasks sequentially. Each task runs in a **separate worktree agent** with its own context window — the main conversation only manages the loop.
 
 ```
 /sw-plan <idea> --auto
@@ -104,7 +104,7 @@ When `profile.json` has `workflow.integration_branch: true`:
     ├── Plan epic (Steps 1-11) — or skip if already planned
     │
     ▼
-┌─ Auto-Execute Loop ─────────────────────────┐
+┌─ Auto-Execute Loop (main conversation) ────┐
 │                                              │
 │   Read fresh context (tasks.md + GitHub)     │
 │   Select next unblocked, unassigned task     │
@@ -113,20 +113,18 @@ When `profile.json` has `workflow.integration_branch: true`:
 │       ├── All blocked → Deadlock, STOP ──────┼──► Report blocked tasks
 │       │                                      │
 │       ▼                                      │
-│   sw-work: assign, branch, implement,        │
-│            typecheck, lint, test, commit      │
-│       │                                      │
-│       ├── Fail after 3 retries → STOP ───────┼──► Report error + branch
-│       │                                      │
+│   Assign issue, spawn worktree agent ────────┼──► Agent: own context window
+│       │                                      │    implement → test → commit
+│       │                                      │    push → PR → squash merge
+│       │                                      │    unblock deps → return result
 │       ▼                                      │
-│   sw-ship --merge: push, PR, squash merge,   │
-│                    close issue, unblock deps  │
+│   Process agent result                       │
 │       │                                      │
-│       ├── Merge conflict → STOP ─────────────┼──► Report conflict
+│       ├── Fail → STOP ──────────────────────┼──► Report error + branch
 │       │                                      │
 │       ▼                                      │
 │   Progress: ✓ Task #N (X/Y done)             │
-│   Loop ──────────────────────────────────────┘
+│   Clean state, loop ────────────────────────┘
 ```
 
 ### Resuming Auto Mode
@@ -291,3 +289,6 @@ PR body includes `Closes #<issue-number>` to auto-close the task issue on merge.
 - **Scope-aware rule loading.** In monorepos, `/sw-work` reads the task's Scope field and loads only the rules matching that workspace's type (frontend/backend/shared). Cross-scope tasks load rules for all involved types.
 - **Branch strategy consistency.** All tasks in an epic follow the same branch strategy from `profile.json`. Don't mix default and integration branch workflows within a single epic.
 - **Integration branch freshness.** When using integration branch strategy, regularly merge main into the integration branch to reduce final merge conflicts.
+- **Subagent per task.** In auto mode, each task is executed in a separate worktree agent with its own context window. The main conversation only manages task selection and progress tracking. This prevents context accumulation across tasks.
+- **Explore via agent.** Codebase research in the Explore & Brainstorm phase (Step 4a) is delegated to an Explore agent. Only the structured summary enters the planning context — not raw file contents.
+- **Selective rule loading.** `/sw-work` loads only rules relevant to the task's nature and scope. Universal rules are filtered by task type (feature, test, API, etc.) rather than loading all 19.

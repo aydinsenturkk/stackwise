@@ -94,22 +94,29 @@ gh issue edit <number> --add-assignee "@me"
 
 ### Step 4: Load Project Rules
 
+Load rules **selectively** based on task nature to minimize context usage. Don't load the entire rule set — only what's relevant.
+
 1. Read `.claude/profile.json` to understand the project's stack
-2. If monorepo and task has a scope:
+2. Determine which universal rules (`01-*`) are relevant to the task:
+   - **Always load:** `architecture-principles`, `typescript-patterns`, `naming-conventions`
+   - **Feature/refactor tasks:** add `error-handling`
+   - **API tasks:** add `api-design`, `security-principles`
+   - **Test tasks:** add `testing-philosophy`
+   - **Performance tasks:** add `performance-principles`
+   - **Skip unless directly relevant:** `ci-cd-principles`, `git-workflow`, `pm-workflow`, `documentation-standards`, `observability`, `dependency-management`, `configuration-management`, `code-review-standards`
+3. If monorepo and task has a scope:
    a. Find the workspace in `profile.workspaces` where `dir` matches the task's scope
    b. Use `workspace.type` to determine domain (frontend/backend/shared)
-   c. Load rules from `.claude/rules/`:
-      - `01-*` (universal) — always load
+   c. Load domain/framework/tool rules:
       - `02-*` (domain) — only matching `workspace.type`
       - `03-*` (framework) — only matching `workspace.frameworks`
-      - `04-*` (tool) — only matching `workspace.tools`
+      - `04-*` (tool) — only tools actually used by the files being changed
    d. If scope is `cross`, load rules for all involved workspace types
-3. If not monorepo: based on the files you will modify, read rules from `.claude/rules/`:
-   - `01-*` (universal rules) - always load relevant ones
+4. If not monorepo: based on the files you will modify, read rules from `.claude/rules/`:
    - `02-*` (domain rules) - load based on the domain (frontend vs backend)
    - `03-*` (framework rules) - load for the active framework
-   - `04-*` (tool rules) - load for active tools
-4. If no profile exists, read all available rules from `.claude/rules/` and apply relevant ones
+   - `04-*` (tool rules) - load only for tools actually used in the changed files
+5. If no profile exists, read all available rules from `.claude/rules/` and apply relevant ones
 
 ### Step 5: Implement
 
