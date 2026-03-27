@@ -145,24 +145,9 @@ When enabled during setup, task PRs target an integration branch (`feat/<epic-sl
         └── tasks.md         # Task ↔ GitHub Issue mapping
 ```
 
-## Skills (17 Slash Commands)
+## Skills (8 Slash Commands)
 
 Installed to `.claude/skills/` and available as `/command` in Claude Code.
-
-### Development
-
-| Command | Description |
-|---------|-------------|
-| `/sw-review` | Code review using project rules as checklist |
-| `/sw-fix-issue <number>` | Fetch GitHub issue and implement fix |
-| `/sw-new-feature <name>` | Scaffold feature with proper structure |
-| `/sw-add-tests <file>` | Generate tests following testing philosophy |
-| `/sw-api-endpoint <resource>` | Create REST endpoint with full stack |
-| `/sw-component <name>` | Create React component with types and tests |
-| `/sw-debug <description>` | Structured debugging workflow |
-| `/sw-optimize <file>` | Performance analysis and optimization |
-| `/sw-pr` | Create pull request for ad-hoc work (no task issue required) |
-| `/sw-migrate <description>` | Database migration with rollback strategy |
 
 ### PM Workflow
 
@@ -173,6 +158,7 @@ Installed to `.claude/skills/` and available as `/command` in Claude Code.
 | `/sw-work <issue>` | Pick up a task and implement it |
 | `/sw-ship` | Create PR for a tracked task issue, close it, and optionally merge |
 | `/sw-standup` | Generate standup status report across all epics |
+| `/sw-review` | Code review using project rules as checklist |
 
 ### Utility
 
@@ -180,8 +166,6 @@ Installed to `.claude/skills/` and available as `/command` in Claude Code.
 |---------|-------------|
 | `/sw-generate-knowledge` | Generate knowledge rules for an unsupported tool |
 | `/sw-sync-project` | Sync CLAUDE.md with current project state |
-
-Skills are context-aware: `/sw-component` only appears for frontend projects, `/sw-api-endpoint` and `/sw-migrate` only for backend.
 
 ## Agents (4 Specialized)
 

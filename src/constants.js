@@ -1,21 +1,12 @@
 export const SKILLS = [
-  { name: 'sw-review', description: 'Code review using project rules' },
-  { name: 'sw-fix-issue', description: 'Fetch GitHub issue and implement fix' },
-  { name: 'sw-new-feature', description: 'Scaffold feature with proper structure' },
-  { name: 'sw-add-tests', description: 'Generate tests following testing philosophy' },
-  { name: 'sw-api-endpoint', description: 'Create REST endpoint with full stack' },
-  { name: 'sw-component', description: 'Create React component with types and tests' },
-  { name: 'sw-debug', description: 'Structured debugging workflow' },
-  { name: 'sw-optimize', description: 'Performance analysis and optimization' },
-  { name: 'sw-pr', description: 'Create pull request for ad-hoc work (no task issue required)' },
-  { name: 'sw-migrate', description: 'Database migration with rollback strategy' },
-  { name: 'sw-generate-knowledge', description: 'Generate knowledge rules for an unsupported tool' },
-  { name: 'sw-sync-project', description: 'Sync CLAUDE.md with current project state' },
   { name: 'sw-plan', description: 'Plan work as standalone task or epic. Use --auto for epic auto-execution' },
   { name: 'sw-tasks', description: 'View task status dashboard from GitHub Issues' },
   { name: 'sw-work', description: 'Pick up a task and implement it' },
   { name: 'sw-ship', description: 'Create PR for a tracked task issue, close it, and optionally merge' },
   { name: 'sw-standup', description: 'Generate standup status report across all epics' },
+  { name: 'sw-review', description: 'Code review using project rules' },
+  { name: 'sw-generate-knowledge', description: 'Generate knowledge rules for an unsupported tool' },
+  { name: 'sw-sync-project', description: 'Sync CLAUDE.md with current project state' },
 ];
 
 export const AGENTS = [
@@ -189,7 +180,7 @@ export const DEPENDENCY_MAP = {
 
 // Frontend-only skills (hidden if no frontend detected)
 // All skills NOT listed here or in BACKEND_SKILLS are shown universally
-export const FRONTEND_SKILLS = ['sw-component'];
+export const FRONTEND_SKILLS = [];
 
 // Backend-only skills (hidden if no backend detected)
-export const BACKEND_SKILLS = ['sw-api-endpoint', 'sw-migrate'];
+export const BACKEND_SKILLS = [];

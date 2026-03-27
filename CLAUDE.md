@@ -129,22 +129,7 @@ Profiles are automatically determined based on detected stack. The CLI resolves 
 | `backend-nestjs` | L1 + L2 backend + L3 NestJS + L4 tools | NestJS API without frontend |
 | `generic` | L1 only | Any TypeScript project |
 
-## Skills (17 slash commands)
-
-### Development
-
-| Command | Description |
-|---------|-------------|
-| `/sw-review` | Code review using project rules as checklist |
-| `/sw-fix-issue <number>` | Fetch GitHub issue and implement fix |
-| `/sw-new-feature <name>` | Scaffold feature with proper structure |
-| `/sw-add-tests <file>` | Generate tests following testing philosophy |
-| `/sw-api-endpoint <resource>` | Create REST endpoint with full stack |
-| `/sw-component <name>` | Create React component with types and tests |
-| `/sw-debug <description>` | Structured debugging workflow |
-| `/sw-optimize <file>` | Performance analysis and optimization |
-| `/sw-pr` | Create pull request for ad-hoc work (no task issue required) |
-| `/sw-migrate <description>` | Database migration with rollback strategy |
+## Skills (8 slash commands)
 
 ### PM Workflow
 
@@ -155,6 +140,7 @@ Profiles are automatically determined based on detected stack. The CLI resolves 
 | `/sw-work <issue>` | Pick up a task and implement it |
 | `/sw-ship` | Create PR for a tracked task issue, close it, and optionally merge |
 | `/sw-standup` | Generate standup status report across all epics |
+| `/sw-review` | Code review using project rules as checklist |
 
 ### Utility
 
@@ -264,22 +250,13 @@ stackwise/
 │       └── config/           # nestjs-config
 ├── lib/
 │   └── registry.json         # Knowledge file registry with metadata
-├── skills/                   # 17 slash command definitions
-│   ├── sw-review/            # Development skills
-│   ├── sw-fix-issue/
-│   ├── sw-new-feature/
-│   ├── sw-add-tests/
-│   ├── sw-api-endpoint/
-│   ├── sw-component/
-│   ├── sw-debug/
-│   ├── sw-optimize/
-│   ├── sw-pr/
-│   ├── sw-migrate/
+├── skills/                   # 8 slash command definitions
 │   ├── sw-plan/              # PM workflow skills
 │   ├── sw-tasks/
 │   ├── sw-work/
 │   ├── sw-ship/
 │   ├── sw-standup/
+│   ├── sw-review/
 │   ├── sw-generate-knowledge/ # Utility skills
 │   └── sw-sync-project/
 ├── agents/                   # Custom agent definitions
