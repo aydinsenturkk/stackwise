@@ -171,10 +171,10 @@ Installed to `.claude/skills/` and available as `/command` in Claude Code.
 
 | Agent | Model | Role | Purpose |
 |-------|-------|------|---------|
-| `backend-dev` | Sonnet | Developer | Backend specialist: API, database, business logic |
-| `frontend-dev` | Sonnet | Developer | Frontend specialist: UI, components, state management |
-| `qa` | Sonnet | QA Engineer | Test coverage, edge cases, acceptance criteria validation |
-| `code-reviewer` | Sonnet | Reviewer | Code quality, patterns, conventions |
+| `backend-dev` | Opus | Developer | Backend specialist: API, database, business logic |
+| `frontend-dev` | Opus | Developer | Frontend specialist: UI, components, state management |
+| `qa` | Opus | QA Engineer | Test coverage, edge cases, acceptance criteria validation |
+| `code-reviewer` | Opus | Reviewer | Code quality, patterns, conventions |
 | `security-auditor` | Opus | Security | Security analysis using OWASP categories |
 
 ### Workflow Modes

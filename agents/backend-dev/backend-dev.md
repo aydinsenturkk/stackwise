@@ -1,5 +1,5 @@
 ---
-model: sonnet
+model: opus
 allowedTools:
   - Read
   - Grep

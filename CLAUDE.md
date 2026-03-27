@@ -153,10 +153,10 @@ Profiles are automatically determined based on detected stack. The CLI resolves 
 
 | Agent | Model | Role | Purpose |
 |-------|-------|------|---------|
-| `backend-dev` | sonnet | Developer | Backend specialist: API, database, business logic |
-| `frontend-dev` | sonnet | Developer | Frontend specialist: UI, components, state management |
-| `qa` | sonnet | QA Engineer | Test coverage, edge cases, acceptance criteria validation |
-| `code-reviewer` | sonnet | Reviewer | Code quality, patterns, conventions |
+| `backend-dev` | opus | Developer | Backend specialist: API, database, business logic |
+| `frontend-dev` | opus | Developer | Frontend specialist: UI, components, state management |
+| `qa` | opus | QA Engineer | Test coverage, edge cases, acceptance criteria validation |
+| `code-reviewer` | opus | Reviewer | Code quality, patterns, conventions |
 | `security-auditor` | opus | Security | Security analysis using OWASP categories |
 
 ### Workflow modes
