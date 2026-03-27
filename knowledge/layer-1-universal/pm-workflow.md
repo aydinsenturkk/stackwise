@@ -1,27 +1,43 @@
 # PM Workflow
 
-Spec-driven development workflow using GitHub Issues as the single source of truth. Planning artifacts are stored in `.claude/pm/`.
+Two-tier development workflow using GitHub Issues as the single source of truth. Planning artifacts are stored in `.claude/pm/`.
 
 ## Commands
 
 | Command | Purpose |
 |---------|---------|
-| `/sw-plan <idea> [--auto]` | Define scope, create PRD, epic, tasks, GitHub Issues. `--auto` executes all tasks sequentially |
+| `/sw-plan <idea> [--auto]` | Plan work as standalone task or epic. `--auto` executes all tasks sequentially |
 | `/sw-tasks [filter]` | View task status dashboard |
 | `/sw-work [issue]` | Pick up a task and implement it |
-| `/sw-ship [issue]` | Create PR, optionally merge |
+| `/sw-ship [issue] [--review] [--merge]` | Create PR, optionally review and merge |
 | `/sw-standup` | Status report across all epics |
 
 ## Development Flow
 
 ```
-/sw-plan <project idea>        # First run: scope mode
+/sw-plan <idea>
     │
-    ├── Define project vision
-    ├── Decompose into epics
-    ├── Create PROJECT.md (roadmap)
-    ├── User confirms epic list
-    └── Detail first epic (PRD + tasks + GitHub Issues)
+    ├── Step 1: Parse idea
+    ├── Step 2: Assess scope → Standalone or Epic?
+    │
+    ├─── Standalone Task ──────────────────────┐
+    │    Review issue → Confirm → Create issue  │
+    │    Branch: <type>/<number>-<desc>          │
+    │    /sw-work → /sw-ship → done             │
+    └──────────────────────────────────────────┘
+    │
+    ├─── Epic ─────────────────────────────────┐
+    │    Step 3: Understand project context      │
+    │    Step 4: Explore & brainstorm            │
+    │            (research codebase, propose     │
+    │             approaches, iterate, confirm)  │
+    │    Step 5: Generate PRD                    │
+    │    Step 6: Decompose into tasks            │
+    │    Step 7: Review & approve                │
+    │            (user reviews plan, confirms    │
+    │             before any issues are created) │
+    │    Steps 8-11: Labels, issues, mapping     │
+    └──────────────────────────────────────────┘
     │
     ▼
 ┌─ /sw-work ──────────────────┐
@@ -33,20 +49,15 @@ Spec-driven development workflow using GitHub Issues as the single source of tru
 └──────────┬───────────────────┘
            │
            ▼
-   /sw-ship
+   /sw-ship [--review] [--merge]
+       Optional: review before PR
        Create PR (Closes #N)
-       Optional: --merge
+       Optional: squash merge
            │
            ▼
        More tasks in epic?
        ├── Yes → /sw-work (loop)
        └── No  → /sw-plan <next epic>
-                     │
-                     ▼
-                 Epic mode: detail next epic
-                 from PROJECT.md roadmap
-                     │
-                     └── back to /sw-work loop
 ```
 
 ### Integration Branch Flow
@@ -90,7 +101,7 @@ When `profile.json` has `workflow.integration_branch: true`:
 ```
 /sw-plan <idea> --auto
     │
-    ├── Plan epic (Steps 1-8) — or skip if already planned
+    ├── Plan epic (Steps 1-11) — or skip if already planned
     │
     ▼
 ┌─ Auto-Execute Loop ─────────────────────────┐
@@ -130,12 +141,36 @@ Since the epic is already planned and tasks exist, it skips planning and picks u
 
 ## Key Concepts
 
+### Planning Tiers
+
+`/sw-plan` assesses the scope of the idea and determines the planning tier:
+
+- **Standalone Task**: Small, focused work (bug fix, small feature, config change). Creates a single GitHub issue without PRD/Epic ceremony. Branch: `<type>/<number>-<desc>`.
+- **Epic**: Multi-task initiative. Goes through explore → PRD → tasks → review → issues. Branch: `feat/<number>-<desc>` or `<epic-slug>/<number>-<desc>`.
+
 ### Scope Mode vs Epic Mode
 
-`/sw-plan` has two modes based on whether `.claude/pm/PROJECT.md` exists:
+For epics, `/sw-plan` has two modes based on whether `.claude/pm/PROJECT.md` exists:
 
 - **Scope Mode** (first run): Takes a broad project idea, asks clarifying questions, collects architecture decisions (frontend model, backend model, API style, database, auth), decomposes into epics, creates PROJECT.md as the roadmap, then details the first epic. First epic's first task is always "Project Setup".
-- **Epic Mode** (subsequent runs): Takes a specific epic from the roadmap (or a new idea), creates its PRD + tasks + GitHub Issues, updates PROJECT.md
+- **Epic Mode** (subsequent runs): Takes a specific epic from the roadmap (or a new idea), explores the codebase, brainstorms approaches with the user, creates PRD + tasks, presents for review, and only creates GitHub Issues after user approval.
+
+### Explore & Brainstorm
+
+Before writing any plan documents, `/sw-plan` explores the problem space:
+
+1. **Research codebase** — find relevant files, patterns, constraints
+2. **Propose approaches** — present 2-3 options with pros/cons
+3. **Iterate** — discuss with user, adjust based on feedback
+4. **Confirm direction** — proceed to PRD only after explicit agreement
+
+### Review Gate
+
+After PRD and task breakdown are created (as local files), `/sw-plan` pauses for user review:
+
+- Shows PRD summary + task table
+- User can modify, add/remove tasks, or cancel
+- GitHub issues are only created after explicit approval
 
 ### Architecture Decisions
 
@@ -207,7 +242,13 @@ Special value `cross` indicates the epic/task spans multiple workspaces.
 
 `.claude/profile.json` records the branch strategy under `workflow.integration_branch`. Two modes are supported:
 
-**Default** (`integration_branch: false`):
+**Standalone task** (no epic):
+- Branch: `<type>/<issue-number>-<short-description>`
+- PR target: `main`
+- Type from task nature: `fix`, `feat`, `refactor`, `chore`, `docs`, `test`
+- Example: `fix/42-login-validation` → PR to `main`
+
+**Epic — default** (`integration_branch: false`):
 - Task branches: `feat/<issue-number>-<short-description>`
 - PR target: `main`
 - Each task is a direct PR to main

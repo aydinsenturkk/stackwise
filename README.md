@@ -90,22 +90,31 @@ Knowledge files are organized into layers of increasing specificity. Only the la
 
 ## PM Workflow
 
-stackwise includes a two-tier development workflow powered by 5 slash commands. Small work becomes a standalone task (single issue, single PR). Larger work becomes an epic with PRD, tasks, and GitHub Issues — manually or fully automated.
+stackwise includes a two-tier development workflow powered by 5 slash commands. Small work becomes a standalone task (single issue, single PR). Larger work becomes an epic — explored, planned, reviewed, then executed.
 
 ```
 Idea → /sw-plan → Assess scope
                         ↓
-          ┌─────────────┴─────────────┐
-    Standalone Task              Epic (PRD + Tasks)
-     Single issue               Multiple issues
-          ↓                           ↓
-    /sw-work → /sw-ship     /sw-tasks (dashboard)
-                                      ↓
-                            /sw-work  (pick up & implement)
-                                      ↓
-                            /sw-ship  (PR + merge)
-                                      ↓
-                            /sw-standup (status report)
+          ┌─────────────┴──────────────────┐
+    Standalone Task                   Epic
+     Review → Issue                    ↓
+          ↓                     Explore & brainstorm
+    /sw-work → /sw-ship         (research, propose, iterate)
+                                       ↓
+                                PRD + task breakdown
+                                       ↓
+                                Review & approve
+                                (user confirms plan)
+                                       ↓
+                                GitHub Issues created
+                                       ↓
+                                /sw-tasks (dashboard)
+                                       ↓
+                                /sw-work  (implement)
+                                       ↓
+                                /sw-ship  (PR + merge)
+                                       ↓
+                                /sw-standup (report)
 ```
 
 ### Commands
