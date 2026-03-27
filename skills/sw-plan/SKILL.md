@@ -218,6 +218,8 @@ This is a new project. Before creating any epic, define the overall scope first.
 
 Before writing any plan documents, explore the problem space with the user.
 
+**If arriving from Scope Mode (first epic of a new project):** The codebase is empty or minimal — skip 4a (codebase research) and go directly to 4b. In 4b, focus on technology choices, project structure, and implementation strategy rather than existing code analysis. The architecture decisions from Step 3 (PROJECT.md) provide the foundation for the discussion.
+
 #### 4a: Research the Codebase
 
 Investigate the current state of the project as it relates to the idea:
@@ -234,7 +236,7 @@ Present a summary of findings:
 
 #### 4b: Discuss Approaches
 
-Based on the codebase research, propose 2-3 possible approaches:
+Based on the codebase research (or architecture decisions for new projects), propose 2-3 possible approaches:
 
 For each approach, explain:
 - **What:** Brief description of the approach

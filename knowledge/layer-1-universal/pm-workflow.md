@@ -159,8 +159,8 @@ For epics, `/sw-plan` has two modes based on whether `.claude/pm/PROJECT.md` exi
 
 Before writing any plan documents, `/sw-plan` explores the problem space:
 
-1. **Research codebase** — find relevant files, patterns, constraints
-2. **Propose approaches** — present 2-3 options with pros/cons
+1. **Research codebase** — find relevant files, patterns, constraints. For new/empty projects (first epic from Scope Mode), skip this step — there's nothing to research yet.
+2. **Propose approaches** — present 2-3 options with pros/cons. For new projects, focus on technology choices and project structure based on architecture decisions from PROJECT.md.
 3. **Iterate** — discuss with user, adjust based on feedback
 4. **Confirm direction** — proceed to PRD only after explicit agreement
 
