@@ -73,7 +73,19 @@ Infer the type from the idea:
 - `docs` — documentation only
 - `test` — adding or fixing tests
 
-#### A4: Create GitHub Issue
+#### A4: Review Before Creating
+
+Present the issue that will be created:
+
+> **Title:** `<type>: <description>`
+> **Labels:** `pm:task`, `priority:<level>`, `size:<size>`
+> **Body:** (preview of the issue body)
+>
+> "Create this issue?"
+
+Wait for the user's confirmation before creating.
+
+#### A5: Create GitHub Issue
 
 Create a single issue using the conventions:
 
@@ -88,7 +100,7 @@ The task body follows the same template as epic tasks (Minimal/Detailed/User Sto
 
 **Monorepo:** If `.claude/profile.json` has `monorepo: true`, add `scope:<workspace>` to the labels.
 
-#### A5: Output
+#### A6: Output
 
 Display:
 - Task issue number and URL
@@ -102,7 +114,7 @@ Display:
 
 ### Path B: Epic
 
-Continue with the full planning flow below (Steps 3–10).
+Continue with the full planning flow below (Steps 3–12).
 
 ### Step 3: Understand Project Context
 
@@ -197,12 +209,51 @@ This is a new project. Before creating any epic, define the overall scope first.
 1. Read `.claude/pm/PROJECT.md` to understand existing epics, ordering, and dependencies
 2. Check existing PRDs in `.claude/pm/prds/` to avoid duplication
 3. Determine which epic to plan:
-   - If `$ARGUMENTS` matches a planned/active epic from PROJECT.md **AND** `.claude/pm/epics/<slug>/tasks.md` already exists → tasks are already created. If `--auto` is set, skip directly to Step 10. Otherwise show the Output summary.
-   - If `$ARGUMENTS` matches a planned epic from PROJECT.md but tasks don't exist yet, proceed to Step 3
+   - If `$ARGUMENTS` matches a planned/active epic from PROJECT.md **AND** `.claude/pm/epics/<slug>/tasks.md` already exists → tasks are already created. If `--auto` is set, skip directly to Step 12. Otherwise show the Output summary.
+   - If `$ARGUMENTS` matches a planned epic from PROJECT.md but tasks don't exist yet, proceed to Step 4
    - If `$ARGUMENTS` is a new idea not in PROJECT.md, add it as a new epic
 4. Proceed to Step 4
 
-### Step 4: Generate the PRD
+### Step 4: Explore & Brainstorm
+
+Before writing any plan documents, explore the problem space with the user.
+
+#### 4a: Research the Codebase
+
+Investigate the current state of the project as it relates to the idea:
+
+- Search for existing code, modules, or patterns relevant to the feature
+- Identify files and directories that will be affected
+- Check for similar implementations that could be referenced or extended
+- Note technical constraints (database schema, API contracts, shared types)
+- Review dependencies that may be involved
+
+Present a summary of findings:
+
+> "Here's what I found in the codebase that's relevant to this feature: ..."
+
+#### 4b: Discuss Approaches
+
+Based on the codebase research, propose 2-3 possible approaches:
+
+For each approach, explain:
+- **What:** Brief description of the approach
+- **How:** Key implementation details
+- **Pros:** Benefits, simplicity, alignment with existing patterns
+- **Cons:** Trade-offs, risks, complexity
+- **Affected areas:** Which files/modules will change
+
+Let the user ask questions, challenge assumptions, suggest alternatives. Iterate until alignment.
+
+#### 4c: Confirm Direction
+
+Summarize the chosen approach:
+
+> "We'll go with [approach]: [brief description]. This means [key implications]. Agreed?"
+
+Wait for explicit confirmation before proceeding to the PRD.
+
+### Step 5: Generate the PRD
 
 Create a slug from the idea (e.g., `user-notifications`).
 
@@ -243,7 +294,7 @@ Write `.claude/pm/prds/<slug>.md` with this structure:
 - [ ] <measurable criterion 2>
 ```
 
-### Step 5: Decompose into Epic and Tasks
+### Step 6: Decompose into Epic and Tasks
 
 Write `.claude/pm/epics/<slug>/epic.md`.
 
@@ -274,7 +325,51 @@ Guidelines for task decomposition:
 - Identify dependencies between tasks clearly
 - Order tasks so blocked ones come after their dependencies
 
-### Step 6: Ensure GitHub Labels Exist
+### Step 7: Review & Approve
+
+Before creating any GitHub issues, present the full plan to the user for review.
+
+#### 7a: Present the Plan
+
+Display a summary:
+
+```
+## Plan Review
+
+### PRD: <title>
+Problem: <1-2 sentence summary>
+Solution: <chosen approach from brainstorm>
+
+### Tasks (<count> total)
+
+| # | Task | Size | Priority | Blocked By |
+|---|------|------|----------|------------|
+| 1 | <task> | small | high | - |
+| 2 | <task> | medium | high | - |
+| 3 | <task> | small | medium | 1, 2 |
+
+### Files Created
+- .claude/pm/prds/<slug>.md
+- .claude/pm/epics/<slug>/epic.md
+```
+
+#### 7b: Iterate
+
+Ask the user:
+
+> "This is the plan. Would you like to change anything before I create the GitHub issues?"
+
+The user may:
+- Approve → proceed to Step 8
+- Request changes → modify PRD and/or epic.md, then re-present
+- Add/remove/reorder tasks → update epic.md, then re-present
+- Cancel → stop entirely, local files remain for future use
+
+#### 7c: Confirm
+
+Only after explicit approval ("tamam", "onaylıyorum", "evet", "go ahead", etc.) proceed to Step 8.
+
+### Step 8: Ensure GitHub Labels Exist
 
 Check and create labels if they don't exist:
 
@@ -295,7 +390,7 @@ gh label create "size:large" --description "Large task" --color "D4C5F9" 2>/dev/
 gh label create "scope:<workspace-dir>" --description "Scope: <workspace-dir>" --color "1D76DB" 2>/dev/null || true
 ```
 
-### Step 7: Create GitHub Issues
+### Step 9: Create GitHub Issues
 
 Read the **Issue Conventions** section from `.claude/pm/PROJECT.md` to determine which title patterns and body templates to use. Apply the selected convention for every issue created below.
 
@@ -486,7 +581,7 @@ Add to `.claude/pm/epics/<slug>/epic.md`:
 **Integration Branch:** `feat/<epic-slug>`
 ```
 
-### Step 8: Write Task Mapping
+### Step 10: Write Task Mapping
 
 Write `.claude/pm/epics/<slug>/tasks.md`.
 
@@ -503,7 +598,7 @@ Write `.claude/pm/epics/<slug>/tasks.md`.
 | #<number> | <task title> | open | medium | medium | web |
 ```
 
-### Step 9: Update Project Index
+### Step 11: Update Project Index
 
 Update `.claude/pm/PROJECT.md` — create it if it doesn't exist.
 
@@ -536,7 +631,7 @@ Rules:
 - Add it to the Epic Order section with its dependencies (if any)
 - If this is the only epic, set it to `active`
 
-### Step 10: Auto-Execute (only when `--auto` is set)
+### Step 12: Auto-Execute (only when `--auto` is set)
 
 If `--auto` is NOT in `$ARGUMENTS`, skip this step entirely and show the Output below.
 
