@@ -167,14 +167,32 @@ Installed to `.claude/skills/` and available as `/command` in Claude Code.
 | `/sw-generate-knowledge` | Generate knowledge rules for an unsupported tool |
 | `/sw-sync-project` | Sync CLAUDE.md with current project state |
 
-## Agents (4 Specialized)
+## Agents (5 Specialized)
 
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| `code-reviewer` | Sonnet | Thorough code review with categorized findings |
-| `test-writer` | Sonnet | Test generation following testing philosophy |
-| `security-auditor` | Opus | Security analysis using OWASP categories |
-| `refactorer` | Sonnet | Safe refactoring with test verification |
+| Agent | Model | Role | Purpose |
+|-------|-------|------|---------|
+| `backend-dev` | Sonnet | Developer | Backend specialist: API, database, business logic |
+| `frontend-dev` | Sonnet | Developer | Frontend specialist: UI, components, state management |
+| `qa` | Sonnet | QA Engineer | Test coverage, edge cases, acceptance criteria validation |
+| `code-reviewer` | Sonnet | Reviewer | Code quality, patterns, conventions |
+| `security-auditor` | Opus | Security | Security analysis using OWASP categories |
+
+### Workflow Modes
+
+| Mode | Description |
+|------|-------------|
+| **Solo** | Single agent per task — implements, tests, and ships (default) |
+| **Agency** | Specialized agents with quality pipeline: dev → qa → review → ship |
+
+Agency mode runs a quality pipeline for each task in auto mode (`/sw-plan --auto`):
+
+```
+Dev Agent (backend/frontend) → implement + test + commit
+  → QA Agent → validate quality + test coverage
+    → Code Review Agent → check code quality
+      → Security Agent (if API/auth task)
+        → Ship (push + PR + merge)
+```
 
 ## Hooks
 

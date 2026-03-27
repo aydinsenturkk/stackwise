@@ -305,7 +305,16 @@ export async function promptWorkflow(defaults = {}) {
     default: defaults.pr_merge || 'squash',
   });
 
-  const result = { commit_convention, branch_strategy, integration_branch, release_strategy, changelog, pr_merge };
+  const mode = await select({
+    message: 'Workflow mode:',
+    choices: [
+      { name: 'Solo — single agent per task', value: 'solo' },
+      { name: 'Agency — specialized agents + quality pipeline (dev → qa → review)', value: 'agency' },
+    ],
+    default: defaults.mode || 'solo',
+  });
+
+  const result = { commit_convention, branch_strategy, integration_branch, release_strategy, changelog, pr_merge, mode };
   if (commit_convention === 'custom') {
     result.custom_commit_pattern = custom_commit_pattern;
   }

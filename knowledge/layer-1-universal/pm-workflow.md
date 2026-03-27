@@ -96,7 +96,13 @@ When `profile.json` has `workflow.integration_branch: true`:
 
 ## Automated Flow
 
-`/sw-plan <idea> --auto` combines planning and execution into a single command. It plans the epic (or resumes an existing one) and then executes all tasks sequentially. Each task runs in a **separate worktree agent** with its own context window — the main conversation only manages the loop.
+`/sw-plan <idea> --auto` combines planning and execution into a single command. It plans the epic (or resumes an existing one) and then executes all tasks. Each task runs in a **separate worktree agent** with its own context window — the main conversation only manages the loop.
+
+Two workflow modes are supported (configured via `npx stackwise` → `profile.json`):
+
+### Solo Mode (default)
+
+Single agent per task — implements, tests, and ships.
 
 ```
 /sw-plan <idea> --auto
@@ -106,25 +112,47 @@ When `profile.json` has `workflow.integration_branch: true`:
     ▼
 ┌─ Auto-Execute Loop (main conversation) ────┐
 │                                              │
-│   Read fresh context (tasks.md + GitHub)     │
 │   Select next unblocked, unassigned task     │
 │       │                                      │
-│       ├── No tasks left → Epic complete ─────┼──► Close epic, activate next
-│       ├── All blocked → Deadlock, STOP ──────┼──► Report blocked tasks
+│       ├── No tasks left → Epic complete      │
+│       ├── All blocked → Deadlock, STOP       │
 │       │                                      │
 │       ▼                                      │
-│   Assign issue, spawn worktree agent ────────┼──► Agent: own context window
+│   Spawn worktree agent ─────────────────────┼──► implement → test → commit
+│       │                                      │    push → PR → merge
+│       ▼                                      │
+│   ✓ Task #N (X/Y done), loop ──────────────┘
+```
+
+### Agency Mode
+
+Specialized agents with quality pipeline: dev → qa → review → ship.
+
+```
+/sw-plan <idea> --auto
+    │
+    ├── Plan epic (Steps 1-11) — or skip if already planned
+    │
+    ▼
+┌─ Auto-Execute Loop (main conversation) ────┐
+│                                              │
+│   Select next unblocked, unassigned task     │
+│       │                                      │
+│       ▼                                      │
+│   Dev Agent (worktree) ─────────────────────┼──► backend-dev or frontend-dev
 │       │                                      │    implement → test → commit
-│       │                                      │    push → PR → squash merge
-│       │                                      │    unblock deps → return result
 │       ▼                                      │
-│   Process agent result                       │
-│       │                                      │
-│       ├── Fail → STOP ──────────────────────┼──► Report error + branch
+│   QA Agent ─────────────────────────────────┼──► validate quality + coverage
+│       │                                      │    FAIL? → Dev Agent fix (max 2)
+│       ▼                                      │
+│   Code Review Agent ────────────────────────┼──► check patterns + conventions
+│       │                                      │    CRITICAL? → Dev Agent fix
+│       ▼                                      │
+│   Security Agent (if API/auth) ─────────────┼──► security review
 │       │                                      │
 │       ▼                                      │
-│   Progress: ✓ Task #N (X/Y done)             │
-│   Clean state, loop ────────────────────────┘
+│   Ship: push → PR → merge                   │
+│   ✓ Task #N (X/Y done), loop ──────────────┘
 ```
 
 ### Resuming Auto Mode

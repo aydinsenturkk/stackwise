@@ -10,10 +10,11 @@ export const SKILLS = [
 ];
 
 export const AGENTS = [
-  { name: 'code-reviewer', description: 'Thorough code review with categorized findings' },
-  { name: 'test-writer', description: 'Test generation following testing philosophy' },
+  { name: 'backend-dev', description: 'Backend specialist: API, database, business logic' },
+  { name: 'frontend-dev', description: 'Frontend specialist: UI, components, state management' },
+  { name: 'qa', description: 'QA engineer: test coverage, edge cases, acceptance criteria' },
+  { name: 'code-reviewer', description: 'Code review: quality, patterns, conventions' },
   { name: 'security-auditor', description: 'Security analysis using OWASP categories' },
-  { name: 'refactorer', description: 'Safe refactoring with test verification' },
 ];
 
 export const HOOKS = [

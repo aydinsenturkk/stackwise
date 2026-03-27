@@ -658,7 +658,9 @@ If not on the base branch (main/master), switch to it and pull latest.
 
 #### Execution Loop
 
-Each task is executed in a **separate worktree agent** to prevent context accumulation. The main conversation only manages task selection and progress tracking.
+Read `.claude/profile.json` → `workflow.mode` to determine the execution mode: **solo** or **agency**.
+
+Each task is executed in a **separate worktree agent** to prevent context accumulation. The main conversation only manages task selection, pipeline orchestration, and progress tracking.
 
 ```
 WHILE true:
@@ -674,51 +676,92 @@ WHILE true:
 
   3. If no unblocked unassigned task found:
      - Check if any open tasks remain
-     - If open tasks exist but all are blocked → STOP, report deadlock:
-       "All remaining tasks are blocked. Blocked tasks: #X (blocked by #Y), ..."
+     - If open tasks exist but all are blocked → STOP, report deadlock
      - If no open tasks remain → epic is COMPLETE, break loop
 
   4. Assign the issue (main conversation):
      gh issue edit <number> --add-assignee "@me"
 
-  5. Spawn a worktree agent for this task:
+  5. Execute the task using the configured workflow mode:
 
-     The agent receives a self-contained prompt with everything it needs:
-     - Issue number and epic slug
-     - Path to profile.json, epic.md, PRD, and tasks.md
-     - Branch strategy (default or integration branch)
-     - Base branch name
+     ─── SOLO MODE (workflow.mode: "solo") ───
 
-     Agent prompt template:
+     Spawn a single worktree agent that handles everything:
+
      > "Execute task #<number> for epic <slug>.
-     >  Read the issue: gh issue view <number> --json number,title,body,labels
-     >  Read context: .claude/pm/epics/<slug>/epic.md, .claude/pm/prds/<slug>.md
-     >  Read profile: .claude/profile.json
-     >  Branch strategy: <default | integration branch feat/<slug>>
-     >  Base branch: <main>
-     >
-     >  Steps:
-     >  1. Create branch per strategy
-     >  2. Load relevant project rules from .claude/rules/
-     >  3. Implement following acceptance criteria
-     >  4. Run quality checks (typecheck, lint, test) — fix failures, max 3 retries
-     >  5. Commit: <type>: <desc>\n\nImplements #<number>
-     >  6. Push: git push -u origin <branch>
-     >  7. Create PR with 'Closes #<number>' in body, referencing epic #<epic-number>
-     >  8. Squash merge: gh pr merge --squash --delete-branch
-     >  9. Unblock dependent tasks: remove pm:blocked where all blockers are closed
-     >
-     >  If any step fails after 3 retries, stop and report the error."
+     >  Read the issue, context files, and profile.
+     >  Create branch, load rules, implement, test, commit.
+     >  Push, create PR with 'Closes #<number>', squash merge.
+     >  Unblock dependent tasks."
 
-     Use `isolation: "worktree"` so the agent works on an isolated copy.
+     Use `isolation: "worktree"`.
 
-  6. Process agent result:
+     ─── AGENCY MODE (workflow.mode: "agency") ───
+
+     Run a quality pipeline with specialized agents:
+
+     **Step A: Determine task domain**
+     From task labels (`scope:<workspace>`) or issue body (`## Scope`):
+     - Backend task → use `backend-dev` agent
+     - Frontend task → use `frontend-dev` agent
+     - Cross/ambiguous → use `backend-dev` or `frontend-dev` based on primary files
+
+     **Step B: Dev Agent (worktree)**
+     Spawn the appropriate dev agent with `isolation: "worktree"`:
+
+     > "Implement task #<number> for epic <slug>.
+     >  Read the issue, context files, and profile.
+     >  Create branch per strategy. Load rules for your domain.
+     >  Implement following acceptance criteria. Write tests.
+     >  Run quality checks. Commit."
+
+     Dev agent implements and commits but does NOT push or create PR.
+
+     **Step C: QA Agent (reviews dev agent's work)**
+     Spawn `qa` agent on the dev agent's branch (no worktree — reads only):
+
+     > "Review task #<number> on branch <branch>.
+     >  Read the task issue for acceptance criteria.
+     >  Run: git diff <base>...<branch> to see changes.
+     >  Run: npm test to verify tests pass.
+     >  Validate: acceptance criteria, test coverage, edge cases.
+     >  Return: PASS or FAIL with findings."
+
+     - If **FAIL**: Spawn dev agent again on same branch to fix QA findings.
+       Re-run QA. Max 2 QA cycles. If still failing → STOP.
+     - If **PASS**: Continue to Step D.
+
+     **Step D: Code Review Agent**
+     Spawn `code-reviewer` agent on the branch:
+
+     > "Review changes on branch <branch> against <base>.
+     >  Check code quality, patterns, conventions.
+     >  Return categorized findings."
+
+     - If **CRITICAL** findings: Spawn dev agent to fix. Re-review. Max 1 retry.
+     - If no criticals: Continue to Step E.
+
+     **Step E: Security Agent (conditional)**
+     If the task involves API endpoints, authentication, authorization, or user input handling:
+     Spawn `security-auditor` agent on the branch.
+
+     - If **CRITICAL** findings: Spawn dev agent to fix. Re-audit.
+     - Otherwise: Continue.
+
+     **Step F: Ship (main conversation)**
+     Push, create PR, squash merge, unblock dependent tasks.
+
+     ```bash
+     git push -u origin <branch>
+     gh pr create --title "<title>" --body "Closes #<number>\n\nPart of #<epic>"
+     gh pr merge --squash --delete-branch
+     ```
+
+  6. Process result:
      - **Success:** Log progress, update tasks.md status
        "✓ Task #<number>: <title> — Completed (X/Y tasks done)"
-     - **Failure:** STOP immediately (fail-fast), report:
-       "Task #<number> failed. Error: <details from agent>.
-        Branch: <branch>. Resolve manually, then resume with:
-        /sw-plan <epic-slug> --auto"
+     - **Failure:** STOP immediately (fail-fast), report error and branch.
+       "Task #<number> failed. Resume with: /sw-plan <epic-slug> --auto"
 
   7. Ensure clean state for next task:
      git checkout <base> && git pull

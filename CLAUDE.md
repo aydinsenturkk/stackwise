@@ -149,14 +149,20 @@ Profiles are automatically determined based on detected stack. The CLI resolves 
 | `/sw-generate-knowledge` | Generate knowledge rules for an unsupported tool |
 | `/sw-sync-project` | Sync CLAUDE.md with current project state |
 
-## Agents (4 specialized)
+## Agents (5 specialized)
 
-| Agent | Model | Purpose |
-|-------|-------|---------|
-| `code-reviewer` | sonnet | Thorough code review with categorized findings |
-| `test-writer` | sonnet | Test generation following testing philosophy |
-| `security-auditor` | opus | Security analysis using OWASP categories |
-| `refactorer` | sonnet | Safe refactoring with test verification |
+| Agent | Model | Role | Purpose |
+|-------|-------|------|---------|
+| `backend-dev` | sonnet | Developer | Backend specialist: API, database, business logic |
+| `frontend-dev` | sonnet | Developer | Frontend specialist: UI, components, state management |
+| `qa` | sonnet | QA Engineer | Test coverage, edge cases, acceptance criteria validation |
+| `code-reviewer` | sonnet | Reviewer | Code quality, patterns, conventions |
+| `security-auditor` | opus | Security | Security analysis using OWASP categories |
+
+### Workflow modes
+
+- **Solo** (default): Single agent per task — implements, tests, and ships
+- **Agency**: Specialized agents with quality pipeline — dev → qa → review → ship
 
 ## Hooks
 
@@ -259,11 +265,12 @@ stackwise/
 │   ├── sw-review/
 │   ├── sw-generate-knowledge/ # Utility skills
 │   └── sw-sync-project/
-├── agents/                   # Custom agent definitions
-│   ├── code-reviewer/
-│   ├── test-writer/
-│   ├── security-auditor/
-│   └── refactorer/
+├── agents/                   # Specialized agent definitions
+│   ├── backend-dev/          # Backend developer
+│   ├── frontend-dev/         # Frontend developer
+│   ├── qa/                   # QA engineer
+│   ├── code-reviewer/        # Code reviewer
+│   └── security-auditor/     # Security auditor
 ├── hooks/                    # Hook scripts
 ├── settings/                 # Settings templates (base, frontend, backend, fullstack)
 └── templates/                # CLAUDE.md templates (flat .md files)
