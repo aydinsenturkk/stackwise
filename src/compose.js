@@ -1,6 +1,6 @@
-import { readFileSync, writeFileSync, copyFileSync, chmodSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, copyFileSync, chmodSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { ensureDir, copyDirRecursive, fileExists, getPackageRoot } from './utils.js';
+import { ensureDir, copyDirRecursive, fileExists, removeDirRecursive, getPackageRoot } from './utils.js';
 import { getFileMetadata } from './registry.js';
 
 const AUTO_START = '<!-- STACKWISE:AUTO:START -->';
@@ -514,6 +514,14 @@ export function compose(config, packageRoot) {
 
   const counts = { rules: 0, skills: 0, agents: 0, hooks: 0, skipped: 0 };
 
+  // --- Clean up old rules before installing new ones ---
+  if (existsSync(rulesDir)) {
+    const existingRules = readdirSync(rulesDir).filter((entry) => entry.endsWith('.md'));
+    for (const oldRule of existingRules) {
+      removeDirRecursive(join(rulesDir, oldRule));
+    }
+  }
+
   // --- Install knowledge files as rules with frontmatter ---
   for (const filePath of config.knowledge_files) {
     const meta = getFileMetadata(filePath);
@@ -553,6 +561,19 @@ export function compose(config, packageRoot) {
     counts.rules++;
   }
 
+  // --- Clean up old skills not in current selection ---
+  if (existsSync(skillsDir)) {
+    const existingSkills = readdirSync(skillsDir).filter((entry) => {
+      try { return statSync(join(skillsDir, entry)).isDirectory(); } catch { return false; }
+    });
+    const selectedSkills = new Set(config.skills || []);
+    for (const oldSkill of existingSkills) {
+      if (!selectedSkills.has(oldSkill)) {
+        removeDirRecursive(join(skillsDir, oldSkill));
+      }
+    }
+  }
+
   // --- Copy skills ---
   for (const skillName of config.skills || []) {
     const skillSource = join(packageRoot, 'skills', skillName);
@@ -571,6 +592,19 @@ export function compose(config, packageRoot) {
     }
   }
 
+  // --- Clean up old agents not in current selection ---
+  if (existsSync(agentsDir)) {
+    const existingAgents = readdirSync(agentsDir).filter((entry) => {
+      try { return statSync(join(agentsDir, entry)).isDirectory(); } catch { return false; }
+    });
+    const selectedAgents = new Set(config.agents || []);
+    for (const oldAgent of existingAgents) {
+      if (!selectedAgents.has(oldAgent)) {
+        removeDirRecursive(join(agentsDir, oldAgent));
+      }
+    }
+  }
+
   // --- Copy agents ---
   for (const agentName of config.agents || []) {
     const agentSource = join(packageRoot, 'agents', agentName);
@@ -586,6 +620,19 @@ export function compose(config, packageRoot) {
     } else {
       console.warn(`Warning: Agent not found, skipping: ${agentName}`);
       counts.skipped++;
+    }
+  }
+
+  // --- Clean up old hooks not in current selection ---
+  if (existsSync(hooksDir)) {
+    const existingHooks = readdirSync(hooksDir).filter((entry) => {
+      try { return statSync(join(hooksDir, entry)).isFile(); } catch { return false; }
+    });
+    const selectedHooks = new Set(config.hooks || []);
+    for (const oldHook of existingHooks) {
+      if (!selectedHooks.has(oldHook)) {
+        removeDirRecursive(join(hooksDir, oldHook));
+      }
     }
   }
 

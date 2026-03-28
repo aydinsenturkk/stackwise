@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, lstatSync, copyFileSync, chmodSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, statSync, lstatSync, copyFileSync, chmodSync, rmSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -65,4 +65,8 @@ export function fileExists(filePath) {
   } catch {
     return false;
   }
+}
+
+export function removeDirRecursive(dirPath) {
+  rmSync(dirPath, { recursive: true, force: true });
 }
